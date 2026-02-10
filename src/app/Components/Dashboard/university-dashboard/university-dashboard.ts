@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-university-dashboard',
@@ -11,24 +12,76 @@ import { Router } from '@angular/router';
 })
 export class UniversityDashboardComponent implements OnInit {
 
-  userName: string | null = '';
-  role: string | null = '';
+  universityName: string | null = '';
+  colleges: any[] = [];
+  loading = false;
+  errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
 
-    this.userName = localStorage.getItem('userName');
-    this.role = localStorage.getItem('userRole');
-
-    // Safety check
-    if (!this.role || this.role !== 'university') {
-      this.router.navigate(['/login']);
+    //  role check
+    if (localStorage.getItem('userRole') !== 'university') {
+      this.router.navigate(['/']);
+      return;
     }
+
+    this.universityName = localStorage.getItem('userName');
+
+    // 🔹 pehle localStorage se try karo
+    const storedColleges = localStorage.getItem('colleges');
+    if (storedColleges) {
+      this.colleges = JSON.parse(storedColleges);
+    }
+
+    // 🔹 backend se fresh data lao
+    this.fetchColleges();
+  }
+
+  fetchColleges() {
+    this.loading = true;
+
+    this.http.get<any[]>(
+      'http://localhost:8080/api/university/colleges',
+      { withCredentials: true }
+    ).subscribe({
+      next: (data) => {
+        this.colleges = data;
+
+        //  localStorage me save
+        localStorage.setItem('colleges', JSON.stringify(data));
+
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Unable to load colleges';
+        this.loading = false;
+      }
+    });
   }
 
   logout() {
+    this.http.post(
+      'http://localhost:8080/api/auth/logout',
+      {},
+      { withCredentials: true }
+    ).subscribe({
+      next: () => this.clearAndRedirect(),
+      error: () => this.clearAndRedirect()
+    });
+  }
+
+  clearAndRedirect() {
     localStorage.clear();
-    this.router.navigate(['/login']);
+    sessionStorage.clear();
+    window.location.href = '/';
+  }
+
+  addCollege() {
+    alert('Add College form will open here');
   }
 }
