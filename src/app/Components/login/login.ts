@@ -30,7 +30,9 @@ export class LoginComponent {
     });
   }
 
-  get f() { return this.loginForm.controls; }
+  get f() {
+    return this.loginForm.controls;
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -39,56 +41,41 @@ export class LoginComponent {
 
     if (this.loginForm.invalid) return;
 
-    // 🔹 LOGIN
-    this.http.post(
+    this.http.post<any>(
       'http://localhost:8080/api/auth/login',
       this.loginForm.value,
-      { withCredentials: true, responseType: 'text' }
+      { withCredentials: true }   //  COOKIE
     ).subscribe({
-      next: () => {
+      next: (res) => {
 
-        // ROLE CHECK: STUDENT
-        this.http.get(
-          'http://localhost:8080/api/auth/student',
-          { withCredentials: true, responseType: 'text' }
-        ).subscribe({
-          next: () => {
+        // res = { message, name, role, email }
+
+        this.successMessage = `Welcome ${res.name}`;
+
+        //   store for dashboard
+        localStorage.setItem('userName', res.name);
+        localStorage.setItem('userRole', res.role);
+
+        // ROLE BASED REDIRECT
+        switch (res.role) {
+          case 'student':
             this.router.navigate(['/student-dashboard']);
-          },
-          error: () => {
+            break;
 
-            // ROLE CHECK: COLLEGE
-            this.http.get(
-              'http://localhost:8080/api/auth/college',
-              { withCredentials: true, responseType: 'text' }
-            ).subscribe({
-              next: () => {
-                this.router.navigate(['/college-dashboard']);
-              },
-              error: () => {
+          case 'college':
+            this.router.navigate(['/college-dashboard']);
+            break;
 
-                //  ROLE CHECK: UNIVERSITY
-                this.http.get(
-                  'http://localhost:8080/api/auth/university',
-                  { withCredentials: true, responseType: 'text' }
-                ).subscribe({
-                  next: () => {
-                    this.router.navigate(['/university-dashboard']);
-                  },
-                  error: () => {
-                    this.errorMessage = 'Role not authorized';
-                  }
-                });
+          case 'university':
+            this.router.navigate(['/university-dashboard']);
+            break;
 
-              }
-            });
-
-          }
-        });
-
+          default:
+            this.errorMessage = 'Invalid role';
+        }
       },
       error: (err) => {
-        this.errorMessage = err.error || 'Login failed!';
+        this.errorMessage = err.error?.message || 'Login failed!';
       }
     });
   }
