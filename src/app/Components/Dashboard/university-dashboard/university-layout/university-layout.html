@@ -1,0 +1,28 @@
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">SmartSeat</h2>
+
+    <ul class="menu">
+      <li routerLink="/university-dashboard/dashboard" routerLinkActive="active">
+        🏛️ Dashboard
+      </li>
+
+      <li routerLink="/university-dashboard/addCollege" routerLinkActive="active">
+        🏫 Add College
+      </li>
+
+      <li>📊 Reports</li>
+      <li>⚙️ Settings</li>
+    </ul>
+
+    <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+  </aside>
+
+  <!-- RIGHT CONTENT CHANGES HERE -->
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

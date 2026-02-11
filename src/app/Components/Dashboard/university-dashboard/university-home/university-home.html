@@ -1,0 +1,29 @@
+<div class="topbar">
+  <h1>Welcome, {{ universityName }}</h1>
+</div>
+
+<div class="card">
+  <h3>Registered Colleges</h3>
+
+  <p *ngIf="colleges.length === 0">No colleges registered yet.</p>
+
+  <table *ngIf="colleges.length > 0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>College Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let college of colleges; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ college.name }}</td>
+        <td>{{ college.mail }}</td>
+        <td>{{ college.mobileNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
