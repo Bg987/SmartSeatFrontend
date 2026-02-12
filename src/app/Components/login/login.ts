@@ -64,7 +64,7 @@ ngOnDestroy() {
         this.successMessage = res.message;
 
         const role = res.data.role.toLowerCase();
-        this.cd.detectChanges();
+        
         localStorage.setItem('userName', res.data.name);
         localStorage.setItem('userRole', role);
 
@@ -94,9 +94,10 @@ ngOnDestroy() {
         } else {
           this.errorMessage = "Invalid credentials";
               }
-              this.cd.detectChanges();
+             
       }
     });
   }
 
 }
+
