@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-university-layout',
@@ -12,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UniversityLayoutComponent {
 
+  private url = environment.apiUrl;
   universityName: string | null = '';
 
   constructor(
@@ -28,7 +30,7 @@ export class UniversityLayoutComponent {
 
   logout() {
     this.http.post(
-      'http://localhost:8080/api/auth/logout',
+      `${ this.url }/auth/logout`,
       {},
       { withCredentials: true }
     ).subscribe({

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-university-home',
@@ -18,12 +18,13 @@ export class UniversityHomeComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  constructor(private http: HttpClient) {}
-
+  constructor(private http: HttpClient) { }
+  
+  private url = environment.apiUrl;
   ngOnInit(): void {
     this.universityName = localStorage.getItem('userName');
     this.colleges$ = this.http.get<any[]>(
-      'http://localhost:8080/api/university/colleges',
+      `${this.url}/university/colleges`,
       { withCredentials: true }
     );
   }

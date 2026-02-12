@@ -1,11 +1,10 @@
 import { ChangeDetectorRef,Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
+  
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
@@ -15,12 +14,14 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
+  private url = environment.apiUrl;
   loginForm: FormGroup;
   submitted = false;
   successMessage = '';
   errorMessage = '';
 ngOnInit() {
   console.log("LoginComponent INIT");
+  
 }
 
 ngOnDestroy() {
@@ -33,6 +34,7 @@ ngOnDestroy() {
     private router: Router,
     private cd: ChangeDetectorRef
   ) {
+    
     this.loginForm = this.fb.group({
       mail: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -50,9 +52,9 @@ ngOnDestroy() {
     this.errorMessage = '';
 
     if (this.loginForm.invalid) return;
-
+    
     this.http.post<any>(
-      'http://localhost:8080/api/auth/login',
+      `${ this.url }/auth/login`,
       this.loginForm.value,
       { withCredentials: true }
     ).subscribe({
