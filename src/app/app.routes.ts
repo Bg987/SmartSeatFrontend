@@ -4,6 +4,7 @@ import { StudentDashboardComponent } from './Components/Dashboard/student-dashbo
 import { CollegeDashboardComponent } from './Components/Dashboard/college-dashboard/college-dashboard';
 import { UniversityLayoutComponent } from './Components/Dashboard/university-dashboard/university-layout/university-layout';
 import { UniversityHomeComponent } from './Components/Dashboard/university-dashboard/university-home/university-home';
+import { UploadCsvComponent } from './Components/Dashboard/university-dashboard/upload-colleges/upload-colleges';
 import { AddCollegeComponent } from './Components/add-colleges-component/add-colleges-component';
 
 export const routes: Routes = [
@@ -18,6 +19,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: UniversityHomeComponent },
       { path: 'addCollege', component: AddCollegeComponent },
+      {path:'csv',component:UploadCsvComponent},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

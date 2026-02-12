@@ -9,9 +9,24 @@
         🏛️ Dashboard
       </li>
 
-      <li routerLink="/university-dashboard/addCollege" routerLinkActive="active">
-        🏫 Add College
-      </li>
+      <li class="dropdown">
+  🏫 Add College ⬇
+
+  <ul class="submenu">
+    <li routerLink="/university-dashboard/addCollege"
+        routerLinkActive="active">
+       
+        📄 Add via Form
+    </li>
+
+    <li routerLink="/university-dashboard/csv"
+        routerLinkActive="active">
+       
+        📂 Upload CSV
+    </li>
+  </ul>
+</li>
+
 
       <li>📊 Reports</li>
       <li>⚙️ Settings</li>
