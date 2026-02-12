@@ -60,7 +60,6 @@ ngOnDestroy() {
     ).subscribe({
 
       next: (res) => {
-        console.log("SUCCESS:", res);
         this.errorMessage = '';
         this.successMessage = res.message;
 
@@ -83,7 +82,7 @@ ngOnDestroy() {
       },
 
       error: (err) => {
-        console.log("FULL ERROR OBJECT:", err);
+        //console.log("FULL ERROR OBJECT:", err);
 
         this.successMessage = '';
 
