@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs/operators';
-
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-upload-csv',
   standalone: true,
@@ -11,7 +11,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./upload-colleges.css']
 })
 export class UploadCsvComponent {
-
+  private url = environment.apiUrl;
   selectedFile: File | null = null;
   fileSize: string = '';
   isDragging = false;
@@ -19,11 +19,11 @@ export class UploadCsvComponent {
   responseMessage: string = '';
   isError = false;
 
-  private uploadUrl = "http://localhost:8080/api/university/addColleges";
+  private uploadUrl = `${this.url}/university/addColleges`;
 
   constructor(
     private http: HttpClient,
-    private cdr: ChangeDetectorRef   // 🔥 Injected
+    private cdr: ChangeDetectorRef  
   ) {}
 
   onFileSelected(event: any) {
@@ -78,7 +78,7 @@ export class UploadCsvComponent {
   this.isUploading = true;
   this.isError = false;
 
-  this.http.post<string[]>(this.uploadUrl, formData)
+  this.http.post<string[]>(this.uploadUrl, formData,{withCredentials: true})
     .pipe(
       finalize(() => {
         this.isUploading = false;
