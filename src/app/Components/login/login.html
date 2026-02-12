@@ -1,40 +1,61 @@
-<div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-    <h2>Login</h2>
+<div class="login-wrapper">
+  <div class="login-card">
 
-    <!-- Email -->
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" formControlName="mail" placeholder="Enter your email">
-      <div class="error" *ngIf="submitted && f['mail'].errors">
-        <small *ngIf="f['mail'].errors?.['required']">Email is required.</small>
-        <small *ngIf="f['mail'].errors?.['email']">Enter a valid email.</small>
+    <div class="login-header">
+      <h2>Welcome Back</h2>
+      <p>Login to your SmartSeat account</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Email -->
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" formControlName="mail" placeholder="you@example.com">
+
+        <div class="error" *ngIf="submitted && f['mail'].errors">
+          <small *ngIf="f['mail'].errors?.['required']">Email is required</small>
+          <small *ngIf="f['mail'].errors?.['email']">Enter a valid email</small>
+        </div>
       </div>
-    </div>
 
-    <!-- Password -->
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" formControlName="password" placeholder="Enter your password">
-      <div class="error" *ngIf="submitted && f['password'].errors">
-        <small *ngIf="f['password'].errors?.['required']">Password is required.</small>
-        <small *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters.</small>
+      <!-- Password -->
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Enter your password">
+
+        <div class="error" *ngIf="submitted && f['password'].errors">
+          <small *ngIf="f['password'].errors?.['required']">Password is required</small>
+          <small *ngIf="f['password'].errors?.['minlength']">
+            Minimum 6 characters required
+          </small>
+        </div>
       </div>
-    </div>
 
-    <!-- Role Dropdown -->
-    <div class="form-group">
-      <label>Role</label>
-      <select formControlName="role">
-        <option value="student">Student</option>
-        <option value="college">College</option>
-        <option value="university">University</option>
-      </select>
-    </div>
+      <!-- Role -->
+      <div class="form-field">
+        <label>Select Role</label>
+        <select formControlName="role">
+          <option value="student">Student</option>
+          <option value="college">College</option>
+          <option value="university">University</option>
+        </select>
+      </div>
 
-    <button type="submit">Login</button>
+      <!-- Button -->
+      <button type="submit" class="login-btn">
+        Login
+      </button>
 
-    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
-    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-  </form>
+      <!-- Messages -->
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+    </form>
+  </div>
 </div>
