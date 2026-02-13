@@ -26,4 +26,39 @@
     {{ responseMessage }}
   </div>
 
+
+
+
+
+<h3 class="table-title">All Subjects</h3>
+
+<div *ngIf="subjects.length > 0; else noData">
+
+  <table class="subjects-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Subject ID</th>
+        <th>Subject Name</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let sub of subjects; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ sub.subjectId }}</td>
+        <td>{{ sub.subjectName }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<ng-template #noData>
+  <div class="empty-state">
+    No subjects available.
+  </div>
+</ng-template>
+
+
 </div>

@@ -19,4 +19,13 @@ export class AddSubjectService {
   addSubject(subject: SubjectDTO): Observable<any> {
     return this.http.post(this.apiUrl, subject,{ responseType: 'text' });
   }
+
+  getAllSubjects() {
+  return this.http.get<any[]>(
+    'http://localhost:8080/api/university/getAllSubjects',
+    { withCredentials: true }
+  );
+}
+
+
 }
