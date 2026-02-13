@@ -1,0 +1,29 @@
+
+<div class="form-container">
+
+  <h2>Add Subject</h2>
+
+  <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+
+    <input
+      type="text"
+      placeholder="Enter Subject ID"
+      formControlName="subjectId"
+    />
+
+    <input
+      type="text"
+      placeholder="Enter Subject Name"
+      formControlName="subjectName"
+    />
+
+    <button type="submit">Add Subject</button>
+
+  </form>
+
+  <!-- Response Show -->
+  <div class="response" *ngIf="responseMessage">
+    {{ responseMessage }}
+  </div>
+
+</div>

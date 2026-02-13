@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-college-dashboard',
+  selector: 'app-college-layout',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl:'college-dashboard.html',
-  styleUrl:'college-dashboard.css'
+  imports: [CommonModule,RouterModule],
+  templateUrl:'college-layout.html',
+  styleUrl:'college-layout.css'
 })
-export class CollegeDashboardComponent implements OnInit {
+export class CollegeLayoutComponent implements OnInit {
   userName: string | null = '';
   role: string | null = '';
 

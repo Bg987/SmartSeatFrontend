@@ -6,30 +6,38 @@
 
     <ul class="menu">
       <li routerLink="/university-dashboard/dashboard" routerLinkActive="active">
-        🏛️ Dashboard
+         Dashboard
       </li>
 
       <li class="dropdown">
-  🏫 Add College ⬇
+   Add College ⬇
 
   <ul class="submenu">
     <li routerLink="/university-dashboard/addCollege"
         routerLinkActive="active">
        
-        📄 Add via Form
+         Add via Form
     </li>
 
     <li routerLink="/university-dashboard/csv"
         routerLinkActive="active">
        
-        📂 Upload CSV
+         Upload CSV
     </li>
   </ul>
 </li>
 
 
-      <li>📊 Reports</li>
-      <li>⚙️ Settings</li>
+       <li routerLink="/university-dashboard/addSubjects"
+        routerLinkActive="active">
+        Add Subjects</li>
+
+
+      <li>
+        Generate Sitting Plan</li>
+
+
+      <li>Settings</li>
     </ul>
 
     <button type="button" class="logout-btn" (click)="logout()">Logout</button>

@@ -1,0 +1,51 @@
+<div class="upload-wrapper">
+
+  <div class="upload-card">
+
+    <h2>Upload Student CSV</h2>
+    <p class="subtitle">Upload a CSV file to bulk add students</p>
+
+    <!-- Drag & Drop Area -->
+     
+    <div class="drop-zone"
+         [class.dragging]="isDragging"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+
+      <input type="file"
+             #fileInput
+             hidden
+             accept=".csv"
+             (change)="onFileSelected($event)" />
+
+      <div class="upload-content" (click)="fileInput.click()">
+
+        <div class="icon">📂</div>
+
+        <p *ngIf="!selectedFile">Drag & Drop CSV here</p>
+        <p *ngIf="!selectedFile" class="browse">or click to browse</p>
+
+        <div class="file-info" *ngIf="selectedFile">
+          <p class="file-name">{{ selectedFile.name }}</p>
+          <p class="file-size">{{ fileSize }}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Upload Button -->
+    <button class="upload-btn"
+           [disabled]="isUploading"
+
+            (click)="uploadFile()">
+
+      {{ isUploading ? 'Uploading...' : 'Upload File' }}
+
+    </button>
+
+   
+
+  </div>
+
+</div>
