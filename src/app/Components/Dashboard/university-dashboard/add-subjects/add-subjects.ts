@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AddSubjectService } from '../../../../services/add-subject-service';
 import { ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-add-subject',
   standalone: true,
@@ -21,6 +20,11 @@ export class AddSubjects implements OnInit {
   responseMessage: string = '';
   subjects: any[] = [];
   isLoading: boolean = false;
+
+  // ✅ File Upload Variables
+  selectedFile: File | null = null;
+  uploadMessage: string = '';
+  activeTab: string = 'manual';
 
   constructor(
     private fb: FormBuilder,
@@ -40,7 +44,7 @@ export class AddSubjects implements OnInit {
     });
   }
 
-  
+  // ✅ Load Subjects
   loadSubjects(): void {
 
     this.isLoading = true;
@@ -51,17 +55,16 @@ export class AddSubjects implements OnInit {
 
           console.log("RAW RESPONSE:", res);
 
-          
           if (Array.isArray(res)) {
             this.subjects = res;
           } else if (res) {
-            this.subjects = [res];  // wrap single object into array
+            this.subjects = [res];
           } else {
             this.subjects = [];
           }
 
           this.isLoading = false;
-           this.cdr.detectChanges(); 
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Error loading subjects:', err);
@@ -71,6 +74,7 @@ export class AddSubjects implements OnInit {
       });
   }
 
+  // ✅ Add Subject
   onSubmit(): void {
 
     if (this.subjectForm.invalid) {
@@ -82,17 +86,48 @@ export class AddSubjects implements OnInit {
       .subscribe({
         next: (res: any) => {
 
-          console.log('Backend Response:', res);
-
-          this.responseMessage = res;
+          this.responseMessage = "Subject added successfully ✅";
           this.subjectForm.reset();
-
-          // Reload subjects properly
           this.loadSubjects();
         },
         error: (err) => {
           console.error('Error adding subject:', err);
-          this.responseMessage = 'Failed to add subject';
+          this.responseMessage = 'Failed to add subject ❌';
+        }
+      });
+  }
+
+  // ✅ File Select
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.uploadMessage = '';
+    }
+  }
+
+  //  Upload File
+  uploadFile(): void {
+
+    if (!this.selectedFile) {
+      this.uploadMessage = "Please select a file first";
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+
+    this.subjectService.uploadSubjectFile(formData)
+      .subscribe({
+        next: (res: any) => {
+
+          this.uploadMessage = "File uploaded successfully ";
+          this.selectedFile = null;
+
+        },
+        error: (err) => {
+          console.error(err);
+          this.uploadMessage = "File upload failed ";
         }
       });
   }

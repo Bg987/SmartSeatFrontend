@@ -27,5 +27,10 @@ export class AddSubjectService {
   );
 }
 
+uploadSubjectFile(data: FormData) {
+  return this.http.post("http://localhost:8080/api/university/uploadSubjects", data,{withCredentials:true});
+}
+
+
 
 }
