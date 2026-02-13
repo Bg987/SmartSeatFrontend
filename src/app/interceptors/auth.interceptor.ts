@@ -12,7 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       console.log("Interceptor caught error: ", error);
 
-      if (error.status === 401 || error.status === 400) {
+      if (error.status === 401) {
         // 1. Clear local storage
         localStorage.clear();
 

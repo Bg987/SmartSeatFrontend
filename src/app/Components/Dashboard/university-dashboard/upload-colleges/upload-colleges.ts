@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs/operators';
-
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-upload-csv',
   standalone: true,
@@ -11,7 +11,8 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./upload-colleges.css']
 })
 export class UploadCsvComponent {
-
+  private url = environment.apiUrl;
+  response = "";
   selectedFile: File | null = null;
   fileSize: string = '';
   isDragging = false;
@@ -19,11 +20,11 @@ export class UploadCsvComponent {
   responseMessage: string = '';
   isError = false;
 
-  private uploadUrl = "http://localhost:8080/api/university/addColleges";
+  private uploadUrl = `${this.url}/university/addColleges`;
 
   constructor(
     private http: HttpClient,
-    private cdr: ChangeDetectorRef   // 🔥 Injected
+    private cdr: ChangeDetectorRef  
   ) {}
 
   onFileSelected(event: any) {
@@ -34,7 +35,8 @@ export class UploadCsvComponent {
       this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
       this.responseMessage = '';
     } else {
-      alert("Please upload a valid CSV file");
+      this.response= "Please upload a valid CSV file"
+      //alert();
     }
   }
 
@@ -60,7 +62,8 @@ export class UploadCsvComponent {
         this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
         this.responseMessage = '';
       } else {
-        alert("Only CSV files are allowed");
+        this.response = "Only CSV files are allowed";
+        //alert("");
       }
     }
   }
@@ -78,7 +81,7 @@ export class UploadCsvComponent {
   this.isUploading = true;
   this.isError = false;
 
-  this.http.post<string[]>(this.uploadUrl, formData)
+  this.http.post<string[]>(this.uploadUrl, formData,{withCredentials: true})
     .pipe(
       finalize(() => {
         this.isUploading = false;
@@ -99,13 +102,13 @@ export class UploadCsvComponent {
           message = JSON.stringify(response);
         }
 
-        alert("Upload Result:\n\n" + message);   // 🔥 ALERT HERE
+        this.response = "Upload Result:\n\n" + message;
+        //alert();
       },
 
       error: (error: HttpErrorResponse) => {
 
         let message = '';
-
         if (Array.isArray(error.error)) {
           message = error.error.join('\n');
         } else if (typeof error.error === 'string') {
@@ -113,8 +116,7 @@ export class UploadCsvComponent {
         } else {
           message = "Upload failed!";
         }
-
-        alert("Error:\n\n" + message);   // 🔥 ERROR ALERT
+        this.response = message; 
       }
     });
 }

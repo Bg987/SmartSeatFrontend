@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollegeService } from '../../services/add-colleges';
@@ -19,18 +19,18 @@ export class AddCollegeComponent {
     address: ''
   };
 
-  responseMessage = '';
+  response: String = '';
   loading = false;
 
-  constructor(private collegeService: CollegeService) {}
+  constructor(private collegeService: CollegeService,private cdr: ChangeDetectorRef) {}
 
  submitCollege(form?: any) {
   this.loading = true;
 
   this.collegeService.addCollege(this.collegeData).subscribe({
-    next: (res: string) => {
+    next: (res: String) => {
       this.loading = false;
-      alert(res);
+      this.response ="fg nfgnfbf";
          
       this.collegeData = {
         collegeName: '',
@@ -43,12 +43,13 @@ export class AddCollegeComponent {
         form.resetForm();   // force UI refresh
       }
     },
-    error: () => {
+    error: (error) => {
       this.loading = false;
-      alert('Failed to add college');
+      console.log(JSON.stringify(error));
+      this.response = error.error;
+      this.cdr.detectChanges();
     }
   });
-}
-
-
+  }
+  
 }
