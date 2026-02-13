@@ -93,8 +93,8 @@ ngOnDestroy() {
           this.errorMessage = err.error;
         } else {
           this.errorMessage = "Invalid credentials";
-              }
-             
+        }
+        this.cd.detectChanges();
       }
     });
   }

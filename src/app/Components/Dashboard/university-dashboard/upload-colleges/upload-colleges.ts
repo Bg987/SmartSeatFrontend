@@ -12,6 +12,7 @@ import { environment } from '../../../../../environments/environment';
 })
 export class UploadCsvComponent {
   private url = environment.apiUrl;
+  response = "";
   selectedFile: File | null = null;
   fileSize: string = '';
   isDragging = false;
@@ -34,7 +35,8 @@ export class UploadCsvComponent {
       this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
       this.responseMessage = '';
     } else {
-      alert("Please upload a valid CSV file");
+      this.response= "Please upload a valid CSV file"
+      //alert();
     }
   }
 
@@ -60,7 +62,8 @@ export class UploadCsvComponent {
         this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
         this.responseMessage = '';
       } else {
-        alert("Only CSV files are allowed");
+        this.response = "Only CSV files are allowed";
+        //alert("");
       }
     }
   }
@@ -99,13 +102,13 @@ export class UploadCsvComponent {
           message = JSON.stringify(response);
         }
 
-        alert("Upload Result:\n\n" + message);   // 🔥 ALERT HERE
+        this.response = "Upload Result:\n\n" + message;
+        //alert();
       },
 
       error: (error: HttpErrorResponse) => {
 
         let message = '';
-
         if (Array.isArray(error.error)) {
           message = error.error.join('\n');
         } else if (typeof error.error === 'string') {
@@ -113,8 +116,7 @@ export class UploadCsvComponent {
         } else {
           message = "Upload failed!";
         }
-
-        alert("Error:\n\n" + message);   // 🔥 ERROR ALERT
+        this.response = message; 
       }
     });
 }

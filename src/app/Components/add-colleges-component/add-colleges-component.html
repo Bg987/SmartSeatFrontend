@@ -3,7 +3,7 @@
 
   <form #collegeForm="ngForm" (ngSubmit)="submitCollege(collegeForm)">
 
-
+<p><u>kindly ensure not duplicate email and 10 digit number and proper name not shortname and address</u></p>
     <input
       type="text"
       placeholder="College Name"
@@ -41,7 +41,7 @@
 
   </form>
 
-  <p class="response" *ngIf="responseMessage">
-    {{ responseMessage }}
+  <p class="response" id = "response" *ngIf="response">
+    {{ response }}
   </p>
 </div>
