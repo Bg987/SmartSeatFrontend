@@ -11,6 +11,7 @@ import { environment } from '../../../../../environments/environment';
   templateUrl: './university-layout.html',
   styleUrls: ['./university-layout.css'],
 })
+  
 export class UniversityLayoutComponent {
 
   private url = environment.apiUrl;

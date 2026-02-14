@@ -30,7 +30,7 @@ export class AddCollegeComponent {
   this.collegeService.addCollege(this.collegeData).subscribe({
     next: (res: String) => {
       this.loading = false;
-      this.response ="fg nfgnfbf";
+      this.response ="";
          
       this.collegeData = {
         collegeName: '',
