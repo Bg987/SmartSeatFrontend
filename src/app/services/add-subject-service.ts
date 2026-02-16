@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 export interface SubjectDTO {
   subjectId: string;
   subjectName: string;
@@ -12,23 +12,23 @@ export interface SubjectDTO {
 })
 export class AddSubjectService {
 
-  private apiUrl = 'http://localhost:8080/api/university/addSubject';
+  private url = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   addSubject(subject: SubjectDTO): Observable<any> {
-    return this.http.post(this.apiUrl, subject,{ responseType: 'text' });
+    return this.http.post(`${this.url}/university/addSubject`, subject,{ responseType: 'text',withCredentials:true });
   }
 
   getAllSubjects() {
   return this.http.get<any[]>(
-    'http://localhost:8080/api/university/getAllSubjects',
+    `${this.url}/university/getAllSubjects`,
     { withCredentials: true }
   );
 }
 
 uploadSubjectFile(data: FormData) {
-  return this.http.post("http://localhost:8080/api/university/uploadSubjects", data,{withCredentials:true});
+  return this.http.post(`${this.url}/university/uploadSubjects`, data,{withCredentials:true});
 }
 
 
