@@ -45,8 +45,7 @@ export class AddCollegeComponent {
     },
     error: (error) => {
       this.loading = false;
-      console.log(JSON.stringify(error));
-      this.response = error.error;
+      this.response = JSON.stringify(error.error);
       this.cdr.detectChanges();
     }
   });

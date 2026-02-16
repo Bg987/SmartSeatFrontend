@@ -52,8 +52,6 @@ export class AddSubjects implements OnInit {
       .subscribe({
         next: (res: any) => {
 
-       //   console.log("RAW RESPONSE:", res);
-
           if (Array.isArray(res)) {
             this.subjects = res;
           } else if (res) {

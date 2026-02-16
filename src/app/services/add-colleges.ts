@@ -13,8 +13,8 @@ export class CollegeService {
 
    addCollege(collegeData: any): Observable<any> {
     return this.http.post(this.apiUrl, collegeData, {
-      responseType: 'text',      // backend String return kar raha hai
-      withCredentials: true      //cookie/session send hogi
+      //responseType: 'text',      //
+      withCredentials: true      //cookie/session send 
     });
   }
 }
