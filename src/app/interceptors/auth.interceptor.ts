@@ -20,8 +20,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         http.post(`${Url}/auth/logout`, { 
           withCredentials: true, 
           responseType: 'text'}).subscribe({
-            next: (res) => console.log("Backend session cleared:", res),
-            error: (err) => console.error("Backend logout failed", err)
+            //next: (res) => //console.log("Backend session cleared:", res),
+            //error: (err) => //console.error("Backend logout failed", err)
           });
 
         //Redirect to login

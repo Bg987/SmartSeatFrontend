@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddSubjectService } from '../../../../services/add-subject-service';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-add-subject',
@@ -17,11 +16,11 @@ import { ChangeDetectorRef } from '@angular/core';
 export class AddSubjects implements OnInit {
 
   subjectForm!: FormGroup;
-  responseMessage: string = '';
+  responseMessage= '';
   subjects: any[] = [];
   isLoading: boolean = false;
 
-  // ✅ File Upload Variables
+  // File Upload Variables
   selectedFile: File | null = null;
   uploadMessage: string = '';
   activeTab: string = 'manual';
@@ -44,7 +43,7 @@ export class AddSubjects implements OnInit {
     });
   }
 
-  // ✅ Load Subjects
+  // load Subjects
   loadSubjects(): void {
 
     this.isLoading = true;
@@ -52,8 +51,6 @@ export class AddSubjects implements OnInit {
     this.subjectService.getAllSubjects()
       .subscribe({
         next: (res: any) => {
-
-          console.log("RAW RESPONSE:", res);
 
           if (Array.isArray(res)) {
             this.subjects = res;
@@ -74,7 +71,7 @@ export class AddSubjects implements OnInit {
       });
   }
 
-  // ✅ Add Subject
+  // Add Subject
   onSubmit(): void {
 
     if (this.subjectForm.invalid) {
@@ -91,13 +88,17 @@ export class AddSubjects implements OnInit {
           this.loadSubjects();
         },
         error: (err) => {
-          console.error('Error adding subject:', err);
-          this.responseMessage = 'Failed to add subject ❌';
+          console.error('Error adding subject:', err.error);
+          const errorObj = typeof err.error === 'string' ? JSON.parse(err.error) : err.error;
+
+          //Extract values and join them into a single message (or keep as array)
+          this.responseMessage = Object.values(errorObj).join(', ');
+          this.cdr.detectChanges();
         }
       });
   }
 
-  // ✅ File Select
+  //File Select
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {

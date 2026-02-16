@@ -30,7 +30,7 @@ export class AddCollegeComponent {
   this.collegeService.addCollege(this.collegeData).subscribe({
     next: (res: String) => {
       this.loading = false;
-      this.response =res;
+      this.response ="";
          
       this.collegeData = {
         collegeName: '',
@@ -45,8 +45,7 @@ export class AddCollegeComponent {
     },
     error: (error) => {
       this.loading = false;
-      console.log(JSON.stringify(error));
-      this.response = error.error;
+      this.response = JSON.stringify(error.error);
       this.cdr.detectChanges();
     }
   });
