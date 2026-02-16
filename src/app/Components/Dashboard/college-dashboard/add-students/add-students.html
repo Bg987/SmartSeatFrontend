@@ -1,1 +1,87 @@
-<p>Student can be add....</p>
+<div class="student-container">
+  <div class="student-card">
+    <div class="card-header">
+      <h2>Add Student Manually</h2>
+    </div>
+
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="student-form">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Enrollment Number</label>
+          <input type="text" formControlName="enrollmentNo" placeholder="e.g. EN12345">
+        </div>
+
+        <div class="form-group wide">
+          <label>Full Name</label>
+          <input type="text" formControlName="name" placeholder="Enter student name">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" formControlName="email" placeholder="email@university.edu">
+        </div>
+
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="text" formControlName="mobileNumber" placeholder="10-digit number">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Branch</label>
+          <select formControlName="branch">
+            <option value="">Select Branch</option>
+            <option value="CS">Computer Science</option>
+            <option value="IT">Information Technology</option>
+            <option value="EC">Electronics</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+    <label>Specialization</label>
+    <input type="text" formControlName="specialization" placeholder="e.g. Artificial Intelligence">
+  </div>
+
+        <div class="form-group">
+          <label>Semester</label>
+          <input type="number" formControlName="semester">
+        </div>
+
+        <div class="form-group">
+          <label>College ID</label>
+          <input type="number" formControlName="collegeId">
+        </div>
+      </div>
+
+      <div class="subjects-box">
+        <label>Subject Codes</label>
+        <div formArrayName="subjects">
+          <div *ngFor="let sub of subjects.controls; let i=index" class="subject-item">
+            <input [formControlName]="i" placeholder="Enter Code (e.g. CS101)">
+            <button type="button" (click)="removeSubject(i)">Remove</button>
+          </div>
+        </div>
+        <button type="button" class="add-btn" (click)="addSubject()">+ Add Subject</button>
+      </div>
+
+      <div class="form-group">
+        <label>Image URL</label>
+        <input type="text" formControlName="imgUrl" placeholder="http://link-to-photo.jpg">
+      </div>
+
+      <div class="switch-group">
+        <input type="checkbox" formControlName="hasBacklog" id="backlogSwitch">
+        <label for="backlogSwitch">Currently has Backlog</label>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="studentForm.invalid">
+        Register Student
+      </button>
+
+    </form>
+  </div>
+</div>
