@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 export class AddRoomsService {
   private url = environment.apiUrl;
     private apiUrl = `${ this.url }/colleges/addRooms`;
+    private apiUrl2=`${this.url}/colleges/uploadRooms`;
 
   constructor(private http: HttpClient) { }
 
@@ -21,9 +22,11 @@ export class AddRoomsService {
   }
 
 
-  // uploadCSV(formData: FormData): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}/upload`, formData);
-  // }
+  uploadCSV(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl2}`, formData,
+      {withCredentials:true}
+    );
+  }
 
 
 }

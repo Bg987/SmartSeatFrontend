@@ -26,7 +26,7 @@
 
   <div *ngIf="uploadMode === 'csv'" class="csv-section">
     <input type="file" (change)="onFileChange($event)" accept=".csv" />
-    <button >Upload CSV</button>
+    <button (click)="uploadCSV()">Upload CSV</button>
   </div>
 
   <p *ngIf="message">{{ message }}</p>
