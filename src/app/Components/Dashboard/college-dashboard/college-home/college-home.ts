@@ -5,16 +5,14 @@ import { GetStudents } from '../../../../services/get-students';
 import { GetRooms } from '../../../../services/get-rooms';
 import { ChangeDetectorRef } from '@angular/core';
 
-
 @Component({
   selector: 'app-college-home',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './college-home.html',
-  styleUrls: ['./college-home.css']
+  styleUrls: ['./college-home.css'],
 })
 export class CollegeHome implements OnInit {
-
   totalStudents = 0;
   totalRooms = 0;
   totalSittingPlans = 6;
@@ -25,34 +23,39 @@ export class CollegeHome implements OnInit {
   showStudentsTable = true;
   showRoomsTable = false;
 
+  // Rooms Pagination
+  roomPage = 0;
+  roomSize = 5;
+  totalRoomPages = 0;
+
   constructor(
     private getStudent: GetStudents,
     private getRoom: GetRooms,
-    private cd:ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.loadStudentsData();   // load students + count
-    this.loadRoomsData();      // load rooms + count
+    this.loadStudentsData(); // load students + count
+    this.loadRoomsData(); // load rooms + count
   }
 
-  // Load Students 
+  // Load Students
   loadStudentsData() {
-    this.getStudent.getStudents().subscribe(res => {
+    this.getStudent.getStudents().subscribe((res) => {
       this.students = res;
       this.totalStudents = this.students.length;
       console.log(this.totalStudents);
-       this.cd.detectChanges(); 
+      this.cd.detectChanges();
     });
   }
 
-  // Load Rooms 
   loadRoomsData() {
-    this.getRoom.getRooms().subscribe(res => {
-      this.rooms = res;
-      this.totalRooms = this.rooms.length;
-      console.log(this.totalRooms);
-       this.cd.detectChanges(); 
+    this.getRoom.getRooms(this.roomPage, this.roomSize).subscribe((res) => {
+      this.rooms = res.content; // current page data
+      this.totalRooms = res.totalElements; // total count from DB
+      this.totalRoomPages = res.totalPages;
+
+      this.cd.detectChanges();
     });
   }
 
@@ -66,6 +69,18 @@ export class CollegeHome implements OnInit {
     this.showStudentsTable = false;
     this.showRoomsTable = true;
   }
+
+  nextRoomPage() {
+    if (this.roomPage < this.totalRoomPages - 1) {
+      this.roomPage++;
+      this.loadRoomsData();
+    }
+  }
+
+  prevRoomPage() {
+    if (this.roomPage > 0) {
+      this.roomPage--;
+      this.loadRoomsData();
+    }
+  }
 }
-
-

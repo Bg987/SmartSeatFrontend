@@ -70,32 +70,49 @@
   </div>
 
   <!-- ================= ROOMS TABLE ================= -->
-  <div *ngIf="showRoomsTable" class="data-table">
+<div *ngIf="showRoomsTable" class="data-table">
 
-    <h2>Rooms Information</h2>
+  <h2>Rooms Information</h2>
 
-    <table *ngIf="rooms.length > 0; else noRooms">
-      <thead>
-        <tr>
-          <th>Block</th>
-          <th>Room Number</th>
-          <th>Capacity</th>
-        </tr>
-      </thead>
+  <table *ngIf="rooms.length > 0; else noRooms">
+    <thead>
+      <tr>
+        <th>Block</th>
+        <th>Room Number</th>
+        <th>Capacity</th>
+      </tr>
+    </thead>
 
-      <tbody>
-        <tr *ngFor="let room of rooms">
-          <td>{{ room.block }}</td>
-          <td>{{ room.roomNumber }}</td>
-          <td>{{ room.capacity }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <tbody>
+      <tr *ngFor="let room of rooms">
+        <td>{{ room.block }}</td>
+        <td>{{ room.roomNumber }}</td>
+        <td>{{ room.capacity }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-    <ng-template #noRooms>
-      <p class="empty-msg">No rooms available.</p>
-    </ng-template>
+  <ng-template #noRooms>
+    <p class="empty-msg">No rooms available.</p>
+  </ng-template>
 
+  <!--  ROOMS PAGINATION -->
+  <div class="pagination" *ngIf="rooms.length > 0">
+    <button (click)="prevRoomPage()" 
+            [disabled]="roomPage === 0">
+      Previous
+    </button>
+
+    <span>
+      Page {{ roomPage + 1 }} of {{ totalRoomPages }}
+    </span>
+
+    <button (click)="nextRoomPage()" 
+            [disabled]="roomPage === totalRoomPages - 1">
+      Next
+    </button>
   </div>
+
+</div>
 
 </div>

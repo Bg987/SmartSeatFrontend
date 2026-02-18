@@ -13,13 +13,15 @@ export class GetRooms{
 
   constructor(private http: HttpClient) { }
 
-  getRooms(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`,
-      {
-        withCredentials:true
-      }
-    );
-  }
+  getRooms(page: number, size: number): Observable<any> {
+  return this.http.get(
+    `${this.apiUrl}?page=${page}&size=${size}`,
+    {
+      withCredentials: true
+    }
+  );
+}
+
 
 
   }
