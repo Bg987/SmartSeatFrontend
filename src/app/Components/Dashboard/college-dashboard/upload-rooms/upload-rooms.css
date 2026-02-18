@@ -1,0 +1,129 @@
+/* Container styling */
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px 30px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Heading */
+.container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Mode toggle buttons */
+.mode-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.mode-toggle button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode-toggle button[disabled] {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+.mode-toggle button:hover:not([disabled]) {
+  background-color: #45a049;
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form label {
+  font-weight: bold;
+  color: #555;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background-color: #1976d2;
+}
+
+/* CSV section styling */
+.csv-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.csv-section input[type="file"] {
+  cursor: pointer;
+}
+
+.csv-section button {
+  background-color: #ff9800;
+}
+
+.csv-section button:hover {
+  background-color: #fb8c00;
+}
+
+/* Success/Error message */
+p {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+p:empty {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .mode-toggle {
+    flex-direction: column;
+  }
+
+  form input, form button, .csv-section button {
+    width: 100%;
+  }
+}
