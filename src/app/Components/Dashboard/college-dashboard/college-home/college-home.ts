@@ -75,7 +75,6 @@ export class CollegeHome implements OnInit {
     if (this.roomPage < this.totalRoomPages - 1) {
       this.roomPage++;
       this.loadRoomsData();
-      
     }
   }
 
