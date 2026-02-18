@@ -21,7 +21,7 @@ export class UploadRooms {
       roomNumber: ['', Validators.required],
       capacity: ['', [Validators.required, Validators.min(1)]],
       block: ['', Validators.required],
-      college_id: ['', Validators.required]
+     
     });
   }
 
