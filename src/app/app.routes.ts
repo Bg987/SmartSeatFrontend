@@ -22,7 +22,7 @@ export const routes: Routes = [
   { path: 'college-dashboard',
     component: CollegeLayoutComponent ,
      children: [
-      {path:'home',component:CollegeHome},
+      {path:'',component:CollegeHome},
       { path: 'uploadStudent', component: UploadStudents },
       {path:'addStudents',component:AddStudents},
       {path:'uploadRooms',component:UploadRooms},
