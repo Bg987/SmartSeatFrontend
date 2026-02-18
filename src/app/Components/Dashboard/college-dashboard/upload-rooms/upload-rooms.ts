@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AddRoomsService } from '../../../../services/add-rooms-service';
 import { CommonModule } from '@angular/common';
@@ -20,13 +20,15 @@ export class UploadRooms {
 
   constructor(
     private fb: FormBuilder,
-    private roomsService: AddRoomsService
+    private roomsService: AddRoomsService,
+    private chengeDetector:ChangeDetectorRef
   ) {
     this.roomForm = this.fb.group({
       roomNumber: ['', Validators.required],
       capacity: ['', [Validators.required, Validators.min(1)]],
-      block: ['', Validators.required],
+      block: ['A', Validators.required],
     });
+    this.message = "";
   }
 
   toggleMode(mode: 'form' | 'csv') {
@@ -48,33 +50,22 @@ export class UploadRooms {
 
   submitForm() {
 
-    if (this.roomForm.invalid) {
-      this.roomForm.markAllAsTouched();
-      return;
-    }
 
     this.isSubmitting = true;
 
     this.roomsService.addRoom(this.roomForm.value).subscribe({
       next: (res) => {
 
-        alert("Room added successfully ");
-
-        //  Reset Form Properly
-        this.roomForm.reset({
-          roomNumber: '',
-          capacity: '',
-          block: ''
-        });
-
+        this.message = "room added succesfully";
         this.roomForm.markAsPristine();
         this.roomForm.markAsUntouched();
-
         this.isSubmitting = false;
+        this.chengeDetector.detectChanges();
       },
       error: (err) => {
-        alert("Failed to add room ❌");
+        this.message = err.error.message;
         this.isSubmitting = false;
+        this.chengeDetector.detectChanges();
       }
     });
   }
