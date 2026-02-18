@@ -1,0 +1,166 @@
+/* ===== MAIN LAYOUT ===== */
+.home-container {
+  padding: 40px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== CARD SECTION ===== */
+.card-wrapper {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+/* ===== CARD BASE STYLE ===== */
+.card {
+  flex: 1;
+  min-width: 260px;
+  height: 170px;
+  border-radius: 18px;
+  padding: 25px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover Animation */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Text */
+.card-content h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+.card-content p {
+  font-size: 42px;
+  font-weight: 700;
+}
+
+/* Card Gradients */
+.students {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+.rooms {
+  background: linear-gradient(135deg, #134e5e, #71b280);
+}
+
+.sitting {
+  background: linear-gradient(135deg, #41295a, #2f0743);
+}
+
+/* Glow Effect */
+.card::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+  top: -50px;
+  right: -50px;
+}
+
+/* ===== TABLE SECTION ===== */
+.data-table {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.data-table h2 {
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Table Style */
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Header */
+.data-table thead {
+  background: #f8f9fb;
+}
+
+.data-table th {
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+  border-bottom: 2px solid #eee;
+}
+
+/* Body */
+.data-table td {
+  padding: 14px;
+  font-size: 14px;
+  color: #555;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Row Hover */
+.data-table tbody tr:hover {
+  background: #f7faff;
+  transition: 0.2s;
+}
+
+/* Empty Message */
+.empty-msg {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-style: italic;
+}
+
+/* ===== SMOOTH ANIMATION ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .card-wrapper {
+    flex-direction: column;
+  }
+
+  .card {
+    height: 140px;
+  }
+
+  .data-table {
+    padding: 15px;
+  }
+
+  .data-table table {
+    font-size: 13px;
+  }
+}

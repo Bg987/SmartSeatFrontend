@@ -1,1 +1,101 @@
-<p>college-home works!</p>
+<div class="home-container">
+
+  <div class="card-wrapper">
+
+    <!-- Students Card -->
+    <div class="card students" (click)="loadStudents()">
+      <div class="card-content">
+        <h3>Students</h3>
+        <p>{{ totalStudents }}</p>
+      </div>
+    </div>
+
+    <!-- Rooms Card -->
+    <div class="card rooms" (click)="loadRooms()">
+      <div class="card-content">
+        <h3>Rooms</h3>
+        <p>{{ totalRooms }}</p>
+      </div>
+    </div>
+
+    <!-- Sitting Plan Card -->
+    <div class="card sitting">
+      <div class="card-content">
+        <h3>Sitting Plan</h3>
+        <p>{{ totalSittingPlans }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= STUDENTS TABLE ================= -->
+  <div *ngIf="showStudentsTable" class="data-table">
+
+    <h2>Students List</h2>
+
+    <table *ngIf="students.length > 0; else noStudents">
+      <thead>
+        <tr>
+          <th>Enroll</th>
+          <th>Name</th>
+          <th>Semester</th>
+          <th>Branch</th>
+          <th>Specialization</th>
+          <th>Mobile</th>
+          <th>Email</th>
+          <th>Backlog</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let student of students">
+          <td>{{ student.enrollmentNo }}</td>
+          <td>{{ student.name }}</td>
+          <td>{{ student.semester }}</td>
+          <td>{{ student.branch }}</td>
+          <td>{{ student.specialization }}</td>
+          <td>{{ student.mobileNumber }}</td>
+          <td>{{ student.email }}</td>
+          <td>
+            {{ student.hasBacklog ? 'Yes' : 'No' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noStudents>
+      <p class="empty-msg">No students available.</p>
+    </ng-template>
+
+  </div>
+
+  <!-- ================= ROOMS TABLE ================= -->
+  <div *ngIf="showRoomsTable" class="data-table">
+
+    <h2>Rooms Information</h2>
+
+    <table *ngIf="rooms.length > 0; else noRooms">
+      <thead>
+        <tr>
+          <th>Block</th>
+          <th>Room Number</th>
+          <th>Capacity</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let room of rooms">
+          <td>{{ room.block }}</td>
+          <td>{{ room.roomNumber }}</td>
+          <td>{{ room.capacity }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noRooms>
+      <p class="empty-msg">No rooms available.</p>
+    </ng-template>
+
+  </div>
+
+</div>
