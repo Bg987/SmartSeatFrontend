@@ -26,7 +26,7 @@ export class CollegeHome implements OnInit {
 
   // Rooms Pagination
   roomPage = 0;
-  roomSize = 3;
+  roomSize = 1;
   totalRoomPages = 0;
 
   constructor(
@@ -45,7 +45,6 @@ export class CollegeHome implements OnInit {
     this.getStudent.getStudents().subscribe((res) => {
       this.students = res;
       this.totalStudents = this.students.length;
-      console.log(this.totalStudents);
       this.cd.detectChanges();
     });
   }
@@ -76,6 +75,7 @@ export class CollegeHome implements OnInit {
     if (this.roomPage < this.totalRoomPages - 1) {
       this.roomPage++;
       this.loadRoomsData();
+      
     }
   }
 
