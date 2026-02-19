@@ -79,7 +79,9 @@ ngOnDestroy() {
             this.router.navigate(['/university-dashboard']);
             break;
         }
+        this.cd.detectChanges();
       },
+      
 
       error: (err) => {
         //console.log("FULL ERROR OBJECT:", err);

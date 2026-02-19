@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-
+import { AuthService } from '../../../../services/auth-service';
 @Component({
   selector: 'app-university-layout',
   standalone: true,
@@ -19,7 +19,8 @@ export class UniversityLayoutComponent {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
     // role check
     if (localStorage.getItem('userRole') !== 'university') {
@@ -29,20 +30,15 @@ export class UniversityLayoutComponent {
     this.universityName = localStorage.getItem('userName');
   }
 
-  logout() {
-    this.http.post(
-      `${ this.url }/auth/logout`,
-      {},
-      { withCredentials: true }
-    ).subscribe({
-      next: () => this.clearAndRedirect(),
-      error: () => this.clearAndRedirect()
+  onLogout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.authService.clearAndRedirect();
+      },
+      error: (err) => {
+        console.error('Logout failed', err);
+        this.authService.clearAndRedirect(); // Still redirect even if error
+      }
     });
-  }
-
-  clearAndRedirect() {
-    localStorage.clear();
-    sessionStorage.clear();
-    window.location.href = '/';
   }
 }
