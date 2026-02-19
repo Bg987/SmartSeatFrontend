@@ -51,7 +51,6 @@ export class CollegeHome implements OnInit {
 
   loadRoomsData() {
     this.getRoom.getRooms(this.roomPage, this.roomSize).subscribe((res) => {
-<<<<<<< HEAD
       this.rooms = res; 
 
       console.log(this.rooms);//Total rooms count
@@ -62,11 +61,9 @@ export class CollegeHome implements OnInit {
       console.log(this.totalRooms);//Total rooms count
 
 
-=======
       this.rooms = res.content; // current page data
       console.log();
       this.totalRooms = res.totalElements; // total count from DB
->>>>>>> fd80d667301e28b65f42c528b9beef655b4ed892
       this.totalRoomPages = res.totalPages;
       console.log(this.totalRoomPages);
 
