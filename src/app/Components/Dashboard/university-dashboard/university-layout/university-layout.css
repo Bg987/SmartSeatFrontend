@@ -9,6 +9,7 @@
 /* ===== SIDEBAR ===== */
 .sidebar {
   width: 260px;
+  height: max-content;
   background: linear-gradient(180deg, #111827, #1f2937);
   color: #fff;
   padding: 28px 20px;
@@ -60,6 +61,7 @@
   color: #fff;
   font-weight: 500;
   cursor: pointer;
+  position :relative;
   transition: all 0.3s ease;
 }
 
