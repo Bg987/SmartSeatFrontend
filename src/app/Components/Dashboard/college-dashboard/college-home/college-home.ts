@@ -51,9 +51,18 @@ export class CollegeHome implements OnInit {
 
   loadRoomsData() {
     this.getRoom.getRooms(this.roomPage, this.roomSize).subscribe((res) => {
-      this.rooms = res.content; // current page data
-      this.totalRooms = res.totalElements; // total count from DB
+      this.rooms = res; 
+
+      console.log(this.rooms);//Total rooms count
+
+
+      this.totalRooms = this.rooms.length,
+
+      console.log(this.totalRooms);//Total rooms count
+
+
       this.totalRoomPages = res.totalPages;
+      console.log(this.totalRoomPages);
 
       this.cd.detectChanges();
     });

@@ -1,0 +1,96 @@
+<div class="timetable-wrapper">
+  <div class="header-section">
+    <h1>Exam Timetable Generator</h1>
+    <div class="subject-info">
+      Total Subjects Available:
+      <span class="count">{{ subjects.length }}</span>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps-section">
+    <div class="step-box" [class.active]="activeStep === 1" (click)="setStep(1)">
+      <div class="step-number">01</div>
+      <div class="step-content">
+        <h3>Select Subjects</h3>
+        <p>Choose the subjects for timetable</p>
+      </div>
+    </div>
+
+    <div class="step-box" [class.active]="activeStep === 2" (click)="setStep(2)">
+      <div class="step-number">02</div>
+      <div class="step-content">
+        <h3>Assign Exam Dates</h3>
+        <p>Select exam dates</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1 CONTENT -->
+  <div *ngIf="activeStep === 1" class="content-section">
+    <div class="subjects-grid">
+      <div
+        class="subject-card"
+        *ngFor="let subject of subjects"
+        [class.selected]="isSelected(subject)"
+        (click)="toggleSubject(subject)"
+      >
+        <input
+          type="checkbox"
+          class="subject-checkbox"
+          [checked]="isSelected(subject)"
+          (click)="$event.stopPropagation()"
+          (change)="toggleSubject(subject)"
+        />
+
+        <div class="subject-info-box">
+          <span class="subject-name">
+            {{ subject.subjectName }}
+          </span>
+          <span class="subject-code">
+            {{ subject.subjectId }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 CONTENT -->
+  <div *ngIf="activeStep === 2" class="content-section">
+    <h3 class="selected-heading">Selected Subjects ({{ selectedSubjects.length }})</h3>
+
+    <div *ngIf="selectedSubjects.length > 0; else noSelection">
+      <table class="subjects-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Subject Name</th>
+            <th>Subject Code</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let subject of selectedSubjects; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ subject.subjectName }}</td>
+            <td>{{ subject.subjectId }}</td>
+            <td>
+              <input type="date" [(ngModel)]="subject.examDate"  [min]="minExamDate"   class="date-input" required />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noSelection>
+      <p class="no-data">No subjects selected yet.</p>
+    </ng-template>
+  </div>
+
+  <div class="button-section">
+    <button class="generate-btn"  (click)="generateTimetable()" [disabled]="selectedSubjects.length === 0" >
+      Generate Timetable
+    </button>
+  </div>
+</div>

@@ -12,6 +12,7 @@ import { AddStudents } from './Components/Dashboard/college-dashboard/add-studen
 import { UploadRooms } from './Components/Dashboard/college-dashboard/upload-rooms/upload-rooms';
 import { SittingPlan } from './Components/Dashboard/college-dashboard/sitting-plan/sitting-plan';
 import { AddSubjects } from './Components/Dashboard/university-dashboard/add-subjects/add-subjects';
+import { AddTimeTable } from './Components/Dashboard/university-dashboard/add-time-table/add-time-table';
 
 export const routes: Routes = [
 
@@ -40,6 +41,7 @@ export const routes: Routes = [
       { path: 'addCollege', component: AddCollegeComponent },
       {path:'csv',component:UploadCsvComponent},
       {path:'addSubjects',component:AddSubjects},
+      {path:'addTimeTable',component:AddTimeTable},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
