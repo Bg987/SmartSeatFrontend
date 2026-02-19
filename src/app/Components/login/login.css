@@ -123,3 +123,36 @@
     transform: translateY(0);
   }
 }
+
+/* This container holds both elements */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* The input field */
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px;
+  /* Space for the emoji on the right */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  /* Ensures padding doesn't increase width */
+}
+
+/* The emoji positioned inside the box */
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  /* Distance from the right edge */
+  cursor: pointer;
+  user-select: none;
+  /* Prevents highlighting the emoji on click */
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}

@@ -40,7 +40,8 @@
           routerLinkActive="active">
         Upload Rooms Information
       </li>
-
+      <li routerLink="/college-dashboard/changePassword" routerLinkActive="active">
+        Change password</li>
       <li routerLink="/college-dashboard/sittingPlan"
           routerLinkActive="active">
         Get Sitting Plan
@@ -50,7 +51,7 @@
 
     <button type="button"
             class="logout-btn"
-            (click)="logout()">
+            (click)="onLogout()">
       Logout
     </button>
 

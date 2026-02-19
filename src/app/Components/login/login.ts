@@ -15,6 +15,9 @@ import { environment } from '../../../environments/environment';
 export class LoginComponent {
 
   private url = environment.apiUrl;
+  showOld: boolean = false;
+  showNew: boolean = false;
+  showConfirm: boolean = false;
   loginForm: FormGroup;
   submitted = false;
   successMessage = '';
@@ -79,7 +82,9 @@ ngOnDestroy() {
             this.router.navigate(['/university-dashboard']);
             break;
         }
+        this.cd.detectChanges();
       },
+      
 
       error: (err) => {
         //console.log("FULL ERROR OBJECT:", err);

@@ -13,6 +13,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./college-home.css'],
 })
 export class CollegeHome implements OnInit {
+  //default values
   totalStudents = 0;
   totalRooms = 0;
   totalSittingPlans = 6;
@@ -25,7 +26,7 @@ export class CollegeHome implements OnInit {
 
   // Rooms Pagination
   roomPage = 0;
-  roomSize = 5;
+  roomSize = 1;
   totalRoomPages = 0;
 
   constructor(
@@ -44,13 +45,13 @@ export class CollegeHome implements OnInit {
     this.getStudent.getStudents().subscribe((res) => {
       this.students = res;
       this.totalStudents = this.students.length;
-      console.log(this.totalStudents);
       this.cd.detectChanges();
     });
   }
 
   loadRoomsData() {
     this.getRoom.getRooms(this.roomPage, this.roomSize).subscribe((res) => {
+<<<<<<< HEAD
       this.rooms = res; 
 
       console.log(this.rooms);//Total rooms count
@@ -61,6 +62,11 @@ export class CollegeHome implements OnInit {
       console.log(this.totalRooms);//Total rooms count
 
 
+=======
+      this.rooms = res.content; // current page data
+      console.log();
+      this.totalRooms = res.totalElements; // total count from DB
+>>>>>>> fd80d667301e28b65f42c528b9beef655b4ed892
       this.totalRoomPages = res.totalPages;
       console.log(this.totalRoomPages);
 

@@ -13,17 +13,18 @@ import { UploadRooms } from './Components/Dashboard/college-dashboard/upload-roo
 import { SittingPlan } from './Components/Dashboard/college-dashboard/sitting-plan/sitting-plan';
 import { AddSubjects } from './Components/Dashboard/university-dashboard/add-subjects/add-subjects';
 import { AddTimeTable } from './Components/Dashboard/university-dashboard/add-time-table/add-time-table';
+import { changePassword } from './Components/change-password/change-password';
+
 
 export const routes: Routes = [
 
   { path: '', component: LoginComponent },
   { path: 'student-dashboard', component: StudentDashboardComponent },
-
-
   { path: 'college-dashboard',
     component: CollegeLayoutComponent ,
      children: [
-      {path:'',component:CollegeHome},
+       { path: '', component: CollegeHome },
+      { path: 'changePassword', component: changePassword },
       { path: 'uploadStudent', component: UploadStudents },
       {path:'addStudents',component:AddStudents},
       {path:'uploadRooms',component:UploadRooms},
@@ -37,6 +38,7 @@ export const routes: Routes = [
     path: 'university-dashboard',
     component: UniversityLayoutComponent,
     children: [
+    { path: 'changePassword', component: changePassword },
       { path: 'dashboard', component: UniversityHomeComponent },
       { path: 'addCollege', component: AddCollegeComponent },
       {path:'csv',component:UploadCsvComponent},

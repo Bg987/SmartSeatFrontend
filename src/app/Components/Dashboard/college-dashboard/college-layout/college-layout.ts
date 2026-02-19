@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../services/auth-service';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -13,7 +14,7 @@ export class CollegeLayoutComponent implements OnInit {
   userName: string | null = '';
   role: string | null = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: AuthService) {}
 
   ngOnInit(): void {
 
@@ -26,8 +27,15 @@ export class CollegeLayoutComponent implements OnInit {
     }
   }
 
-  logout() {
-    localStorage.clear();
-    this.router.navigate(['/login']);
+  onLogout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.authService.clearAndRedirect();
+      },
+      error: (err) => {
+        console.error('Logout failed', err);
+        this.authService.clearAndRedirect(); // Still redirect even if error
+      }
+    });
   }
 }

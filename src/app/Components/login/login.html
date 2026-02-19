@@ -21,9 +21,14 @@
 
       <!-- Password -->
       <div class="form-field">
-        <label>Password</label>
-        <input type="password" formControlName="password" placeholder="Enter your password">
+        <label>Password</label>        
+        <div class="input-group">
+          <input [type]="showConfirm ? 'text' : 'password'" formControlName="password" placeholder="Enter your password">
 
+          <span class="eye-icon" (click)="showConfirm = !showConfirm">
+            {{ showConfirm ? '👁️' : '🙈' }}
+          </span>
+        </div>
         <div class="error" *ngIf="submitted && f['password'].errors">
           <small *ngIf="f['password'].errors?.['required']">Password is required</small>
           <small *ngIf="f['password'].errors?.['minlength']">
