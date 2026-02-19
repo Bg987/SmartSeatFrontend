@@ -15,6 +15,9 @@ import { environment } from '../../../environments/environment';
 export class LoginComponent {
 
   private url = environment.apiUrl;
+  showOld: boolean = false;
+  showNew: boolean = false;
+  showConfirm: boolean = false;
   loginForm: FormGroup;
   submitted = false;
   successMessage = '';
