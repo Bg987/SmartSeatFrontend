@@ -16,6 +16,7 @@ import { AddTimeTable } from './Components/Dashboard/university-dashboard/add-ti
 import { changePassword } from './Components/change-password/change-password';
 import { GetTimetable } from './Components/Dashboard/university-dashboard/get-timetable/get-timetable';
 
+import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/update-student-image/update-student-image'
 
 export const routes: Routes = [
 
@@ -25,6 +26,7 @@ export const routes: Routes = [
     component: CollegeLayoutComponent ,
      children: [
        { path: '', component: CollegeHome },
+       { path: 'updateImage', component: UpdateStudentImage },
       { path: 'changePassword', component: changePassword },
       { path: 'uploadStudent', component: UploadStudents },
       {path:'addStudents',component:AddStudents},
