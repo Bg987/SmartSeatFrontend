@@ -3,6 +3,8 @@ import { AddSubjectService } from '../../../../services/add-subject-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimetableService } from '../../../../services/timetable-service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-add-time-table',
@@ -24,6 +26,7 @@ export class AddTimeTable implements OnInit {
     private subjectService: AddSubjectService,
      private timetableService: TimetableService,
     private cdr: ChangeDetectorRef,
+    private router:Router,
   ) {}
 
   ngOnInit(): void {
@@ -109,8 +112,8 @@ export class AddTimeTable implements OnInit {
   this.timetableService.generateTimetable(this.selectedSubjects)
     .subscribe({
       next: (res) => {
-        console.log("Success:", res);
-        alert("Timetable Generated Successfully ");
+        
+        alert(res.batchId);
       },
       error: (err) => {
         console.error("Error:", err);
@@ -119,4 +122,27 @@ export class AddTimeTable implements OnInit {
     });
 }
 
+
+
+   getTimetable() {
+
+  
+
+  
+
+ 
+
+  this.timetableService.generateTimetable(this.selectedSubjects)
+    .subscribe({
+      next: (res) => {
+        
+        alert(res.batchId);
+      },
+      error: (err) => {
+        console.error("Error:", err);
+        alert("Something went wrong ");
+      }
+    });
 }
+}
+

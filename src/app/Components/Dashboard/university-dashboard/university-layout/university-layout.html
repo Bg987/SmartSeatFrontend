@@ -5,9 +5,15 @@
     <h2 class="logo">SmartSeat</h2>
 
     <ul class="menu">
+     
+
       <li routerLink="/university-dashboard/dashboard" routerLinkActive="active">
          Dashboard
       </li>
+
+    
+            <li routerLink="/university-dashboard/changePassword" routerLinkActive="active">
+              Change password</li>
 
       <li class="dropdown">
    Add College ⬇
@@ -36,11 +42,13 @@
         routerLinkActive="active">
         Create Exam Time Table</li>
 
-
-      <li>
+         <li>
         Generate Sitting Plan</li>
-            <li routerLink="/university-dashboard/changePassword" routerLinkActive="active">
-              Change password</li>
+            <li routerLink="/university-dashboard/getTimetable" routerLinkActive="active">
+              Get Timetable</li>
+
+
+      
       <li>Settings</li>
     </ul>
     <button type="button" class="logout-btn" (click)="onLogout()">Logout</button>

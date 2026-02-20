@@ -1,0 +1,46 @@
+<div class="timetable-container">
+
+  <div class="timetable-title">Exam Timetable</div>
+
+  <div class="input-section">
+    <input 
+      type="text" 
+      placeholder="Enter batchId" 
+      [(ngModel)]="batchId" 
+      name="batchId"
+    />
+
+    <button class="get-btn" (click)="getTimetable()">
+      Get TimeTable
+    </button>
+  </div>
+
+  <table *ngIf="timeTable.length > 0">
+    <thead>
+      <tr>
+        <th>Subject ID</th>
+        <th>Subject Name</th>
+        <th>Exam Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of timeTable">
+        <td>{{ item.subjectId }}</td>
+        <td>{{ item.subjectName }}</td>
+        <td>{{ item.examDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button 
+    class="download-btn"
+    (click)="downloadTimetable()" 
+    *ngIf="timeTable.length > 0">
+    Download PDF
+  </button>
+
+  <p class="no-data" *ngIf="timeTable.length === 0">
+    No Timetable Found
+  </p>
+
+</div>
