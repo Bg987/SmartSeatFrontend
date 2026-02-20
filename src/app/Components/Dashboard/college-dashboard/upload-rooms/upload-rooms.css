@@ -108,9 +108,6 @@ p {
   color: #4caf50;
 }
 
-p:empty {
-  display: none;
-}
 
 /* Responsive adjustments */
 @media (max-width: 640px) {

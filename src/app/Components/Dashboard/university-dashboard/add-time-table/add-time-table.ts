@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class AddTimeTable implements OnInit {
   subjects: any[] = [];
   selectedSubjects: any[] = [];
-
+   message: string = "";
   countOfSubjects = 0;
   activeStep: number = 1;
 
@@ -96,53 +96,30 @@ export class AddTimeTable implements OnInit {
 
   generateTimetable() {
 
-  if (this.selectedSubjects.length === 0) {
-    alert("Please select subjects first.");
-    return;
+    if (this.selectedSubjects.length === 0) {
+      alert("Please select subjects first.");
+      return;
+    }
+
+    // Optional: Check if all dates selected
+    const invalidDate = this.selectedSubjects.some(s => !s.examDate);
+
+    if (invalidDate) {
+      alert("Please select exam date for all subjects.");
+      return;
+    }
+
+    this.timetableService.generateTimetable(this.selectedSubjects)
+      .subscribe({
+        next: (res) => {
+          this.message = "exam scheduled = "+res.batchId + " this is the batch id keep this for further use";
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.message = err.error;
+          this.cdr.detectChanges();
+        }
+      });
   }
-
-  // Optional: Check if all dates selected
-  const invalidDate = this.selectedSubjects.some(s => !s.examDate);
-
-  if (invalidDate) {
-    alert("Please select exam date for all subjects.");
-    return;
-  }
-
-  this.timetableService.generateTimetable(this.selectedSubjects)
-    .subscribe({
-      next: (res) => {
-        
-        alert(res.batchId);
-      },
-      error: (err) => {
-        console.error("Error:", err);
-        alert("Something went wrong ");
-      }
-    });
-}
-
-
-
-   getTimetable() {
-
-  
-
-  
-
- 
-
-  this.timetableService.generateTimetable(this.selectedSubjects)
-    .subscribe({
-      next: (res) => {
-        
-        alert(res.batchId);
-      },
-      error: (err) => {
-        console.error("Error:", err);
-        alert("Something went wrong ");
-      }
-    });
-}
 }
 

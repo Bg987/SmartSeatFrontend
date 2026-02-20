@@ -1,7 +1,6 @@
 <div class="container">
   <h2>Rooms Management</h2>
 
-  <!-- Mode Selection -->
   <div class="mode-toggle">
     <button (click)="toggleMode('form')" [disabled]="uploadMode==='form'">Add Room</button>
     <button (click)="toggleMode('csv')" [disabled]="uploadMode==='csv'">Upload CSV</button>
@@ -10,24 +9,24 @@
   <div *ngIf="uploadMode === 'form'" class="form-section">
     <form [formGroup]="roomForm" (ngSubmit)="submitForm()">
       <label>Room Number:</label>
-      <input formControlName="roomNumber" type="text"  />
-      
+      <input formControlName="roomNumber" type="text" />
+
       <label>Capacity:</label>
       <input formControlName="capacity" type="number" />
 
       <label>Block:</label>
-      <input formControlName="block" type="text"/>
+      <input formControlName="block" type="text" />
 
-      
-
-      <button type="submit">Add Room</button>
+      <button type="submit" [disabled]="isSubmitting">Add Room</button>
     </form>
   </div>
 
   <div *ngIf="uploadMode === 'csv'" class="csv-section">
     <input type="file" (change)="onFileChange($event)" accept=".csv" />
-    <button (click)="uploadCSV()">Upload CSV</button>
+    <button (click)="uploadCSV()" [disabled]="isSubmitting">Upload CSV</button>
   </div>
 
-  <p *ngIf="message">{{ message }}</p>
+  <p *ngIf="message" >
+    {{ message }}
+  </p>
 </div>

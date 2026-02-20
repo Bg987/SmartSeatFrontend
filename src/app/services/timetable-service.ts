@@ -1,18 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class TimetableService {
-
-  private baseUrl = 'http://localhost:8080/api/university';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
   generateTimetable(data: any[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}/generateTimetable`, data,
+    return this.http.post(`${this.baseUrl}/university/generateTimetable`, data,
       {withCredentials:true}
     );
   }

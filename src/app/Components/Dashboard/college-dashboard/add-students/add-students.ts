@@ -25,8 +25,6 @@ export class AddStudents {
       semester: [1, [Validators.required, Validators.min(1), Validators.max(8)]],
       subjects: this.fb.array([]), // Start with empty list
       hasBacklog: [false],
-      imgUrl: [''],
-      collegeId: [null, Validators.required]
     });
   }
 

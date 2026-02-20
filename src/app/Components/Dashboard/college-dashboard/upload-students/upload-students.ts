@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-upload-students',
   imports: [CommonModule],
@@ -19,7 +19,8 @@ export class UploadStudents {
   responseMessage: string = '';
   isError = false;
 
-  private uploadUrl = "http://localhost:8080/api/colleges/uploadStudents";
+  private url = environment.apiUrl;
+  private uploadUrl = `${this.url}/colleges/uploadStudents`;
   //Not present yet only template is ready---
 
   constructor(
@@ -83,7 +84,7 @@ export class UploadStudents {
     this.uploadUrl,
     formData,
     {
-      withCredentials: true   // ✅ Properly Set Here
+      withCredentials: true  
     }
   )
   .pipe(
