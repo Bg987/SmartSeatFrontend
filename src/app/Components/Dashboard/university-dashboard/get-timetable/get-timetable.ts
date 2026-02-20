@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-get-timetable',
@@ -14,7 +15,8 @@ import jsPDF from 'jspdf';
 export class GetTimetable {
 
   constructor(
-    private service:GetTimetableService
+    private service:GetTimetableService,
+    private cdr:ChangeDetectorRef
   )
   {}
 
@@ -32,6 +34,7 @@ getTimetable() {
       console.log(res);
       this.timeTable=res;
     });
+    this.cdr.detectChanges();
 }
 
   downloadTimetable() {
@@ -93,4 +96,6 @@ getTimetable() {
 
   doc.save(`TimeTable_${this.batchId}.pdf`);
 }
+
+
 }

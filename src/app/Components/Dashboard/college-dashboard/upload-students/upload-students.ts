@@ -19,7 +19,7 @@ export class UploadStudents {
   responseMessage: string = '';
   isError = false;
 
-  private uploadUrl = "http://localhost:8080/api/university/uploadStudents";
+  private uploadUrl = "http://localhost:8080/api/colleges/uploadStudents";
   //Not present yet only template is ready---
 
   constructor(
@@ -79,44 +79,50 @@ export class UploadStudents {
   this.isUploading = true;
   this.isError = false;
 
-  this.http.post<string[]>(this.uploadUrl, formData)
-    .pipe(
-      finalize(() => {
-        this.isUploading = false;
-        this.cdr.detectChanges();
-      })
-    )
-    .subscribe({
+  this.http.post<string[]>(
+    this.uploadUrl,
+    formData,
+    {
+      withCredentials: true   // ✅ Properly Set Here
+    }
+  )
+  .pipe(
+    finalize(() => {
+      this.isUploading = false;
+      this.cdr.detectChanges();
+    })
+  )
+  .subscribe({
 
-      next: (response: any) => {
+    next: (response: any) => {
 
-        let message = '';
+      let message = '';
 
-        if (Array.isArray(response)) {
-          message = response.join('\n');
-        } else if (typeof response === 'string') {
-          message = response;
-        } else {
-          message = JSON.stringify(response);
-        }
-
-        alert("Upload Result:\n\n" + message);   // 🔥 ALERT HERE
-      },
-
-      error: (error: HttpErrorResponse) => {
-
-        let message = '';
-
-        if (Array.isArray(error.error)) {
-          message = error.error.join('\n');
-        } else if (typeof error.error === 'string') {
-          message = error.error;
-        } else {
-          message = "Upload failed!";
-        }
-
-        alert("Error:\n\n" + message);   // 🔥 ERROR ALERT
+      if (Array.isArray(response)) {
+        message = response.join('\n');
+      } else if (typeof response === 'string') {
+        message = response;
+      } else {
+        message = JSON.stringify(response);
       }
-    });
+
+      alert("Upload Result:\n\n" + message);
+    },
+
+    error: (error: HttpErrorResponse) => {
+
+      let message = '';
+
+      if (Array.isArray(error.error)) {
+        message = error.error.join('\n');
+      } else if (typeof error.error === 'string') {
+        message = error.error;
+      } else {
+        message = "Upload failed!";
+      }
+
+      alert("Error:\n\n" + message);
+    }
+  });
 }
 }
