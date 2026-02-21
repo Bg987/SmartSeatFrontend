@@ -1,7 +1,7 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CollegeService } from '../../services/add-colleges';
+import { CollegeService } from '../../../../services/add-colleges';
 
 @Component({
   selector: 'app-add-college',

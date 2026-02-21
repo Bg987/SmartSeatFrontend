@@ -13,7 +13,7 @@ import { AuthService } from '../../../../services/auth-service';
 })
   
 export class UniversityLayoutComponent {
-
+  isDarkMode: boolean = localStorage.getItem("theme")==="dark";
   private url = environment.apiUrl;
   universityName: string | null = '';
 
@@ -23,13 +23,29 @@ export class UniversityLayoutComponent {
     private authService: AuthService
   ) {
     // role check
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-theme');
+    }
+    else {
+      document.body.classList.remove('dark-theme');
+    }
     if (localStorage.getItem('userRole') !== 'university') {
       this.router.navigate(['/']);
     }
 
     this.universityName = localStorage.getItem('userName');
   }
-
+    toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    // Apply class to the root element for global styling
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem("theme", "light");
+    }
+  }
   onLogout() {
     this.authService.logout().subscribe({
       next: () => {

@@ -4,7 +4,7 @@ import { StudentDashboardComponent } from './Components/Dashboard/student-dashbo
 import { UniversityLayoutComponent } from './Components/Dashboard/university-dashboard/university-layout/university-layout';
 import { UniversityHomeComponent } from './Components/Dashboard/university-dashboard/university-home/university-home';
 import { UploadCsvComponent } from './Components/Dashboard/university-dashboard/upload-colleges/upload-colleges';
-import { AddCollegeComponent } from './Components/add-colleges-component/add-colleges-component';
+import { AddCollegeComponent } from './Components/Dashboard/university-dashboard/add-colleges-component/add-colleges-component';
 import { CollegeLayoutComponent } from './Components/Dashboard/college-dashboard/college-layout/college-layout';
 import { CollegeHome } from './Components/Dashboard/college-dashboard/college-home/college-home';
 import { UploadStudents } from './Components/Dashboard/college-dashboard/upload-students/upload-students';

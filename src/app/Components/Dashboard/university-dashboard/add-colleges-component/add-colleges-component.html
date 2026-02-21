@@ -1,0 +1,47 @@
+<div class="form-wrapper">
+  <header class="form-header">
+    <h2 class="main-title">Institution Onboarding</h2>
+    <p class="subtitle">Connect a new college node to the SmartSeat examination ecosystem.</p>
+  </header>
+
+  <form #collegeForm="ngForm" (ngSubmit)="submitCollege(collegeForm)" class="college-form">
+
+    <div class="info-banner">
+      <span class="icon">ℹ️</span>
+      <p><u>Ensure unique email, 10-digit contact, and full institutional address.</u></p>
+    </div>
+
+    <div class="input-section">
+      <label class="field-label">College Name</label>
+      <input type="text" placeholder="e.g., Rajkot Engineering Institute" name="collegeName"
+        [(ngModel)]="collegeData.collegeName" required />
+    </div>
+
+    <div class="input-section">
+      <label class="field-label">Official Email</label>
+      <input type="email" placeholder="admin@college.edu" name="email" [(ngModel)]="collegeData.email" required />
+    </div>
+
+    <div class="input-section">
+      <label class="field-label">Contact Number</label>
+      <input type="text" placeholder="10-digit mobile number" name="contactNumber"
+        [(ngModel)]="collegeData.contactNumber" required pattern="^[0-9]{10}$" />
+    </div>
+
+    <div class="input-section">
+      <label class="field-label">Institutional Address</label>
+      <textarea placeholder="Provide the full physical location of the campus" name="address"
+        [(ngModel)]="collegeData.address" required></textarea>
+    </div>
+
+    <button type="submit" [disabled]="collegeForm.invalid || loading" class="prime-btn">
+      {{ loading ? 'Synchronizing Node...' : 'Register College' }}
+    </button>
+
+  </form>
+
+  <div class="status-toast" *ngIf="response">
+    <span class="toast-icon">✨</span>
+    {{ response }}
+  </div>
+</div>
