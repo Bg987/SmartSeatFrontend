@@ -10,6 +10,12 @@
     transition: all 0.2s;
 }
 
+
+
+html,
+body {
+    overflow-x: hidden;
+}
 .logout-btn:hover {
     background-color: #ef4444;
     color: white;

@@ -1,9 +1,33 @@
+/* ===== Global Reset ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    /* Ensures the body covers the full screen */
+    width: 100%;
     overflow-x: hidden;
-    /* Prevents accidental side-scrolling */
+    overflow-y: hidden;
+    /* Prevent horizontal white scroll */
+}
+
+/* Prevent 100vh overflow issues */
+body {
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Remove default image overflow */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Optional: smoother scrolling */
+html {
+    scroll-behavior: smooth;
 }
