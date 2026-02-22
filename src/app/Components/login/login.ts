@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private url = environment.apiUrl;
+
   
   // UI State variables
   showConfirm: boolean = false;
@@ -53,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.successMessage = '';
     this.errorMessage = '';
-
+    const headers = new HttpHeaders().set('ngrok-skip-browser-warning', 'true');
     if (this.loginForm.invalid) return;
 
     // Start Loader
@@ -62,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.http.post<any>(
       `${this.url}/auth/login`,
       this.loginForm.value,
-      { withCredentials: true }
+      { withCredentials: true,headers }
     ).subscribe({
       next: (res) => {
         this.isLoading = false; // Stop Loader
