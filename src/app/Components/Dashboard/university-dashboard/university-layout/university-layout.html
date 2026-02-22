@@ -56,14 +56,9 @@
           <div class="switch-thumb" [class.active]="isDarkMode"></div>
         </div>
       </div>
-
-      <div class="sidebar-user" (click)="onLogout()">
-        <div class="avatar">AD</div>
-        <div class="user-meta">
-          <p class="name">University</p>
-          <p class="action">Sign Out</p>
-        </div>
-      </div>
+      <button type="button" class="logout-btn" (click)="onLogout()">
+        <span class="icon">🚪</span> Terminate Session
+      </button>
     </div>
   </aside>
 

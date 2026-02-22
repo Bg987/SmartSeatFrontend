@@ -1,65 +1,73 @@
-<div class="app-container">
-
-  <!-- ===== SIDEBAR ===== -->
-  <aside class="sidebar">
-
-    <!-- College Name -->
-    <div class="college-name">
-      {{ userName || 'College Name' }}
+<div class="dashboard-root" [class.dark-mode]="isDarkMode">
+  <aside class="glass-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">S</div>
+      <h2 class="logo">SmartSeat<span>.</span></h2>
     </div>
 
+    <div class="college-identity">
+      <p class="label">Authenticated Node</p>
+      <p class="node-name">{{ userName || 'College Admin' }}</p>
+    </div>
 
-
-    <ul class="menu">
-
-      <li routerLink="/college-dashboard"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }">
-        Dashboard
-      </li>
-
-      <li class="dropdown">
-        <span>Add Students</span>
-
-        <ul class="submenu">
-          
-          <li routerLink="/college-dashboard/uploadStudent"
-              routerLinkActive="active">
-            Upload CSV
+    <nav class="side-nav">
+      <div class="nav-section">
+        <span class="section-title">Operations</span>
+        <ul>
+          <li routerLink="/college-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="icon">📊</i> <span>Overview</span>
           </li>
-
-          <li routerLink="/college-dashboard/addStudents"
-              routerLinkActive="active">
-            Add via Form
-          </li>
-
         </ul>
-      </li>
+      </div>
 
-      <li routerLink="/college-dashboard/uploadRooms"
-          routerLinkActive="active">
-        Upload Rooms Information
-      </li>
-      <li routerLink="/college-dashboard/changePassword" routerLinkActive="active">
-        Change password</li>
-              <li routerLink="/college-dashboard/updateImage" routerLinkActive="active">
-                Update student profile pic
-              </li>
-      <li routerLink="/college-dashboard/sittingPlan"
-          routerLinkActive="active">
-        Get Sitting Plan
-      </li>
-        <button type="button" class="logout-btn" (click)="onLogout()">
-          Logout
-        </button>
-    </ul>
+      <div class="nav-section">
+        <span class="section-title">Academic & Students</span>
+        <ul>
+          <li class="has-submenu">
+            <i class="icon">🎓</i> <span>Enroll Students</span>
+            <ul class="sub-nav">
+              <li routerLink="/college-dashboard/uploadStudent" routerLinkActive="active">CSV Import</li>
+              <li routerLink="/college-dashboard/addStudents" routerLinkActive="active">Manual Entry</li>
+            </ul>
+          </li>
+          <li routerLink="/college-dashboard/updateImage" routerLinkActive="active">
+            <i class="icon">🖼️</i> <span>Biometric Sync</span>
+          </li>
+        </ul>
+      </div>
 
+      <div class="nav-section">
+        <span class="section-title">Infrastructure</span>
+        <ul>
+          <li routerLink="/college-dashboard/uploadRooms" routerLinkActive="active">
+            <i class="icon">🏢</i> <span>Room Inventory</span>
+          </li>
+          <li routerLink="/college-dashboard/sittingPlan" routerLinkActive="active">
+            <i class="icon">🪑</i> <span>Seating Logic</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
+    <div class="sidebar-footer">
+      <div class="theme-switch" (click)="toggleTheme()">
+        <div class="switch-content">
+          <span>{{ isDarkMode ? '🌙 Dark' : '☀️ Light' }}</span>
+        </div>
+        <div class="switch-track">
+          <div class="switch-thumb" [class.active]="isDarkMode"></div>
+        </div>
+      </div>
+
+      <button type="button" class="logout-btn" (click)="onLogout()">
+        <span class="icon">🚪</span> Terminate Session
+      </button>
+    </div>
   </aside>
 
-  <!-- ===== RIGHT SIDE CONTENT ===== -->
-  <main class="content">
-    <router-outlet></router-outlet>
+  <main class="main-canvas">
+    <div class="content-viewport">
+      <router-outlet></router-outlet>
+    </div>
   </main>
-
 </div>

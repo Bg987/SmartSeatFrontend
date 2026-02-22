@@ -97,32 +97,32 @@ export class UploadStudents {
 
     next: (response: any) => {
 
-      let message = '';
+      
 
       if (Array.isArray(response)) {
-        message = response.join('\n');
+        this.responseMessage  = response.join('\n');
       } else if (typeof response === 'string') {
-        message = response;
+        this.responseMessage = response;
       } else {
-        message = JSON.stringify(response);
+        this.responseMessage = JSON.stringify(response);
       }
 
-      alert("Upload Result:\n\n" + message);
+      //alert("Upload Result:\n\n" + message);
     },
 
     error: (error: HttpErrorResponse) => {
 
-      let message = '';
+      
 
       if (Array.isArray(error.error)) {
-        message = error.error.join('\n');
+       this.responseMessage = error.error.join('\n');
       } else if (typeof error.error === 'string') {
-        message = error.error;
+        this.responseMessage = error.error;
       } else {
-        message = "Upload failed!";
+        this.responseMessage = "Upload failed!";
       }
 
-      alert("Error:\n\n" + message);
+      //alert("Error:\n\n" + message);
     }
   });
 }

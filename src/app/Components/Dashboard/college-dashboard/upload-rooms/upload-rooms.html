@@ -1,32 +1,60 @@
-<div class="container">
-  <h2>Rooms Management</h2>
+<div class="form-wrapper">
+  <header class="form-header">
+    <h2 class="main-title">Infrastructure Management</h2>
+    <p class="subtitle">Configure and synchronize physical room inventory for examination allocation.</p>
+  </header>
 
-  <div class="mode-toggle">
-    <button (click)="toggleMode('form')" [disabled]="uploadMode==='form'">Add Room</button>
-    <button (click)="toggleMode('csv')" [disabled]="uploadMode==='csv'">Upload CSV</button>
+  <div class="option-toggle">
+    <button [class.active]="uploadMode === 'form'" (click)="toggleMode('form')">
+      <span class="icon">✍️</span> Manual Entry
+    </button>
+    <button [class.active]="uploadMode === 'csv'" (click)="toggleMode('csv')">
+      <span class="icon">📁</span> Bulk CSV Sync
+    </button>
   </div>
 
-  <div *ngIf="uploadMode === 'form'" class="form-section">
-    <form [formGroup]="roomForm" (ngSubmit)="submitForm()">
-      <label>Room Number:</label>
-      <input formControlName="roomNumber" type="text" />
+  <div *ngIf="uploadMode === 'form'" class="tab-content">
+    <form [formGroup]="roomForm" (ngSubmit)="submitForm()" class="themed-form">
+      <div class="form-row">
+        <div class="input-section">
+          <label class="field-label">Block / Wing</label>
+          <input formControlName="block" type="text" placeholder="e.g., Block A" />
+        </div>
+        <div class="input-section">
+          <label class="field-label">Room Identifier</label>
+          <input formControlName="roomNumber" type="text" placeholder="e.g., 101" />
+        </div>
+      </div>
 
-      <label>Capacity:</label>
-      <input formControlName="capacity" type="number" />
+      <div class="input-section">
+        <label class="field-label">Seating Capacity</label>
+        <input formControlName="capacity" type="number" placeholder="Enter total capacity" />
+      </div>
 
-      <label>Block:</label>
-      <input formControlName="block" type="text" />
-
-      <button type="submit" [disabled]="isSubmitting">Add Room</button>
+      <button type="submit" class="prime-btn" [disabled]="isSubmitting || roomForm.invalid">
+        {{ isSubmitting ? 'Syncing Asset...' : 'Register Room Node' }}
+      </button>
     </form>
   </div>
 
-  <div *ngIf="uploadMode === 'csv'" class="csv-section">
-    <input type="file" (change)="onFileChange($event)" accept=".csv" />
-    <button (click)="uploadCSV()" [disabled]="isSubmitting">Upload CSV</button>
+  <div *ngIf="uploadMode === 'csv'" class="tab-content">
+    <div class="upload-dropzone">
+      <input type="file" #fileInput (change)="onFileChange($event)" accept=".csv" hidden />
+      <div class="upload-trigger" (click)="fileInput.click()">
+        <div class="icon-circle">
+          <span class="icon">📤</span>
+        </div>
+        <p class="primary-text">Upload Infrastructure Manifest</p>
+        <p class="secondary-text">Standard CSV format only</p>
+      </div>
+      <button class="prime-btn" (click)="uploadCSV()" [disabled]="isSubmitting">
+        Initialize Bulk Sync
+      </button>
+    </div>
   </div>
 
-  <p *ngIf="message" >
+  <div class="status-toast" *ngIf="message">
+    <span class="toast-icon">✨</span>
     {{ message }}
-  </p>
+  </div>
 </div>

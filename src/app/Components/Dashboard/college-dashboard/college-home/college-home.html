@@ -1,118 +1,106 @@
-<div class="home-container">
+<div class="home-viewport">
 
-  <div class="card-wrapper">
-
-    <!-- Students Card -->
-    <div class="card students" (click)="loadStudents()">
-      <div class="card-content">
-        <h3>Students</h3>
-        <p>{{ totalStudents }}</p>
+  <div class="stats-grid">
+    <div class="stat-card" (click)="loadStudents()">
+      <div class="card-glow student-glow"></div>
+      <div class="card-info">
+        <h3>Enrolled Students</h3>
+        <p class="stat-value">{{ totalStudents }}</p>
       </div>
+      <div class="card-icon">🎓</div>
     </div>
 
-    <!-- Rooms Card -->
-    <div class="card rooms" (click)="loadRooms()">
-      <div class="card-content">
-        <h3>Rooms</h3>
-        <p>{{ totalRooms }}</p>
+    <div class="stat-card" (click)="loadRooms()">
+      <div class="card-glow room-glow"></div>
+      <div class="card-info">
+        <h3>Campus Capacity</h3>
+        <p class="stat-value">{{ totalRooms }}</p>
       </div>
+      <div class="card-icon">🏢</div>
     </div>
 
-    <!-- Sitting Plan Card -->
-    <div class="card sitting">
-      <div class="card-content">
-        <h3>Sitting Plan</h3>
-        <p>{{ totalSittingPlans }}</p>
+    <div class="stat-card">
+      <div class="card-glow plan-glow"></div>
+      <div class="card-info">
+        <h3>Active Seating Plans</h3>
+        <p class="stat-value">{{ totalSittingPlans }}</p>
       </div>
+      <div class="card-icon">🪑</div>
+    </div>
+  </div>
+
+  <div class="data-canvas">
+
+    <div *ngIf="showStudentsTable" class="table-card" [@fadeIn]>
+      <div class="table-header">
+        <h2>Student Registry</h2>
+        <span class="badge">Total: {{ totalStudents }}</span>
+      </div>
+
+      <div class="scroll-container" *ngIf="students.length > 0; else noStudents">
+        <table class="smart-table">
+          <thead>
+            <tr>
+              <th>Enrollment</th>
+              <th>Student Identity</th>
+              <th>Sem/Branch</th>
+              <th>Status</th>
+              <th>Contact Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of students">
+              <td><code>{{ student.enrollmentNo }}</code></td>
+              <td><strong>{{ student.name }}</strong><br><small>{{ student.specialization }}</small></td>
+              <td>S{{ student.semester }} / {{ student.branch }}</td>
+              <td>
+                <span class="status-pill" [class.backlog]="student.hasBacklog">
+                  {{ student.hasBacklog ? 'Backlog' : 'Clear' }}
+                </span>
+              </td>
+              <td>{{ student.mobileNumber }}<br><small>{{ student.email }}</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #noStudents>
+        <p class="empty-state">No students found in the local node.</p>
+      </ng-template>
+    </div>
+
+    <div *ngIf="showRoomsTable" class="table-card" [@fadeIn]>
+      <div class="table-header">
+        <h2>Room Inventory</h2>
+      </div>
+
+      <div class="scroll-container" *ngIf="rooms.length > 0; else noRooms">
+        <table class="smart-table">
+          <thead>
+            <tr>
+              <th>Block Unit</th>
+              <th>Room Identifier</th>
+              <th>Capacity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let room of rooms">
+              <td><strong>{{ room.block }}</strong></td>
+              <td><code>{{ room.roomNumber }}</code></td>
+              <td><span class="capacity-count">{{ room.capacity }} Seats</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="paginator">
+          <button (click)="prevRoomPage()" [disabled]="roomPage === 0" class="page-btn">← Prev</button>
+          <span>Page <strong>{{ roomPage + 1 }}</strong> of {{ totalRoomPages }}</span>
+          <button (click)="nextRoomPage()" [disabled]="roomPage === totalRoomPages - 1" class="page-btn">Next →</button>
+        </div>
+      </div>
+      <ng-template #noRooms>
+        <p class="empty-state">Room inventory is empty.</p>
+      </ng-template>
     </div>
 
   </div>
-
-  <!-- ================= STUDENTS TABLE ================= -->
-  <div *ngIf="showStudentsTable" class="data-table">
-
-    <h2>Students List</h2>
-
-    <table *ngIf="students.length > 0; else noStudents">
-      <thead>
-        <tr>
-          <th>Enroll</th>
-          <th>Name</th>
-          <th>Semester</th>
-          <th>Branch</th>
-          <th>Specialization</th>
-          <th>Mobile</th>
-          <th>Email</th>
-          <th>Backlog</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let student of students">
-          <td>{{ student.enrollmentNo }}</td>
-          <td>{{ student.name }}</td>
-          <td>{{ student.semester }}</td>
-          <td>{{ student.branch }}</td>
-          <td>{{ student.specialization }}</td>
-          <td>{{ student.mobileNumber }}</td>
-          <td>{{ student.email }}</td>
-          <td>
-            {{ student.hasBacklog ? 'Yes' : 'No' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <ng-template #noStudents>
-      <p class="empty-msg">No students available.</p>
-    </ng-template>
-
-  </div>
-
-  <!-- ================= ROOMS TABLE ================= -->
-<div *ngIf="showRoomsTable" class="data-table">
-
-  <h2>Rooms Information</h2>
-
-  <table *ngIf="rooms.length > 0; else noRooms">
-    <thead>
-      <tr>
-        <th>Block</th>
-        <th>Room Number</th>
-        <th>Capacity</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let room of rooms">
-        <td>{{ room.block }}</td>
-        <td>{{ room.roomNumber }}</td>
-        <td>{{ room.capacity }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <ng-template #noRooms>
-    <p class="empty-msg">No rooms available.</p>
-  </ng-template>
-
-  <!--  ROOMS PAGINATION -->
-  <div class="pagination" *ngIf="rooms.length > 0">
-    <button (click)="prevRoomPage()" 
-            [disabled]="roomPage === 0">
-      Previous
-    </button>
-
-    <span>
-      Page {{ roomPage + 1 }} of {{ totalRoomPages }}
-    </span>
-
-    <button (click)="nextRoomPage()" 
-            [disabled]="roomPage === totalRoomPages - 1">
-      Next
-    </button>
-  </div>
-
-</div>
-
 </div>

@@ -13,7 +13,7 @@ import { AuthService } from '../../../../services/auth-service';
 })
   
 export class UniversityLayoutComponent {
-  isDarkMode: boolean = localStorage.getItem("theme")==="dark";
+  isDarkMode: boolean = localStorage.getItem("smartseat-theme")==="dark";
   private url = environment.apiUrl;
   universityName: string | null = '';
 
