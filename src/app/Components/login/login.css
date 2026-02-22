@@ -6,6 +6,24 @@
   --card-bg: #11141b;
   --text-p: #94a3b8;
 }
+.side-nav {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+.side-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Chrome/Safari */
+
+.nav-section {
+  margin-bottom: 25px;
+}
 
 .login-wrapper {
   background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
