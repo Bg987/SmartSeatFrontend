@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://nonswimming-nonseriously-lester.ngrok-free.dev/api' //backend link
+  apiUrl: 'http://localhost:8080/api' //backend link
 };
