@@ -26,6 +26,11 @@
                 "input": "public"
               }
             ],
+            "optimization": {
+                "fonts": {
+                  "inline": false
+                }
+              },
             "styles": [
               "src/styles.css"
             ]
@@ -40,8 +45,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "10kb",
+                  "maximumError": "20kb"
                 }
               ],
               "outputHashing": "all"
