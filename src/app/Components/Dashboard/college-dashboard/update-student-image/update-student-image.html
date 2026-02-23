@@ -1,24 +1,49 @@
-<div class="upload-container">
-    <h2>Update Student Image</h2>
+<div class="form-wrapper">
+    <header class="form-header">
+        <h2 class="main-title">Biometric Profile Sync</h2>
+        <p class="subtitle">Update student identity verification images for the SeatWise AI engine.</p>
+    </header>
 
-    <div class="form-group">
-        <label>Enrollment Number:</label>
-        <input type="text" [(ngModel)]="enrollmentNo" placeholder="Enter Enrollment No" [disabled]="isLoading">
+    <div class="sync-canvas">
+
+        <div class="input-section">
+            <label class="field-label">Student Enrollment No.</label>
+            <input type="text" [(ngModel)]="enrollmentNo" placeholder="e.g. EN12345" [disabled]="isLoading"
+                class="themed-input">
+        </div>
+
+        <div class="biometric-zone" [class.processing]="isLoading">
+            <input type="file" #imageInput (change)="onFileSelected($event)" accept=".jpg,.jpeg" [disabled]="isLoading"
+                hidden>
+
+            <div class="zone-content" (click)="!isLoading && imageInput.click()">
+                <div class="icon-circle">
+                    <span class="icon">{{ selectedFile ? '📸' : '👤' }}</span>
+                </div>
+                <p class="primary-text" *ngIf="!selectedFile">Select Identity Image</p>
+                <p class="secondary-text" *ngIf="!selectedFile">Strictly JPG/JPEG format</p>
+
+                <div class="file-summary" *ngIf="selectedFile">
+                    <p class="file-name">{{ selectedFile.name }}</p>
+                    <span class="ready-badge">Ready for Embedding</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="prime-btn" (click)="onSubmit()" [disabled]="isLoading || !enrollmentNo || !selectedFile">
+            <div class="btn-content">
+                <span *ngIf="!isLoading">Sync Biometric Data</span>
+                <div *ngIf="isLoading" class="processing-group">
+                    <div class="mini-spinner"></div>
+                    <span>Generating AI Embeddings...</span>
+                </div>
+            </div>
+        </button>
+
+        <div class="status-toast" *ngIf="message" [class.error-toast]="isError">
+            <span class="toast-icon">{{ isError ? '⚠️' : '✨' }}</span>
+            {{ message }}
+        </div>
+
     </div>
-
-    <div class="form-group">
-        <label>Select Profile Image (JPG only):</label>
-        <input type="file" (change)="onFileSelected($event)" accept=".jpg,.jpeg" [disabled]="isLoading">
-    </div>
-
-    <button (click)='onSubmit()' [disabled]="isLoading">
-        <span *ngIf="!isLoading">Upload Image</span>
-        <span *ngIf="isLoading" class="loader-text">Processing Embeddings...</span>
-    </button>
-
-    <div *ngIf="isLoading" class="spinner"></div>
-
-    <p [ngClass]="{'error': isError, 'success': !isError}" *ngIf="message">
-        {{ message }}
-    </p>
 </div>

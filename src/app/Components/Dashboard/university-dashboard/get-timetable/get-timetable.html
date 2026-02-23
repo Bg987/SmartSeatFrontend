@@ -1,46 +1,57 @@
-<div class="timetable-container">
+<div class="form-wrapper">
+  <header class="form-header">
+    <div class="header-main">
+      <h2 class="main-title">Schedule Retrieval</h2>
+      <div class="status-badge" [class.active]="timeTable.length > 0">
+        <span class="pulse-dot"></span>
+        {{ timeTable.length > 0 ? 'Data Synchronized' : 'Awaiting Query' }}
+      </div>
+    </div>
+    <p class="subtitle">Access and export university-wide examination schedules by Batch ID.</p>
+  </header>
 
-  <div class="timetable-title">Exam Timetable</div>
-
-  <div class="input-section">
-    <input 
-      type="text" 
-      placeholder="Enter batchId" 
-      [(ngModel)]="batchId" 
-      name="batchId"
-    />
-
-    <button class="get-btn" (click)="getTimetable()">
-      Get TimeTable
-    </button>
+  <div class="query-section">
+    <div class="search-group">
+      <label class="field-label">Registry Batch ID</label>
+      <div class="input-with-action">
+        <input type="text" [(ngModel)]="batchId" name="batchId" />
+        <button class="prime-btn sm" (click)="getTimetable()">
+          Retrieve Schedule
+        </button>
+      </div>
+    </div>
   </div>
 
-  <table *ngIf="timeTable.length > 0">
-    <thead>
-      <tr>
-        <th>Subject ID</th>
-        <th>Subject Name</th>
-        <th>Exam Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of timeTable">
-        <td>{{ item.subjectId }}</td>
-        <td>{{ item.subjectName }}</td>
-        <td>{{ item.examDate }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-section" *ngIf="timeTable.length > 0">
+    <div class="section-meta">
+      <h3 class="table-label">Active Timetable: {{ batchId }}</h3>
+      <button class="export-btn" (click)="downloadTimetable()">
+        <span class="icon">📄</span> Export as PDF
+      </button>
+    </div>
 
-  <button 
-    class="download-btn"
-    (click)="downloadTimetable()" 
-    *ngIf="timeTable.length > 0">
-    Download PDF
-  </button>
+    <div class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Module ID</th>
+            <th>Subject Designation</th>
+            <th>Scheduled Execution Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of timeTable">
+            <td><code>{{ item.subjectId }}</code></td>
+            <td><strong>{{ item.subjectName }}</strong></td>
+            <td><span class="date-tag">{{ item.examDate }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <p class="no-data" *ngIf="timeTable.length === 0">
-    No Timetable Found
-  </p>
-
+  <div class="empty-state" *ngIf="timeTable.length === 0">
+    <div class="empty-icon">📂</div>
+    <p>No timetable data discovered for the specified Batch ID.</p>
+  </div>
 </div>

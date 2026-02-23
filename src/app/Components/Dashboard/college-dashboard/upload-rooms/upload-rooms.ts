@@ -11,11 +11,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./upload-rooms.css']
 })
 export class UploadRooms {
-
   roomForm: FormGroup;
   csvFile: File | null = null;
   uploadMode: 'form' | 'csv' = 'form';
-  message: string = '';
+  message: string = "";
   isSubmitting: boolean = false;
 
   constructor(
@@ -28,7 +27,6 @@ export class UploadRooms {
       capacity: ['', [Validators.required, Validators.min(1)]],
       block: ['A', Validators.required],
     });
-    this.message = "";
   }
 
   toggleMode(mode: 'form' | 'csv') {
@@ -85,11 +83,17 @@ export class UploadRooms {
   
   this.roomsService.uploadCSV(formData).subscribe({ 
   
-  next: res => alert(res),
+    next: res => {
+      this.message = res; 
+      this.chengeDetector.detectChanges();
+    },
   
-   error: err => alert(err.error)
+    error: err => {
+      this.message = err.error;
+      this.chengeDetector.detectChanges();
+    },
    
-   });
+  });
    
     }
 

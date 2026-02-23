@@ -1,66 +1,71 @@
 <div class="login-wrapper">
-  <div class="login-card">
+  <div class="main-container">
 
-    <div class="login-header">
-      <h2>Welcome Back</h2>
-      <p>Login to your SmartSeat account</p>
+    <div class="hero-section">
+      <div class="circuit-overlay"></div>
+      <div class="hero-content">
+  
+        <h1>SmartSeat<span>.</span></h1>
+        <p>A comprehensive distributed ecosystem for end-to-end examination orchestration, from seamless registration to secure
+        execution.</p>
+
+        
+      </div>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-section">
+      <div class="form-container">
+        <header>
+          <h2>Sign In</h2>
+          <p>Secure access to the SmartSeat ecosystem</p>
+        </header>
 
-      <!-- Email -->
-      <div class="form-field">
-        <label>Email Address</label>
-        <input type="email" formControlName="mail" placeholder="you@example.com">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <label>Organization Email</label>
+            <input type="email" formControlName="mail" placeholder="name@university.edu">
+          </div>
 
-        <div class="error" *ngIf="submitted && f['mail'].errors">
-          <small *ngIf="f['mail'].errors?.['required']">Email is required</small>
-          <small *ngIf="f['mail'].errors?.['email']">Enter a valid email</small>
-        </div>
+          <div class="input-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+              <span class="toggle-eye" (click)="showConfirm = !showConfirm">
+                {{ showConfirm ? '🐵' : '🙈' }}
+              </span>
+              <input [type]="showConfirm ? 'text' : 'password'" formControlName="password">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Network Role</label>
+            <select formControlName="role">
+              <option value="university">University</option>
+              <option value="college">College</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+
+          <div class="status-msg success-box" *ngIf="successMessage">
+            <span class="icon">✔️</span> {{ successMessage }}
+          </div>
+          
+          <div class="status-msg error-box" *ngIf="errorMessage">
+            <span class="icon">⚠️</span> {{ errorMessage }}
+          </div>
+          
+          <button type="submit" class="prime-btn" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Initialize Session</span>
+          
+            <div class="button-loader" *ngIf="isLoading"></div>
+          </button>
+          
+          <div class="glass-loader-overlay" *ngIf="isLoading">
+            <div class="main-spinner"></div>
+            <p>Connecting....</p>
+          </div>
+        </form>
       </div>
+    </div>
 
-      <!-- Password -->
-      <div class="form-field">
-        <label>Password</label>        
-        <div class="input-group">
-          <input [type]="showConfirm ? 'text' : 'password'" formControlName="password" placeholder="Enter your password">
-
-          <span class="eye-icon" (click)="showConfirm = !showConfirm">
-            {{ showConfirm ? '👁️' : '🙈' }}
-          </span>
-        </div>
-        <div class="error" *ngIf="submitted && f['password'].errors">
-          <small *ngIf="f['password'].errors?.['required']">Password is required</small>
-          <small *ngIf="f['password'].errors?.['minlength']">
-            Minimum 6 characters required
-          </small>
-        </div>
-      </div>
-
-      <!-- Role -->
-      <div class="form-field">
-        <label>Select Role</label>
-        <select formControlName="role">
-          <option value="university">University</option>
-          <option value="college">College</option>
-          <option value="student">Student</option>
-        </select>
-      </div>
-
-      <!-- Button -->
-      <button type="submit" class="login-btn">
-        Login
-      </button>
-
-      <!-- Messages -->
-      <div class="success-message" *ngIf="successMessage">
-        {{ successMessage }}
-      </div>
-
-      <div class="error-message" *ngIf="errorMessage">
-        {{ errorMessage }}
-      </div>
-
-    </form>
   </div>
 </div>

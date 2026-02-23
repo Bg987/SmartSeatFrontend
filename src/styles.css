@@ -1,22 +1,33 @@
+/* ===== Global Reset ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    /* Ensures the body covers the full screen */
-
-    /* Prevents accidental side-scrolling */
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* Prevent horizontal white scroll */
 }
 
-::-webkit-scrollbar {
-    width: 0 !important;
+/* Prevent 100vh overflow issues */
+body {
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0 !important;
-} */
+/* Remove default image overflow */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Optional: smoother scrolling */
+html {
+    scroll-behavior: smooth;
+}

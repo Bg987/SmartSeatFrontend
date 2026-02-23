@@ -1,104 +1,77 @@
-<div class="form-container">
+<div class="form-wrapper">
+  <header class="form-header">
+    <h2 class="main-title">Subject Management</h2>
+    <p class="subtitle">Define academic subjects for the current examination cycle.</p>
+  </header>
 
-  <h2 class="main-title">Subject Management</h2>
-
-  <!-- OPTION SWITCH -->
   <div class="option-toggle">
-    <button 
-      [class.active]="activeTab === 'manual'" 
-      (click)="activeTab = 'manual'">
-      Add Manually
+    <button [class.active]="activeTab === 'manual'" (click)="activeTab = 'manual'">
+      <span class="icon">✍️</span> Add Manually
     </button>
-
-    <button 
-      [class.active]="activeTab === 'upload'" 
-      (click)="activeTab = 'upload'">
-      Upload File
+    <button [class.active]="activeTab === 'upload'" (click)="activeTab = 'upload'">
+      <span class="icon">📁</span> Bulk Upload
     </button>
   </div>
 
-  <!-- ADD SUBJECT FORM -->
   <div *ngIf="activeTab === 'manual'" class="tab-content">
+    <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()" class="themed-form">
+      <div class="input-section">
+        <label class="field-label">Subject ID</label>
+        <input type="text" placeholder="e.g., CS101" formControlName="subjectId" />
+      </div>
 
-    <form [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+      <div class="input-section">
+        <label class="field-label">Subject Name</label>
+        <input type="text" placeholder="e.g., Data Structures" formControlName="subjectName" />
+      </div>
 
-      <input
-        type="text"
-        placeholder="Enter Subject ID"
-        formControlName="subjectId"
-      />
-
-      <input
-        type="text"
-        placeholder="Enter Subject Name"
-        formControlName="subjectName"
-      />
-
-      <button type="submit" class="primary-btn">
-        Add Subject
+      <button type="submit" class="prime-btn" [disabled]="subjectForm.invalid">
+        Add to Curriculum
       </button>
-
     </form>
-
-    <div class="response" *ngIf="responseMessage">
-      {{ responseMessage }}
-    </div>
-
+    <div class="status-toast" *ngIf="responseMessage">{{ responseMessage }}</div>
   </div>
 
-  <!-- FILE UPLOAD SECTION -->
-  <div *ngIf="activeTab === 'upload'" class="tab-content upload-card">
-
-    <div class="upload-box">
-      <input
-        type="file"
-        (change)="onFileSelected($event)"
-        accept=".csv,.xlsx"
-      />
-
-      <button 
-        class="success-btn"
-        (click)="uploadFile()" 
-        [disabled]="!selectedFile">
-        Upload File
+  <div *ngIf="activeTab === 'upload'" class="tab-content">
+    <div class="upload-dropzone">
+      <input type="file" #fileInput (change)="onFileSelected($event)" accept=".csv,.xlsx" hidden />
+      <div class="upload-trigger" (click)="fileInput.click()">
+        <span class="upload-icon">{{ selectedFile ? '📄' : '☁️' }}</span>
+        <p *ngIf="!selectedFile">Select CSV or XLSX file</p>
+        <p class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</p>
+      </div>
+      <button class="prime-btn" (click)="uploadFile()" [disabled]="!selectedFile">
+        Upload Manifest
       </button>
     </div>
-
-    <div class="upload-message" *ngIf="uploadMessage">
-      {{ uploadMessage }}
-    </div>
-
+    <div class="status-toast" *ngIf="uploadMessage">{{ uploadMessage }}</div>
   </div>
 
-  <!-- SUBJECT TABLE -->
-  <h3 class="table-title">All Subjects</h3>
-
-  <div *ngIf="subjects.length > 0; else noData">
-
-    <table class="subjects-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Subject ID</th>
-          <th>Subject Name</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let sub of subjects; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ sub.subjectId }}</td>
-          <td>{{ sub.subjectName }}</td>
-        </tr>
-      </tbody>
-    </table>
-
+  <div class="table-section">
+    <h3 class="table-title">Academic Inventory</h3>
+    <div class="table-container" *ngIf="subjects.length > 0; else noData">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Subject ID</th>
+            <th>Subject Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sub of subjects; let i = index">
+            <td><span class="index-badge">{{ i + 1 }}</span></td>
+            <td><code>{{ sub.subjectId }}</code></td>
+            <td><strong>{{ sub.subjectName }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <ng-template #noData>
     <div class="empty-state">
-      No subjects available.
+      <p>No subjects have been registered in the inventory.</p>
     </div>
   </ng-template>
-
 </div>

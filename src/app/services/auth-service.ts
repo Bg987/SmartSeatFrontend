@@ -34,7 +34,8 @@ export class AuthService {
   }  
 
   clearAndRedirect() {
-    localStorage.clear();
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userRole");
     sessionStorage.clear();
     window.location.href = '/';
   }

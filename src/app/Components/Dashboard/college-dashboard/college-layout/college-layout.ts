@@ -13,6 +13,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 export class CollegeLayoutComponent implements OnInit {
   userName: string | null = '';
   role: string | null = '';
+  isDarkMode: boolean = localStorage.getItem("smartseat-theme")==="dark"; //
 
   constructor(private router: Router,private authService: AuthService) {}
 
@@ -24,6 +25,22 @@ export class CollegeLayoutComponent implements OnInit {
     // Safety check
     if (!this.role || this.role !== 'college') {
       this.router.navigate(['/login']);
+    }
+    const savedTheme = localStorage.getItem('smartseat-theme');
+    if (savedTheme === 'dark') {
+      this.isDarkMode = true;
+      document.body.classList.add('dark-mode');
+    }
+  }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('smartseat-theme', this.isDarkMode ? 'dark' : 'light');
+    
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
     }
   }
 

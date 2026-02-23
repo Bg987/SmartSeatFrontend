@@ -1,10 +1,10 @@
-import { ChangeDetectorRef,Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-  
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
@@ -12,24 +12,18 @@ import { environment } from '../../../environments/environment';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule]
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnInit, OnDestroy {
   private url = environment.apiUrl;
-  showOld: boolean = false;
-  showNew: boolean = false;
+
+  
+  // UI State variables
   showConfirm: boolean = false;
-  loginForm: FormGroup;
+  isLoading: boolean = false; // Added for the loader
   submitted = false;
+  
+  loginForm: FormGroup;
   successMessage = '';
   errorMessage = '';
-ngOnInit() {
-  console.log("LoginComponent INIT");
-  
-}
-
-ngOnDestroy() {
-  console.log("LoginComponent DESTROY");
-}
 
   constructor(
     private fb: FormBuilder,
@@ -37,12 +31,19 @@ ngOnDestroy() {
     private router: Router,
     private cd: ChangeDetectorRef
   ) {
-    
     this.loginForm = this.fb.group({
       mail: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['student', Validators.required]
     });
+  }
+
+  ngOnInit() {
+    console.log("SmartSeat Login Initialized");
+  }
+
+  ngOnDestroy() {
+    console.log("Login Component Destroyed");
   }
 
   get f() {
@@ -53,56 +54,56 @@ ngOnDestroy() {
     this.submitted = true;
     this.successMessage = '';
     this.errorMessage = '';
-
-    if (this.loginForm.invalid) return;
     
+    if (this.loginForm.invalid) return;
+
+    // Start Loader
+    this.isLoading = true;
+
     this.http.post<any>(
-      `${ this.url }/auth/login`,
+      `${this.url}/auth/login`,
       this.loginForm.value,
       { withCredentials: true }
     ).subscribe({
-
       next: (res) => {
-        this.errorMessage = '';
+        this.isLoading = false; // Stop Loader
         this.successMessage = res.message;
 
         const role = res.data.role.toLowerCase();
-        
         localStorage.setItem('userName', res.data.name);
         localStorage.setItem('userRole', role);
 
-        switch (role) {
-          case 'student':
-            this.router.navigate(['/student-dashboard']);
-            break;
-          case 'college':
-            this.router.navigate(['/college-dashboard']);
-            break;
-          case 'university':
-            this.router.navigate(['/university-dashboard']);
-            break;
-        }
+        // Professional navigation delay (optional: gives user time to see success)
+        setTimeout(() => {
+          switch (role) {
+            case 'student':
+              this.router.navigate(['/student-dashboard']);
+              break;
+            case 'college':
+              this.router.navigate(['/college-dashboard']);
+              break;
+            case 'university':
+              this.router.navigate(['/university-dashboard']);
+              break;
+          }
+        }, 500);
+        
         this.cd.detectChanges();
       },
-      
-
       error: (err) => {
-        //console.log("FULL ERROR OBJECT:", err);
-
+        
+        this.isLoading = false; // Stop Loader on error
         this.successMessage = '';
-
-        // Safe extraction
         if (err?.error?.message) {
           this.errorMessage = err.error.message;
         } else if (typeof err?.error === 'string') {
           this.errorMessage = err.error;
         } else {
-          this.errorMessage = "Invalid credentials";
+          this.errorMessage = "Authentication failed. Please check your credentials.";
         }
+        
         this.cd.detectChanges();
       }
     });
   }
-
 }
-

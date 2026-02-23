@@ -1,36 +1,45 @@
-<div class="topbar">
-  <h1>Welcome, {{ universityName }}</h1>
+<div class="page-header">
+  <div class="header-text">
+    <h1>Registered Colleges</h1>
+    <p>Viewing nodes currently connected to the {{universityName}}</p>
+  </div>
+  <div class="header-actions">
+  </div>
 </div>
 
-<div class="card">
-  <h3>Registered Colleges</h3>
-
+<div class="data-card">
   <ng-container *ngIf="colleges$ | async as colleges">
 
-    <p *ngIf="colleges.length === 0">
-      No colleges registered yet.
-    </p>
+    <div class="empty-state" *ngIf="colleges.length === 0">
+      <div class="empty-icon">📁</div>
+      <p>No colleges registered yet.</p>
+      <button class="prime-btn" routerLink="/university-dashboard/addCollege">Add Your First College</button>
+    </div>
 
-    <table *ngIf="colleges.length > 0">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>College Name</th>
-          <th>Email</th>
-          <th>Mobile</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let college of colleges; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ college.name }}</td>
-          <td>{{ college.mail }}</td>
-          <td>{{ college.mobileNumber }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container" *ngIf="colleges.length > 0">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>College Name</th>
+            <th>Email Identity</th>
+            <th>Contact Number</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let college of colleges; let i = index">
+            <td><span class="index-badge">{{ i + 1 }}</span></td>
+            <td><strong>{{ college.name }}</strong></td>
+            <td><span class="email-tag">{{ college.mail }}</span></td>
+            <td>{{ college.mobileNumber }}</td>
+            <td class="text-right">
+              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </ng-container>
-
 </div>

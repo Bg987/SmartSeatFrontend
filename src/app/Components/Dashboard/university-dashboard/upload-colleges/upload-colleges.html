@@ -1,50 +1,44 @@
 <div class="upload-wrapper">
+  <div class="upload-container">
+    <header class="upload-header">
+      <h2 class="main-title">Bulk Node Onboarding</h2>
+      <p class="subtitle">Upload a CSV manifest to register multiple colleges simultaneously.</p>
+    </header>
 
-  <div class="upload-card">
+    <div class="info-banner">
+      <span class="icon">ℹ️</span>
+      <p>Ensure unique emails, 10-digit contacts, and full institutional addresses in your manifest.</p>
+    </div>
 
-    <h2>Upload College CSV</h2>
-    <p class="subtitle">Upload CSV file to bulk add colleges</p>
-    <p><u>kindly ensure not duplicate email and 10 digit number and proper name not shortname and address</u></p>
+    <div class="drop-zone" [class.dragging]="isDragging" (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
 
-    <!-- Drag & Drop Area -->
-    <div class="drop-zone"
-         [class.dragging]="isDragging"
-         (dragover)="onDragOver($event)"
-         (dragleave)="onDragLeave($event)"
-         (drop)="onDrop($event)">
+      <input type="file" #fileInput hidden accept=".csv" (change)="onFileSelected($event)" />
 
-      <input type="file"
-             #fileInput
-             hidden
-             accept=".csv"
-             (change)="onFileSelected($event)" />
+      <div class="upload-content">
+        <div class="icon-circle">
+          <span class="icon">{{ selectedFile ? '📄' : '📤' }}</span>
+        </div>
 
-      <div class="upload-content" (click)="fileInput.click()">
-
-        <div class="icon">📂</div>
-
-        <p *ngIf="!selectedFile">Drag & Drop CSV here</p>
-        <p *ngIf="!selectedFile" class="browse">or click to browse</p>
+        <div class="text-group" *ngIf="!selectedFile">
+          <p class="primary-text">Drag & Drop CSV manifest</p>
+          <p class="secondary-text">or click to browse local storage</p>
+        </div>
 
         <div class="file-info" *ngIf="selectedFile">
           <p class="file-name">{{ selectedFile.name }}</p>
           <p class="file-size">{{ fileSize }}</p>
         </div>
-
       </div>
     </div>
 
-    <!-- Upload Button -->
-    <button class="upload-btn"
-           [disabled]="isUploading"
-
-            (click)="uploadFile()">
-
-      {{ isUploading ? 'Uploading...' : 'Upload File' }}
-
+    <button class="prime-btn" [disabled]="isUploading || !selectedFile" (click)="uploadFile()">
+      {{ isUploading ? 'Processing Manifest...' : 'Initialize Bulk Upload' }}
     </button>
 
-        <div class="response">{{response}}</div>
+    <div class="status-toast" *ngIf="response" [class.error-toast]="isError">
+      <span class="toast-icon">{{ isError ? '⚠️' : '✨' }}</span>
+      {{ response }}
+    </div>
   </div>
-
 </div>

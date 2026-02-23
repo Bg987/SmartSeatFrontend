@@ -1,62 +1,70 @@
-<div class="layout">
+<div class="dashboard-root" [class.dark-mode]="isDarkMode">
+  <aside class="glass-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">S</div>
+      <h1>SmartSeat<span>.</span></h1>
+    </div>
 
-  <!-- LEFT SIDEBAR -->
-  <aside class="sidebar">
-    <h2 class="logo">SmartSeat</h2>
+    <nav class="side-nav">
+      <div class="nav-section">
+        <span class="section-title">Core Control</span>
+        <ul>
+          <li routerLink="/university-dashboard/dashboard" routerLinkActive="active">
+            <i class="icon">📊</i> <span>Overview</span>
+          </li>
+          <li routerLink="/university-dashboard/changePassword" routerLinkActive="active">
+            <i class="icon">🔐</i> <span>Security</span>
+          </li>
+        </ul>
+      </div>
 
-    <ul class="menu">
-     
+      <div class="nav-section">
+        <span class="section-title">Institutional</span>
+        <ul>
+          <li class="has-submenu">
+            <i class="icon">🏫</i> <span>Colleges</span>
+            <ul class="sub-nav">
+              <li routerLink="/university-dashboard/addCollege" routerLinkActive="active">Manual Entry</li>
+              <li routerLink="/university-dashboard/csv" routerLinkActive="active">Bulk Import</li>
+            </ul>
+          </li>
+          <li routerLink="/university-dashboard/addSubjects" routerLinkActive="active">
+            <i class="icon">📖</i> <span>Subjects</span>
+          </li>
+        </ul>
+      </div>
 
-      <li routerLink="/university-dashboard/dashboard" routerLinkActive="active">
-         Dashboard
-      </li>
+      <div class="nav-section">
+        <span class="section-title">Engine</span>
+        <ul>
+          <li routerLink="/university-dashboard/addTimeTable" routerLinkActive="active">
+            <i class="icon">📅</i> <span>Schedules</span>
+          </li>
+          <li routerLink="/university-dashboard/getTimetable" routerLinkActive="active">
+            <i class="icon">👁️</i> <span>Live View</span>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-    
-            <li routerLink="/university-dashboard/changePassword" routerLinkActive="active">
-              Change password</li>
-
-      <li class="dropdown">
-   Add College ⬇
-
-  <ul class="submenu">
-    <li routerLink="/university-dashboard/addCollege"
-        routerLinkActive="active">
-       
-         Add via Form
-    </li>
-
-    <li routerLink="/university-dashboard/csv"
-        routerLinkActive="active">
-       
-         Upload CSV
-    </li>
-  </ul>
-</li>
-
-
-       <li routerLink="/university-dashboard/addSubjects"
-        routerLinkActive="active">
-        Add Subjects</li>
-
-         <li routerLink="/university-dashboard/addTimeTable"
-        routerLinkActive="active">
-        Create Exam Time Table</li>
-
-         <li>
-        Generate Sitting Plan</li>
-            <li routerLink="/university-dashboard/getTimetable" routerLinkActive="active">
-              Get Timetable</li>
-
-
-      
-      <li>Settings</li>
-      <button type="button" class="logout-btn" (click)="onLogout()">Logout</button>
-    </ul>
+    <div class="sidebar-footer">
+      <div class="theme-switch" (click)="toggleTheme()">
+        <div class="switch-content">
+          <span>{{ isDarkMode ? '🌙 Dark' : '☀️ Light' }}</span>
+        </div>
+        <div class="switch-track">
+          <div class="switch-thumb" [class.active]="isDarkMode"></div>
+        </div>
+      </div>
+      <button type="button" class="logout-btn" (click)="onLogout()">
+        <span class="icon">🚪</span> Terminate Session
+      </button>
+    </div>
   </aside>
 
-  <!-- RIGHT CONTENT CHANGES HERE -->
-  <main class="content">
-    <router-outlet></router-outlet>
+  <main class="main-canvas">
+    <div class="content-viewport">
+      <router-outlet></router-outlet>
+    </div>
   </main>
-
 </div>

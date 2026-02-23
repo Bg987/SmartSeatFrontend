@@ -1,89 +1,89 @@
-<div class="student-container">
-  <div class="student-card">
-    <div class="card-header">
-      <h2>Add Student Manually</h2>
-    </div>
+<div class="form-wrapper">
+  <header class="form-header">
+    <h2 class="main-title">Manual Student Enrollment</h2>
+    <p class="subtitle">Directly register a student node into the institutional registry.</p>
+  </header>
 
-    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="student-form">
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="themed-form">
 
+    <div class="form-section">
       <div class="form-row">
-        <div class="form-group">
-          <label>Enrollment Number</label>
+        <div class="input-section">
+          <label class="field-label">Enrollment Number</label>
           <input type="text" formControlName="enrollmentNo" placeholder="e.g. EN12345">
         </div>
 
-        <div class="form-group wide">
-          <label>Full Name</label>
-          <input type="text" formControlName="name" placeholder="Enter student name">
+        <div class="input-section wide">
+          <label class="field-label">Full Legal Name</label>
+          <input type="text" formControlName="name" placeholder="Enter student's full name">
         </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" formControlName="email" placeholder="email@university.edu">
+        <div class="input-section">
+          <label class="field-label">Institutional Email</label>
+          <input type="email" formControlName="email" placeholder="student@university.edu">
         </div>
 
-        <div class="form-group">
-          <label>Mobile Number</label>
-          <input type="text" formControlName="mobileNumber" placeholder="10-digit number">
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Branch</label>
-          <select formControlName="branch">
-            <option value="">Select Branch</option>
-            <option value="CSE">Computer Science And Engineering</option>
-            <option value="IT">Information Technology</option>
-            <option value="EC">Electronics</option>
-             <option value="ME">Machanical</option>
-              <option value="CE">Civil</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-    <label>Specialization</label>
-    <input type="text" formControlName="specialization" placeholder="e.g. Artificial Intelligence">
-  </div>
-
-        <div class="form-group">
-          <label>Semester</label>
-          <input type="number" formControlName="semester">
-        </div>
-
-        <div class="form-group">
-          <label>College ID</label>
-          <input type="number" formControlName="collegeId">
+        <div class="input-section">
+          <label class="field-label">Mobile Number</label>
+          <input type="text" formControlName="mobileNumber" placeholder="10-digit primary contact">
         </div>
       </div>
+    </div>
 
-      <div class="subjects-box">
-        <label>Subject Codes</label>
-        <div formArrayName="subjects">
-          <div *ngFor="let sub of subjects.controls; let i=index" class="subject-item">
-            <input [formControlName]="i" placeholder="Enter Code (e.g. CS101)">
-            <button type="button" (click)="removeSubject(i)">Remove</button>
-          </div>
+    <div class="form-section row-split">
+      <div class="input-section">
+        <label class="field-label">Academic Branch</label>
+        <select formControlName="branch">
+          <option value="">Select Branch</option>
+          <option value="CSE">Computer Science And Engineering</option>
+          <option value="IT">Information Technology</option>
+          <option value="EC">Electronics</option>
+          <option value="ME">Mechanical</option>
+          <option value="CE">Civil</option>
+        </select>
+      </div>
+
+      <div class="input-section">
+        <label class="field-label">Specialization</label>
+        <input type="text" formControlName="specialization" placeholder="e.g. AI / Data Science">
+      </div>
+
+      <div class="input-section">
+        <label class="field-label">Semester</label>
+        <input type="number" formControlName="semester">
+      </div>
+    </div>
+
+    <div class="subjects-canvas">
+      <h3 class="canvas-title">Academic Curriculum (Subject Codes)</h3>
+      <div formArrayName="subjects">
+        <div *ngFor="let sub of subjects.controls; let i=index" class="subject-row">
+          <input [formControlName]="i" placeholder="Enter Code (e.g. CS101)">
+          <button type="button" class="remove-btn" (click)="removeSubject(i)">
+            <span class="icon">🗑️</span>
+          </button>
         </div>
-        <button type="button" class="add-btn" (click)="addSubject()">+ Add Subject</button>
       </div>
-
-      <div class="form-group">
-        <label>Image URL</label>
-        <input type="text" formControlName="imgUrl" placeholder="http://link-to-photo.jpg">
-      </div>
-
-      <div class="switch-group">
-        <input type="checkbox" formControlName="hasBacklog" id="backlogSwitch">
-        <label for="backlogSwitch">Currently has Backlog</label>
-      </div>
-
-      <button type="submit" class="submit-btn" [disabled]="studentForm.invalid">
-        Register Student
+      <button type="button" class="add-node-btn" (click)="addSubject()">
+        <span class="icon">➕</span> Add Subject Entry
       </button>
+    </div>
 
-    </form>
-  </div>
+    <div class="footer-section">
+      <div class="switch-container">
+        <label class="switch">
+          <input type="checkbox" formControlName="hasBacklog" id="backlogSwitch">
+          <span class="slider"></span>
+        </label>
+        <label for="backlogSwitch" class="switch-label">Student currently has active Backlog</label>
+      </div>
+
+      <button type="submit" class="prime-btn success" [disabled]="studentForm.invalid">
+        Finalize Enrollment
+      </button>
+    </div>
+
+  </form>
 </div>

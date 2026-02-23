@@ -5,6 +5,7 @@
     "packageManager": "npm",
     "analytics": "ac4065e0-15c4-455a-9d24-b275145db630"
   },
+  
   "newProjectRoot": "projects",
   "projects": {
     "Frontend": {
@@ -25,6 +26,11 @@
                 "input": "public"
               }
             ],
+            "optimization": {
+                "fonts": {
+                  "inline": false
+                }
+              },
             "styles": [
               "src/styles.css"
             ]
@@ -34,13 +40,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10kb",
+                  "maximumError": "20kb"
                 }
               ],
               "outputHashing": "all"
@@ -55,6 +61,8 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+    },          
           "configurations": {
             "production": {
               "buildTarget": "Frontend:build:production"
@@ -70,5 +78,6 @@
         }
       }
     }
+    
   }
 }

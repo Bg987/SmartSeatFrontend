@@ -1,51 +1,39 @@
 <div class="upload-wrapper">
+  <div class="upload-container">
+    <header class="upload-header">
+      <h2 class="main-title">Student Onboarding</h2>
+      <p class="subtitle">Upload a CSV manifest to bulk register students to this college node.</p>
+    </header>
 
-  <div class="upload-card">
+    <div class="drop-zone" [class.dragging]="isDragging" (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
 
-    <h2>Upload Student CSV</h2>
-    <p class="subtitle">Upload a CSV file to bulk add students</p>
+      <input type="file" #fileInput hidden accept=".csv" (change)="onFileSelected($event)" />
 
-    <!-- Drag & Drop Area -->
-     
-    <div class="drop-zone"
-         [class.dragging]="isDragging"
-         (dragover)="onDragOver($event)"
-         (dragleave)="onDragLeave($event)"
-         (drop)="onDrop($event)">
+      <div class="upload-content">
+        <div class="icon-circle">
+          <span class="icon">{{ selectedFile ? '📄' : '📤' }}</span>
+        </div>
 
-      <input type="file"
-             #fileInput
-             hidden
-             accept=".csv"
-             (change)="onFileSelected($event)" />
-
-      <div class="upload-content" (click)="fileInput.click()">
-
-        <div class="icon">📂</div>
-
-        <p *ngIf="!selectedFile">Drag & Drop CSV here</p>
-        <p *ngIf="!selectedFile" class="browse">or click to browse</p>
+        <div class="text-group" *ngIf="!selectedFile">
+          <p class="primary-text">Drag & Drop Student CSV</p>
+          <p class="secondary-text">or click to browse local storage</p>
+        </div>
 
         <div class="file-info" *ngIf="selectedFile">
           <p class="file-name">{{ selectedFile.name }}</p>
           <p class="file-size">{{ fileSize }}</p>
         </div>
-
       </div>
     </div>
 
-    <!-- Upload Button -->
-    <button class="upload-btn"
-           [disabled]="isUploading"
-
-            (click)="uploadFile()">
-
-      {{ isUploading ? 'Uploading...' : 'Upload File' }}
-
+    <button class="prime-btn" [disabled]="isUploading || !selectedFile" (click)="uploadFile()">
+      {{ isUploading ? 'Syncing with SmartSeat...' : 'Initialize Bulk Upload' }}
     </button>
 
-   
-
+    <div class="status-toast" *ngIf="responseMessage" [class.error-toast]="isError">
+      <span class="toast-icon">{{ isError ? '⚠️' : '✨' }}</span>
+      {{ responseMessage }}
+    </div>
   </div>
-
 </div>

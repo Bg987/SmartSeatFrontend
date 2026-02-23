@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-upload-students',
   imports: [CommonModule],
@@ -19,7 +19,8 @@ export class UploadStudents {
   responseMessage: string = '';
   isError = false;
 
-  private uploadUrl = "http://localhost:8080/api/colleges/uploadStudents";
+  private url = environment.apiUrl;
+  private uploadUrl = `${this.url}/colleges/uploadStudents`;
   //Not present yet only template is ready---
 
   constructor(
@@ -83,7 +84,7 @@ export class UploadStudents {
     this.uploadUrl,
     formData,
     {
-      withCredentials: true   // ✅ Properly Set Here
+      withCredentials: true  
     }
   )
   .pipe(
@@ -96,32 +97,32 @@ export class UploadStudents {
 
     next: (response: any) => {
 
-      let message = '';
+      
 
       if (Array.isArray(response)) {
-        message = response.join('\n');
+        this.responseMessage  = response.join('\n');
       } else if (typeof response === 'string') {
-        message = response;
+        this.responseMessage = response;
       } else {
-        message = JSON.stringify(response);
+        this.responseMessage = JSON.stringify(response);
       }
 
-      alert("Upload Result:\n\n" + message);
+      //alert("Upload Result:\n\n" + message);
     },
 
     error: (error: HttpErrorResponse) => {
 
-      let message = '';
+      
 
       if (Array.isArray(error.error)) {
-        message = error.error.join('\n');
+       this.responseMessage = error.error.join('\n');
       } else if (typeof error.error === 'string') {
-        message = error.error;
+        this.responseMessage = error.error;
       } else {
-        message = "Upload failed!";
+        this.responseMessage = "Upload failed!";
       }
 
-      alert("Error:\n\n" + message);
+      //alert("Error:\n\n" + message);
     }
   });
 }
