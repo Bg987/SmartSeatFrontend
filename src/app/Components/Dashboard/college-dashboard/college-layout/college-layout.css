@@ -11,7 +11,7 @@
   width: 260px;
   background: linear-gradient(180deg, #111827, #1f2937);
   color: #fff;
-  height: fit-content;
+  /* height: fit-content; */
   padding: 28px 20px ;
   margin-left: 0px;
   display: flex;

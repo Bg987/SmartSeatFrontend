@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimetableService } from '../../../../services/timetable-service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-add-time-table',
   standalone: true,
@@ -24,9 +23,9 @@ export class AddTimeTable implements OnInit {
 
   constructor(
     private subjectService: AddSubjectService,
-     private timetableService: TimetableService,
+    private timetableService: TimetableService,
     private cdr: ChangeDetectorRef,
-    private router:Router,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -92,57 +91,40 @@ export class AddTimeTable implements OnInit {
     this.minExamDate = today.toISOString().split('T')[0];
   }
 
-  
-
   generateTimetable() {
+    if (this.selectedSubjects.length === 0) {
+      alert('Please select subjects first.');
+      return;
+    }
 
-  if (this.selectedSubjects.length === 0) {
-    alert("Please select subjects first.");
-    return;
-  }
+    // Optional: Check if all dates selected
+    const invalidDate = this.selectedSubjects.some((s) => !s.examDate);
 
-  // Optional: Check if all dates selected
-  const invalidDate = this.selectedSubjects.some(s => !s.examDate);
+    if (invalidDate) {
+      alert('Please select exam date for all subjects.');
+      return;
+    }
 
-  if (invalidDate) {
-    alert("Please select exam date for all subjects.");
-    return;
-  }
-
-  this.timetableService.generateTimetable(this.selectedSubjects)
-    .subscribe({
+    this.timetableService.generateTimetable(this.selectedSubjects).subscribe({
       next: (res) => {
-        
         alert(res.batchId);
       },
       error: (err) => {
-        console.error("Error:", err);
-        alert("Something went wrong ");
-      }
+        console.error('Error:', err);
+        alert('Something went wrong ');
+      },
     });
-}
+  }
 
-
-
-   getTimetable() {
-
-  
-
-  
-
- 
-
-  this.timetableService.generateTimetable(this.selectedSubjects)
-    .subscribe({
+  getTimetable() {
+    this.timetableService.generateTimetable(this.selectedSubjects).subscribe({
       next: (res) => {
-        
         alert(res.batchId);
       },
       error: (err) => {
-        console.error("Error:", err);
-        alert("Something went wrong ");
-      }
+        console.error('Error:', err);
+        alert('Something went wrong ');
+      },
     });
+  }
 }
-}
-

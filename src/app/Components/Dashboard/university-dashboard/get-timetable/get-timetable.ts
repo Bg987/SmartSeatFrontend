@@ -33,8 +33,9 @@ getTimetable() {
     .subscribe(res => {
       console.log(res);
       this.timeTable=res;
+      this.cdr.detectChanges(); 
     });
-    this.cdr.detectChanges();
+    
 }
 
   downloadTimetable() {
