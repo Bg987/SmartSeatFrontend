@@ -15,8 +15,8 @@ import { AddSubjects } from './Components/Dashboard/university-dashboard/add-sub
 import { AddTimeTable } from './Components/Dashboard/university-dashboard/add-time-table/add-time-table';
 import { changePassword } from './Components/change-password/change-password';
 import { GetTimetable } from './Components/Dashboard/university-dashboard/get-timetable/get-timetable';
-
 import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/update-student-image/update-student-image'
+import { GenerateSeatingPlan } from './Components/Dashboard/university-dashboard/generate-seating-plan/generate-seating-plan';
 
 export const routes: Routes = [
 
@@ -48,6 +48,7 @@ export const routes: Routes = [
       {path:'csv',component:UploadCsvComponent},
       {path:'addSubjects',component:AddSubjects},
       {path:'addTimeTable',component:AddTimeTable},
+      {path:'generateSeatingPlan',component:GenerateSeatingPlan},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

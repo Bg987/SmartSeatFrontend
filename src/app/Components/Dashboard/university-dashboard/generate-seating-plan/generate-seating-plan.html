@@ -1,0 +1,54 @@
+<h1>Seating Plan Generation</h1>
+
+<form [formGroup]="seatingForm" (ngSubmit)="generatePlan()">
+
+  <label>College ID</label>
+  <input 
+    type="number"
+    formControlName="collegeId"
+    placeholder="Enter college id.."
+  >
+
+  <button type="submit" [disabled]="loading">
+    {{ loading ? 'Generating...' : 'Generate' }}
+  </button>
+
+</form>
+
+
+<!-- Cards Section -->
+<div class="card-container" *ngIf="generatedCollegeId">
+
+  <div class="college-card" (click)="getPlan(generatedCollegeId)">
+    College ID: {{ generatedCollegeId }}
+  </div>
+
+</div>
+
+
+
+<!-- Table for displaying seating plan -->
+<table *ngIf="seats.length > 0" border="1" style="width:100%; margin-top: 20px; text-align:left;">
+  <thead>
+    <tr>
+      <th>Enrollment No</th>
+      <th>Name</th>
+      <th>Branch</th>
+      <th>Semester</th>
+      <th>Room ID</th>
+      <th>Row</th>
+      <th>Column</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let seat of seats">
+      <td>{{ seat.enrollmentNo }}</td>
+      <td>{{ seat.name }}</td>
+      <td>{{ seat.branch }}</td>
+      <td>{{ seat.semester ?? '-' }}</td>
+      <td>{{ seat.room_id }}</td>
+      <td>{{ seat.row }}</td>
+      <td>{{ seat.column }}</td>
+    </tr>
+  </tbody>
+</table>

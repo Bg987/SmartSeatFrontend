@@ -1,0 +1,27 @@
+form {
+    margin-bottom: 20px;
+}
+
+.card-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.college-card {
+    background-color: #1976d2;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 200px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.college-card:hover {
+    background-color: #0d47a1;
+    transform: scale(1.05);
+}

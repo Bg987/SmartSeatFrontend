@@ -14,7 +14,7 @@ import { environment } from '../../../../../environments/environment';
 export class UniversityHomeComponent implements OnInit {
 
   universityName: string | null = '';
-  colleges$!: Observable<any[]>;;
+  colleges$!: Observable<any[]>;
   loading = false;
   errorMessage = '';
 
