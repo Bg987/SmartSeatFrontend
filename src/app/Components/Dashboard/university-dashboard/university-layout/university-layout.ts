@@ -40,10 +40,10 @@ export class UniversityLayoutComponent {
     // Apply class to the root element for global styling
     if (this.isDarkMode) {
       document.body.classList.add('dark-theme');
-      localStorage.setItem("theme", "dark");
+      localStorage.setItem("smartseat-theme", "dark");
     } else {
       document.body.classList.remove('dark-theme');
-      localStorage.setItem("theme", "light");
+      localStorage.setItem("smartseat-theme", "light");
     }
   }
   onLogout() {

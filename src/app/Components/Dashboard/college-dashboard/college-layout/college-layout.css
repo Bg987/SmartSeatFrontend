@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
+/* --- VARIABLES --- */
 :root {
   --primary: #4f46e5;
+  --primary-light: rgba(79, 70, 229, 0.15);
+  /* Light tint for active state */
   --bg-main: #e2e8f0;
   --sidebar-bg: rgba(255, 255, 255, 0.9);
   --content-bg: #ffffff;
@@ -21,6 +24,7 @@
   --shadow-ui: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
+/* --- BASE LAYOUT --- */
 .dashboard-root {
   display: flex;
   height: 100vh;
@@ -34,7 +38,7 @@
   left: 0;
 }
 
-/* SIDEBAR REFINEMENT */
+/* --- SIDEBAR REFINEMENT --- */
 .glass-sidebar {
   width: 280px;
   background: var(--sidebar-bg);
@@ -68,7 +72,14 @@
   font-weight: 800;
 }
 
-.logo span {
+.sidebar-brand h1 {
+  font-size: 20px;
+  color: var(--text-main);
+  margin: 0;
+  font-weight: 800;
+}
+
+.sidebar-brand span {
   color: var(--primary);
 }
 
@@ -97,7 +108,7 @@
   white-space: nowrap;
 }
 
-/* NAVIGATION */
+/* --- NAVIGATION --- */
 .side-nav {
   flex: 1;
   overflow-y: auto;
@@ -132,7 +143,8 @@
   padding: 12px 16px;
   border-radius: 12px;
   color: var(--text-soft);
-  font-weight: 500;
+  /* Inactive text color */
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -142,14 +154,21 @@
 }
 
 .nav-section li:hover {
-  background: rgba(79, 70, 229, 0.1);
   color: var(--primary);
 }
 
+/* --- ACTIVE STATE (TEXT REMAINS DARK) --- */
 .nav-section li.active {
-  background: var(--primary);
-  color: #fff !important;
+  background: var(--primary) !important;
+  color: var(--active-text) !important;
   box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
+}
+
+/* Ensure icons/spans inside active items also use the dark text color */
+.nav-section li.active span,
+.nav-section li.active .icon,
+.nav-section li.active i {
+  color: var(--text-main) !important;
 }
 
 .sub-nav {
@@ -161,9 +180,11 @@
 .sub-nav li {
   font-size: 13px;
   padding: 8px;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
-/* MAIN CONTENT */
+/* --- MAIN CONTENT --- */
 .main-canvas {
   flex: 1;
   display: flex;
@@ -183,11 +204,7 @@
   scrollbar-width: none;
 }
 
-.content-viewport::-webkit-scrollbar {
-  display: none;
-}
-
-/* FOOTER & LOGOUT */
+/* --- FOOTER & LOGOUT --- */
 .sidebar-footer {
   margin-top: auto;
   padding-top: 20px;
@@ -245,10 +262,13 @@
   font-weight: 700;
   cursor: pointer;
   transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .logout-btn:hover {
   background: #ef4444;
   color: #fff;
-  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
 }
