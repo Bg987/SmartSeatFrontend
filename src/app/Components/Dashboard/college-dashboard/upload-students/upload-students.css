@@ -7,9 +7,15 @@
 }
 
 .upload-container {
+  
   width: 100%;
   max-width: 500px;
   text-align: center;
+}
+
+.upload-content{
+  border: 10px solid rgba(79, 70, 229, 0.1);
+    border-radius: 12px;
 }
 
 .upload-header {
@@ -29,22 +35,9 @@
   margin-top: 8px;
 }
 
-/* DROP ZONE REFINEMENT */
-.drop-zone {
-  background: var(--bg-main);
-  border: 2px dashed var(--border-color);
-  padding: 50px 20px;
-  border-radius: 24px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-}
+/* DROP ZONE REFINEMENT - FIXED FOR LIGHT MODE VISIBILITY */
 
-.drop-zone:hover,
-.drop-zone.dragging {
-  border-color: var(--primary);
-  background: rgba(79, 70, 229, 0.04);
-  transform: scale(1.02);
-}
+
 
 .icon-circle {
   width: 64px;
@@ -55,8 +48,10 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
-  box-shadow: var(--shadow-ui);
+  /* Make the icon container pop more */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   font-size: 28px;
+  border: 1px solid var(--border-color);
 }
 
 .primary-text {
@@ -65,9 +60,10 @@
   margin-bottom: 4px;
 }
 
+/* Updated secondary text for better contrast */
 .secondary-text {
   font-size: 13px;
-  color: var(--primary);
+  color: var(--text-soft); /* Changed to text-soft for a cleaner look */
   font-weight: 600;
 }
 
@@ -139,7 +135,6 @@
     opacity: 0;
     transform: translateY(10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
