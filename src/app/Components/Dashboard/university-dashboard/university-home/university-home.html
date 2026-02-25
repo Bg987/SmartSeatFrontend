@@ -23,6 +23,7 @@
             <th>#</th>
             <th>College Name</th>
             <th>Email Identity</th>
+            
             <th>Contact Number</th>
           
           </tr>
@@ -30,8 +31,9 @@
         <tbody>
           <tr *ngFor="let college of colleges; let i = index">
             <td><span class="index-badge">{{ i + 1 }}</span></td>
-            <td><strong>{{ college.name }}</strong></td>
+            <td (click)="viewDetails(college.userId)"><strong>{{ college.name }}</strong></td>
             <td><span class="email-tag">{{ college.mail }}</span></td>
+           
             <td>{{ college.mobileNumber }}</td>
             <td class="text-right">
               

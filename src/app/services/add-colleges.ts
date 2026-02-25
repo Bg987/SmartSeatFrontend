@@ -13,7 +13,7 @@ export class CollegeService {
 
    addCollege(collegeData: any): Observable<any> {
     return this.http.post(this.apiUrl, collegeData, {
-      //responseType: 'text',      //
+      responseType: 'text',      //
       withCredentials: true      //cookie/session send 
     });
   }

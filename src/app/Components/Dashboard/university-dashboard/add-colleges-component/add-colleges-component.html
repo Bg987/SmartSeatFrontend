@@ -28,6 +28,12 @@
         [(ngModel)]="collegeData.contactNumber" required pattern="^[0-9]{10}$" />
     </div>
 
+     <div class="input-section">
+      <label class="field-label">Department</label>
+      <input type="text" placeholder="Enter department" name="department"
+        [(ngModel)]="collegeData.department" required  />
+    </div>
+
     <div class="input-section">
       <label class="field-label">Institutional Address</label>
       <textarea placeholder="Provide the full physical location of the campus" name="address"

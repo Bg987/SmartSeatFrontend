@@ -17,6 +17,7 @@ import { changePassword } from './Components/change-password/change-password';
 import { GetTimetable } from './Components/Dashboard/university-dashboard/get-timetable/get-timetable';
 import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/update-student-image/update-student-image'
 import { GenerateSeatingPlan } from './Components/Dashboard/university-dashboard/generate-seating-plan/generate-seating-plan';
+import { ShowCollegeDetail } from './Components/Dashboard/university-dashboard/show-college-detail/show-college-detail';
 
 export const routes: Routes = [
 
@@ -49,6 +50,7 @@ export const routes: Routes = [
       {path:'addSubjects',component:AddSubjects},
       {path:'addTimeTable',component:AddTimeTable},
       {path:'generateSeatingPlan',component:GenerateSeatingPlan},
+      {path:'college-details/:userId',component:ShowCollegeDetail},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

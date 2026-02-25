@@ -1,0 +1,58 @@
+<div class="dashboard-wrapper">
+
+  <div class="dashboard-header">
+    <div>
+      <h2>{{college?.name}}</h2>
+      <p class="sub-text">College ID: {{college?.collegeId}}</p>
+    </div>
+    <div class="badge">User ID: {{userId}}</div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <h4>Total Students</h4>
+      <h1>{{studentCount || 0}}</h1>
+    </div>
+
+    <div class="stat-card">
+      <h4>Total Rooms</h4>
+      <h1>{{roomCount || 0}}</h1>
+    </div>
+
+    <div class="stat-card">
+      <h4>Capacity</h4>
+      <h1>{{roomCount * 60 || 0}}</h1>
+    </div>
+
+  </div>
+
+  <!-- Info Section -->
+  <div class="info-card">
+    <h3>College Information</h3>
+
+    <div class="info-row">
+      <span>Address</span>
+      <p>{{college?.address}}</p>
+    </div>
+
+    <div class="info-row">
+      <span>Email</span>
+      <p>{{college?.user?.mail}}</p>
+    </div>
+
+    <div class="info-row">
+      <span>Mobile</span>
+      <p>{{college?.user?.mobileNumber}}</p>
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <div class="action-section">
+    <button routerLink="/university-dashboard/generateSeatingPlan">
+      👁️ Generate Seating Plan
+    </button>
+  </div>
+
+</div>

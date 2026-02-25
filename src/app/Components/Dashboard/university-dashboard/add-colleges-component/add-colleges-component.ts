@@ -16,7 +16,8 @@ export class AddCollegeComponent {
     collegeName: '',
     email: '',
     contactNumber: '',
-    address: ''
+    address: '',
+    department:'',
   };
 
   response: String = '';
@@ -36,9 +37,12 @@ export class AddCollegeComponent {
         collegeName: '',
         email: '',
         contactNumber: '',
-        address: ''
+        address: '',
+        department:'',
       };
+      console.log(res);
 
+      alert("From submitted successfully...");
       if (form) {
         form.resetForm();   // force UI refresh
       }

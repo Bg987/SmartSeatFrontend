@@ -1,96 +1,121 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AddSubjectService } from '../../../../services/add-subject-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimetableService } from '../../../../services/timetable-service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { GetTimetable } from '../get-timetable/get-timetable';
 
 @Component({
   selector: 'app-add-time-table',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule,GetTimetable],
   templateUrl: './add-time-table.html',
   styleUrl: './add-time-table.css',
 })
 export class AddTimeTable implements OnInit {
 
+  // ================= STATE =================
   subjects: any[] = [];
   selectedSubjects: any[] = [];
   message: string = "";
-  countOfSubjects = 0;
-  activeStep: number = 1;
+  activeStep: number = 0;   // 0 = filter , 1 = select , 2 = schedule
   minExamDate!: string;
+  loading: boolean = false;
+  batchId!:string;
 
   constructor(
-    private subjectService: AddSubjectService,
     private timetableService: TimetableService,
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
-    this.loadSubjects();
     this.setMinExamDate();
   }
 
+  // ================= STEP CONTROL =================
   setStep(step: number) {
     this.activeStep = step;
   }
 
-  loadSubjects(): void {
-    this.subjectService.getAllSubjects().subscribe({
-      next: (res: any) => {
-        this.subjects = Array.isArray(res) ? res : (res ? [res] : []);
-        this.countOfSubjects = this.subjects.length;
+  // ================= FILTER (Like getStudents) =================
+  getSubjects(formValue: any): void {
+
+    const payload = {
+      department: formValue.department,
+      branch: formValue.branch,
+      semester: Number(formValue.semester)
+    };
+
+    this.loading = true;
+
+    this.http.post<any[]>(
+      'http://localhost:8080/api/university/subjects/filter',
+      payload,
+      { withCredentials: true }
+    )
+    .subscribe({
+      next: (res) => {
+        this.subjects = res ?? [];
+        this.selectedSubjects = [];
+        this.activeStep = 1;   //  go to selection step
+        this.loading = false;
+      
+      localStorage.setItem('subjectsResponse', JSON.stringify(this.subjects));
+
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error loading subjects:', err);
+        console.error("Error fetching subjects:", err);
         this.subjects = [];
-      },
+        this.loading = false;
+      }
     });
   }
 
+  // ================= SELECTION =================
   isSelected(subject: any): boolean {
     return this.selectedSubjects.some(
-      (s) => s.subjectId === subject.subjectId
+      s => s.subjectId === subject.subjectId
     );
   }
 
-  toggleSubject(subject: any) {
+  toggleSubject(subject: any): void {
 
     const exists = this.selectedSubjects.find(
-      (s) => s.subjectId === subject.subjectId
+      s => s.subjectId === subject.subjectId
     );
 
     if (exists) {
       this.selectedSubjects = this.selectedSubjects.filter(
-        (s) => s.subjectId !== subject.subjectId
+        s => s.subjectId !== subject.subjectId
       );
     } else {
       this.selectedSubjects.push({
         ...subject,
-        examDate: null,
+        examDate: null
       });
     }
   }
 
-  setMinExamDate() {
+  // ================= DATE =================
+  setMinExamDate(): void {
     const today = new Date();
     today.setMonth(today.getMonth() + 1);
     this.minExamDate = today.toISOString().split('T')[0];
   }
 
-  generateTimetable() {
+  // ================= GENERATE =================
+  generateTimetable(): void {
 
     if (this.selectedSubjects.length === 0) {
       alert("Please select subjects first.");
       return;
     }
 
-    const invalidDate = this.selectedSubjects.some(
-      (s) => !s.examDate
-    );
+    const invalidDate = this.selectedSubjects.some(s => !s.examDate);
 
     if (invalidDate) {
       alert("Please select exam date for all subjects.");
@@ -101,10 +126,11 @@ export class AddTimeTable implements OnInit {
       .generateTimetable(this.selectedSubjects)
       .subscribe({
         next: (res: any) => {
+
+          this.batchId=res.batchId;
           this.message =
             "Exam scheduled successfully. Batch ID = " +
-            res.batchId +
-            ". Keep this safe for further use.";
+            res.batchId;
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -114,4 +140,11 @@ export class AddTimeTable implements OnInit {
       });
   }
 
+  // ================= RESET =================
+  resetAll(): void {
+    this.subjects = [];
+    this.selectedSubjects = [];
+    this.activeStep = 0;
+    this.message = "";
+  }
 }

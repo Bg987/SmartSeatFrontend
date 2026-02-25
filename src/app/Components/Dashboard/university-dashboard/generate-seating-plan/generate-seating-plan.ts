@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
+import { ChangeDetectorRef } from '@angular/core';
 
 interface Seat {
   enrollmentNo: string;
@@ -17,39 +19,47 @@ interface Seat {
 @Component({
   selector: 'app-seating-plan',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,FormsModule],
   templateUrl: './generate-seating-plan.html',
   styleUrls: ['./generate-seating-plan.css']
 })
 export class GenerateSeatingPlan {
 
-  seatingForm: FormGroup;
   message = '';
   loading = false;
-  seats: Seat[] = [];  // store fetched seats
-  generatedCollegeId: number | null = null;   
+  seats: Seat[] = [];
+  generatedCollegeId: number | null = null;
+
+  subject:string ='';
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
-  ) {
-    this.seatingForm = this.fb.group({
-      collegeId: ['', Validators.required]
-    });
+    private http: HttpClient,
+    private cdr:ChangeDetectorRef
+  ) {}
+
+  // Get collegeId from localStorage
+  private getCollegeId(): number | null {
+    const id = localStorage.getItem('collegeId');
+    return id ? Number(id) : null;
   }
 
   // POST: generate seating plan
   generatePlan() {
-    if (this.seatingForm.invalid) return;
 
-    const collegeId = this.seatingForm.value.collegeId;
+    const collegeId = this.getCollegeId();
+
+    if (!collegeId) {
+      alert("College ID not found. Please login again.");
+      return;
+    }
 
     this.loading = true;
     this.message = '';
 
     this.http.post(
-      `http://localhost:8080/api/university/allocate/${collegeId}`,
-      {}, 
+      `http://localhost:8080/api/university/allocate/${collegeId}/${this.subject}`,
+      {},
       { withCredentials: true, responseType: 'text' as 'json' }
     ).subscribe({
       next: (res: any) => {
@@ -58,8 +68,9 @@ export class GenerateSeatingPlan {
         this.generatedCollegeId = collegeId;
         alert(res);
 
-        // Automatically fetch plan after generation
         this.getPlan(collegeId);
+
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loading = false;
@@ -70,19 +81,73 @@ export class GenerateSeatingPlan {
   }
 
   // GET: fetch seating plan
-  getPlan(collegeId: number) {
+  getPlan(collegeId?: number) {
+
+    const id = collegeId ?? this.getCollegeId();
+
+    if (!id) {
+      alert("College ID not found.");
+      return;
+    }
+
     this.http.get<Seat | Seat[]>(
-      `http://localhost:8080/api/university/getSeattingPlan/${collegeId}`,
+      `http://localhost:8080/api/university/getSeattingPlan/${id}`,
       { withCredentials: true }
     ).subscribe({
       next: (res: any) => {
-        // If API returns a single object, wrap it in array
         this.seats = Array.isArray(res) ? res : [res];
       },
       error: () => {
         alert("Error fetching seating plan.");
       }
     });
+  }
+
+  // PDF Download
+  downloadPDF() {
+
+    if (!this.seats || this.seats.length === 0) {
+      alert("No seating data available.");
+      return;
+    }
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Seating Plan", 14, 15);
+
+    const tableColumn = [
+      "Enrollment No",
+      "Name",
+      "Branch",
+      "Semester",
+      "Room",
+      "Row",
+      "Column"
+    ];
+
+    const tableRows: any[] = [];
+
+    this.seats.forEach(seat => {
+      tableRows.push([
+        seat.enrollmentNo,
+        seat.name,
+        seat.branch,
+        seat.semester ?? '-',
+        seat.room_id,
+        seat.row,
+        seat.column
+      ]);
+    });
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20,
+      styles: { fontSize: 8 }
+    });
+
+    doc.save("Seating-Plan.pdf");
   }
 
 }

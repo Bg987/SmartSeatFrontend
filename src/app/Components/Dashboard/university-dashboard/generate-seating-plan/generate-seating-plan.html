@@ -1,54 +1,73 @@
-<h1>Seating Plan Generation</h1>
+<div class="seating-wrapper">
 
-<form [formGroup]="seatingForm" (ngSubmit)="generatePlan()">
+  <div class="page-header">
+  <h2>Seating Plan Generation</h2>
 
-  <label>College ID</label>
   <input 
-    type="number"
-    formControlName="collegeId"
-    placeholder="Enter college id.."
+    type="text"
+    [(ngModel)]="subject"
+    placeholder="Please give me subject code for sitting arrangement..."
   >
+</div>
 
-  <button type="submit" [disabled]="loading">
-    {{ loading ? 'Generating...' : 'Generate' }}
-  </button>
+  <!-- Top Section -->
+  <div class="top-section">
 
-</form>
+    <!-- Generate Button Card -->
+    <div class="form-card">
 
+      <button (click)="generatePlan()" [disabled]="loading">
+        {{ loading ? 'Generating...' : 'Generate Plan' }}
+      </button>
 
-<!-- Cards Section -->
-<div class="card-container" *ngIf="generatedCollegeId">
+    </div>
 
-  <div class="college-card" (click)="getPlan(generatedCollegeId)">
-    College ID: {{ generatedCollegeId }}
+    <!-- College Card -->
+    <div class="card-container" *ngIf="generatedCollegeId">
+      <div class="college-card" (click)="getPlan()">
+        <h3>College ID: {{ generatedCollegeId }}</h3>
+        <p>Click to View Seating Plan</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Seating Table -->
+  <div class="table-wrapper" *ngIf="seats.length > 0">
+
+    <div class="table-header">
+      <h3>Generated Seating Plan</h3>
+      <button class="download-btn" (click)="downloadPDF()">
+        ⬇ Download PDF
+      </button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Enrollment No</th>
+          <th>Name</th>
+          <th>Branch</th>
+          <th>Semester</th>
+          <th>Room</th>
+          <th>Row</th>
+          <th>Column</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let seat of seats">
+          <td>{{ seat.enrollmentNo }}</td>
+          <td>{{ seat.name }}</td>
+          <td>{{ seat.branch }}</td>
+          <td>{{ seat.semester ?? '-' }}</td>
+          <td>{{ seat.room_id }}</td>
+          <td>{{ seat.row }}</td>
+          <td>{{ seat.column }}</td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 
 </div>
-
-
-
-<!-- Table for displaying seating plan -->
-<table *ngIf="seats.length > 0" border="1" style="width:100%; margin-top: 20px; text-align:left;">
-  <thead>
-    <tr>
-      <th>Enrollment No</th>
-      <th>Name</th>
-      <th>Branch</th>
-      <th>Semester</th>
-      <th>Room ID</th>
-      <th>Row</th>
-      <th>Column</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let seat of seats">
-      <td>{{ seat.enrollmentNo }}</td>
-      <td>{{ seat.name }}</td>
-      <td>{{ seat.branch }}</td>
-      <td>{{ seat.semester ?? '-' }}</td>
-      <td>{{ seat.room_id }}</td>
-      <td>{{ seat.row }}</td>
-      <td>{{ seat.column }}</td>
-    </tr>
-  </tbody>
-</table>

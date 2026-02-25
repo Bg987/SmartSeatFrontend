@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { GetTimetableService } from '../../../../services/get-timetable-service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,13 +14,15 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class GetTimetable {
 
+  @Input() batchId!: string;
+
   constructor(
     private service:GetTimetableService,
     private cdr:ChangeDetectorRef
   )
   {}
 
-  batchId: string = '';
+  
   timeTable:any[]=[];
 
 getTimetable() {
@@ -38,33 +40,52 @@ getTimetable() {
     
 }
 
-  downloadTimetable() {
+ downloadTimetable() {
 
   if (this.timeTable.length === 0) {
     alert("No data to download");
     return;
   }
 
+  // ===== Get data from localStorage =====
+  const storedData = JSON.parse(localStorage.getItem("subjectsResponse") || "[]");
+
+  let department = "";
+  let branch = "";
+  let semester = "";
+
+  if (storedData.length > 0) {
+    department = storedData[0].department;
+    branch = storedData[0].branch;
+    semester = storedData[0].semester;
+  }
+
+  // ===== Create Exam Name =====
+  const examName = `${department}_${branch}_${semester} Exam`;
+
   const doc = new jsPDF();
 
   // ===== Page Border =====
-  doc.setDrawColor(0); // Black color
-  doc.rect(5, 5, 200, 287); // x, y, width, height
+  doc.setDrawColor(0);
+  doc.rect(5, 5, 200, 287);
 
-  // ===== Title Styling =====
+  // ===== Title =====
   doc.setFontSize(18);
   doc.setFont("helvetica", "bold");
   doc.text("Exam Timetable", 105, 15, { align: "center" });
 
-  // ===== Exam Name =====
+  // ===== Exam Details =====
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  doc.text(`Exam Name: Tmp Exam`, 14, 25);
-  doc.text(`Batch ID: ${this.batchId}`, 14, 32);
+  doc.text(`Exam Name: ${examName}`, 14, 25);
+  doc.text(`Department: ${department}`, 14, 32);
+  doc.text(`Branch: ${branch}`, 14, 39);
+  doc.text(`Semester: ${semester}`, 14, 46);
+  doc.text(`Batch ID: ${this.batchId}`, 14, 53);
 
   // ===== Table =====
   autoTable(doc, {
-    startY: 40,
+    startY: 60,
 
     head: [['Subject ID', 'Subject Name', 'Exam Date']],
 
@@ -74,28 +95,28 @@ getTimetable() {
       item.examDate
     ]),
 
-    theme: 'grid', // Full borders
+    theme: 'grid',
 
     styles: {
       fontSize: 11,
       halign: 'center',
       valign: 'middle',
       lineWidth: 0.3,
-      lineColor: [0, 0, 0] // Black borders
+      lineColor: [0, 0, 0]
     },
 
     headStyles: {
-      fillColor: [41, 128, 185], // Blue header
+      fillColor: [41, 128, 185],
       textColor: [255, 255, 255],
       fontStyle: 'bold'
     },
 
     alternateRowStyles: {
-      fillColor: [240, 240, 240] // Light gray alternate rows
+      fillColor: [240, 240, 240]
     }
   });
 
-  doc.save(`TimeTable_${this.batchId}.pdf`);
+  doc.save(`TimeTable_${examName}.pdf`);
 }
 
 

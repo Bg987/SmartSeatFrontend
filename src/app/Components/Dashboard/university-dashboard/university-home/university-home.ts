@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-university-home',
@@ -18,7 +19,9 @@ export class UniversityHomeComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private router:Router
+  ) { }
   
   private url = environment.apiUrl;
   ngOnInit(): void {
@@ -28,4 +31,9 @@ export class UniversityHomeComponent implements OnInit {
       { withCredentials: true }
     );
   }
+   
+ viewDetails(userId: number) {
+  this.router.navigate(['/university-dashboard/college-details', userId]);
+}
+  
 }

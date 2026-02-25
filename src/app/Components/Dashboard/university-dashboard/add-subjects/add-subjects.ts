@@ -39,7 +39,10 @@ export class AddSubjects implements OnInit {
   initializeForm(): void {
     this.subjectForm = this.fb.group({
       subjectId: ['', Validators.required],
-      subjectName: ['', Validators.required]
+      subjectName: ['', Validators.required],
+      department:['', Validators.required],
+      branch:['',Validators.required],
+      semester:['',Validators.required]
     });
   }
 
