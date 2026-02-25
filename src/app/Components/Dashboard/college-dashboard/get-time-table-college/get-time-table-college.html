@@ -1,0 +1,68 @@
+<div class="wrapper">
+  <div class="card">
+    <h2>Select Branch & Semester</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <!-- Branch Dropdown -->
+      <div class="form-group">
+        <label>Branch</label>
+        <select formControlName="branch">
+          <option value="">-- Select Branch --</option>
+          <option *ngFor="let branch of branches" [value]="branch">
+            {{ branch }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Semester Dropdown -->
+      <div class="form-group">
+        <label>Semester</label>
+        <select formControlName="semester">
+          <option value="">-- Select Semester --</option>
+          <option *ngFor="let sem of semesters" [value]="sem">
+            Semester {{ sem }}
+          </option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid">
+        Submit
+      </button>
+
+    </form>
+  </div>
+
+  <!-- ✅ Timetable Table Section -->
+  <div class="table-card" *ngIf="timetableData.length > 0">
+
+    <h3>Exam Timetable</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Subject ID</th>
+          <th>Subject Name</th>
+          <th>Exam Date</th>
+          <th>Branch</th>
+          <th>Semester</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of timetableData">
+          <td>{{ t.subjectId }}</td>
+          <td>{{ t.subjectName }}</td>
+          <td>{{ t.examDate }}</td>
+          <td>{{ t.branch }}</td>
+          <td>{{ t.semester }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--  Download Button -->
+    <div class="download-section">
+      <button (click)="downloadPDF()">Download PDF</button>
+    </div>
+
+  </div>
+</div>

@@ -18,6 +18,8 @@ import { GetTimetable } from './Components/Dashboard/university-dashboard/get-ti
 import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/update-student-image/update-student-image'
 import { GenerateSeatingPlan } from './Components/Dashboard/university-dashboard/generate-seating-plan/generate-seating-plan';
 import { ShowCollegeDetail } from './Components/Dashboard/university-dashboard/show-college-detail/show-college-detail';
+import { GetTimeTableCollege } from './Components/Dashboard/college-dashboard/get-time-table-college/get-time-table-college';
+
 
 export const routes: Routes = [
 
@@ -32,6 +34,7 @@ export const routes: Routes = [
       { path: 'uploadStudent', component: UploadStudents },
       {path:'addStudents',component:AddStudents},
       {path:'uploadRooms',component:UploadRooms},
+       {path:'getTimeTable',component:GetTimeTableCollege},
       {path:'sittingPlan',component:SittingPlan},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

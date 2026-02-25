@@ -1,0 +1,101 @@
+.wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #dfe9f3, #ffffff);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.card {
+  width: 380px;
+  padding: 30px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+}
+
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+select:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #4a90e2;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #357abd;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.table-card {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+table th {
+  background-color: #f4f4f4;
+}
+
+.download-section {
+  margin-top: 20px;
+  text-align: right;
+}
