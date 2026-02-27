@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-get-time-table-college',
@@ -14,7 +15,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrl: './get-time-table-college.css',
 })
 export class GetTimeTableCollege {
-
+  private url = environment.apiUrl;
   form: FormGroup;
   timetableData: any[] = [];
 
@@ -22,7 +23,8 @@ export class GetTimeTableCollege {
   semesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
   constructor(private fb: FormBuilder, private http: HttpClient,
-   private cdr:ChangeDetectorRef
+   private cdr:ChangeDetectorRef,
+   
   ) {
 
     this.form = this.fb.group({
@@ -43,10 +45,11 @@ export class GetTimeTableCollege {
   submit() {
     if (this.form.valid) {
 
+
       const branch = this.form.get('branch')?.value;
       const semester = this.form.get('semester')?.value;
 
-      this.http.get<any[]>(`http://localhost:8080/api/colleges/getTimetable/${branch}/${semester}`,{
+      this.http.get<any[]>(`${this.url}/colleges/getTimetable/${branch}/${semester}`,{
         withCredentials:true
       })
         .subscribe({

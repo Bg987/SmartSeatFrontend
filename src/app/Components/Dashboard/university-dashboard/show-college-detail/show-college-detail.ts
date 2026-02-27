@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
+
 @Component({
   selector: 'app-show-college-detail',
   standalone: true,              
@@ -11,7 +13,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./show-college-detail.css'],
 })
 export class ShowCollegeDetail {
-
+  private url = environment.apiUrl;
   college: any;
   userId: any;
   studentCount:any;
@@ -27,7 +29,7 @@ export class ShowCollegeDetail {
   this.userId = this.route.snapshot.paramMap.get('userId');
 
   this.http.get(
-    `http://localhost:8080/api/university/showCollegeDetail/${this.userId}`,
+    `${this.url}/university/showCollegeDetail/${this.userId}`,
     { withCredentials: true }
   ).subscribe(res => {
 
@@ -37,7 +39,7 @@ export class ShowCollegeDetail {
 
     // Second API for getting student count of college--
     this.http.get(
-      `http://localhost:8080/api/university/getCountOfStudents/${this.college.collegeId}`,
+      `${this.url}/university/getCountOfStudents/${this.college.collegeId}`,
       { withCredentials: true }
     ).subscribe(countRes => {
       this.studentCount = countRes;
@@ -48,7 +50,7 @@ export class ShowCollegeDetail {
 
     // Third API for getting rooms count of college--
     this.http.get(
-      `http://localhost:8080/api/university/getCountOfRooms/${this.college.collegeId}`,
+      `${this.url}/university/getCountOfRooms/${this.college.collegeId}`,
       { withCredentials: true }
     ).subscribe(countRoom => {
       this.roomCount = countRoom;

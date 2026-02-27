@@ -5,6 +5,7 @@ import { TimetableService } from '../../../../services/timetable-service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { GetTimetable } from '../get-timetable/get-timetable';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-add-time-table',
@@ -17,6 +18,7 @@ export class AddTimeTable implements OnInit {
 
   // ================= STATE =================
   subjects: any[] = [];
+  private url = environment.apiUrl;
   selectedSubjects: any[] = [];
   message: string = "";
   activeStep: number = 0;   // 0 = filter , 1 = select , 2 = schedule
@@ -52,7 +54,7 @@ export class AddTimeTable implements OnInit {
     this.loading = true;
 
     this.http.post<any[]>(
-      'http://localhost:8080/api/university/subjects/filter',
+      `${this.url}/university/subjects/filter`,
       payload,
       { withCredentials: true }
     )

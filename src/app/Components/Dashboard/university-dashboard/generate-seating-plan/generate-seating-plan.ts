@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import autoTable from 'jspdf-autotable';
 import jsPDF from 'jspdf';
 import { ChangeDetectorRef } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
 
 interface Seat {
   enrollmentNo: string;
@@ -25,11 +26,11 @@ interface Seat {
 })
 export class GenerateSeatingPlan {
 
+  private url = environment.apiUrl;
   message = '';
   loading = false;
   seats: Seat[] = [];
   generatedCollegeId: number | null = null;
-
   subject:string ='';
 
   constructor(
@@ -58,7 +59,7 @@ export class GenerateSeatingPlan {
     this.message = '';
 
     this.http.post(
-      `http://localhost:8080/api/university/allocate/${collegeId}/${this.subject}`,
+      `${this.url}/university/allocate/${collegeId}/${this.subject}`,
       {},
       { withCredentials: true, responseType: 'text' as 'json' }
     ).subscribe({
@@ -91,7 +92,7 @@ export class GenerateSeatingPlan {
     }
 
     this.http.get<Seat | Seat[]>(
-      `http://localhost:8080/api/university/getSeattingPlan/${id}`,
+      `${this.url}/university/getSeattingPlan/${id}`,
       { withCredentials: true }
     ).subscribe({
       next: (res: any) => {
