@@ -1,0 +1,262 @@
+/* --- INTEGRATED VARIABLE SYSTEM --- */
+/* These inherit from your dashboard-root/dark-mode classes */
+
+:host {
+    --primary: #4f46e5;
+    --primary-hover: rgba(79, 70, 229, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-soft: #475569;
+    --border-color: rgba(15, 23, 42, 0.1);
+    --shadow-ui: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --table-header-bg: #f8fafc;
+}
+
+:host-context(.dark-mode) {
+    --glass-bg: rgba(15, 23, 42, 0.95);
+    --card-bg: #0f172a;
+    --text-main: #f1f5f9;
+    --text-soft: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --shadow-ui: 0 10px 40px rgba(0, 0, 0, 0.4);
+    --table-header-bg: rgba(255, 255, 255, 0.02);
+}
+
+/* --- CONTAINER --- */
+.gen-plan-container {
+    padding: 10px;
+    min-height: 100%;
+    color: var(--text-main);
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- GLASS FILTER HEADER --- */
+.filter-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-ui);
+}
+
+.filter-header input,
+.filter-header select {
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.filter-header input {
+    flex: 3;
+}
+
+.filter-header select {
+    flex: 1;
+    cursor: pointer;
+}
+
+.filter-header input:focus,
+.filter-header select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-hover);
+}
+
+/* --- TABLE ENGINE --- */
+.table-container {
+    overflow-x: auto;
+    border-radius: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-ui);
+}
+
+.exam-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+}
+
+.exam-table th {
+    padding: 16px 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-soft);
+    background: var(--table-header-bg);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 700;
+}
+
+.exam-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.row-hover {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.row-hover:hover {
+    background: var(--primary-hover);
+}
+
+/* --- STATUS BADGES --- */
+.badge {
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge.unallocated {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.badge.allocated {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+/* --- MODALS (Dashboard Style) --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(2, 6, 23, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 24px;
+    min-width: 400px;
+    box-shadow: var(--shadow-ui);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.exam-details {
+    background: var(--bg-main);
+    padding: 20px;
+    border-radius: 16px;
+    margin: 20px 0;
+}
+
+.exam-details p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: var(--text-soft);
+    font-weight: 600;
+}
+
+.exam-details p strong {
+    color: var(--text-main);
+    margin-right: 5px;
+}
+
+/* --- BUTTONS --- */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.btn-confirm,
+.btn-cancel {
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 8px 15px rgba(79, 70, 229, 0.2);
+}
+
+.btn-cancel {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(79, 70, 229, 0.3);
+}
+
+.btn-cancel:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* --- SUCCESS TOAST --- */
+.success-box {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    border-radius: 16px;
+    padding: 15px 30px;
+    animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

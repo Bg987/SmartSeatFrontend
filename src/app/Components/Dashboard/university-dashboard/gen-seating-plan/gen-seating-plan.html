@@ -1,0 +1,66 @@
+<div class="gen-plan-container">
+    <div class="filter-header">
+        <input type="text" [(ngModel)]="searchSubject" (input)="applyFilters()" placeholder="Search Subject or ID...">
+        <select [(ngModel)]="searchSemester" (change)="applyFilters()">
+            <option value="">All Semesters</option>
+            <option *ngFor="let s of [1,2,3,4,5,6,7,8]" [value]="s">Semester {{s}}</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table class="exam-table" *ngIf="filteredExams.length > 0; else noData">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Subject Name</th>
+                    <th>Exam Date</th>
+                    <th>Semester</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let exam of filteredExams" (click)="openConfirm(exam)" class="row-hover">
+                    <td><strong>{{ exam.subjectId }}</strong></td>
+                    <td>{{ exam.subjectName }}</td>
+                    <td>{{ exam.examDate | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ exam.semester }}</td>
+                    <td>
+                        <span class="badge" [class.unallocated]="!exam.allocated">
+                            {{ exam.allocated ? 'Allocated' : 'Pending' }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <ng-template #noData>
+            <div class="not-found">
+                <i class="icon-info"></i>
+                <p>No exams found matching your criteria.</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="showConfirmDialog">
+        <div class="modal-content">
+            <h3>Allocate Seats?</h3>
+            <hr>
+            <div class="exam-details" *ngIf="selectedExam">
+                <p><strong>ID:</strong> {{selectedExam.subjectId}}</p>
+                <p><strong>Subject:</strong> {{selectedExam.subjectName}}</p>
+                <p><strong>Date:</strong> {{selectedExam.examDate | date:'fullDate'}}</p>
+                <p><strong>Semester:</strong> {{selectedExam.semester}}</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" (click)="closeDialog()">Cancel</button>
+                <button class="btn-confirm" (click)="confirmAllocation()">Allocate Now</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-backdrop result-overlay" *ngIf="showResultDialog">
+        <div class="modal-content success-box">
+            <p>{{ apiResponse }}</p>
+        </div>
+    </div>
+</div>

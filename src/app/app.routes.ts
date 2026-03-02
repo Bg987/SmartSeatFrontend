@@ -19,7 +19,7 @@ import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/updat
 import { GenerateSeatingPlan } from './Components/Dashboard/university-dashboard/generate-seating-plan/generate-seating-plan';
 import { ShowCollegeDetail } from './Components/Dashboard/university-dashboard/show-college-detail/show-college-detail';
 import { GetTimeTableCollege } from './Components/Dashboard/college-dashboard/get-time-table-college/get-time-table-college';
-
+import { GenSeatingPlan } from './Components/Dashboard/university-dashboard/gen-seating-plan/gen-seating-plan';
 
 export const routes: Routes = [
 
@@ -49,7 +49,8 @@ export const routes: Routes = [
       { path: 'changePassword', component: changePassword },
       { path: 'dashboard', component: UniversityHomeComponent },
       { path: 'addCollege', component: AddCollegeComponent },
-      {path:'csv',component:UploadCsvComponent},
+      { path: 'csv', component: UploadCsvComponent },
+      { path: 'genSeatPlan', component: GenSeatingPlan },
       {path:'addSubjects',component:AddSubjects},
       {path:'addTimeTable',component:AddTimeTable},
       {path:'generateSeatingPlan',component:GenerateSeatingPlan},
