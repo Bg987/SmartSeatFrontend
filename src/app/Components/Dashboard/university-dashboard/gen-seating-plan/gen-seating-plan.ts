@@ -25,7 +25,6 @@ export class GenSeatingPlan implements OnInit {
   searchSemester: string = '';
 
   constructor(private allocationService: AllocationService,
-    private http: HttpClient,
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void { this.loadExams(); }

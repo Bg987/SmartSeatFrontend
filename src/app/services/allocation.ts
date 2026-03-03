@@ -14,6 +14,20 @@ export interface ExamSubject {
   semester: number | null;
   allocated: boolean;
 }
+export interface User {
+  userId: number;
+  name: string;
+  mobileNumber: string;
+  mail: string;
+  role: string;
+}
+export interface College {
+  collegeId: number;
+  name: string;
+  address: string;
+  department: string | null;
+  user: User;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AllocationService {
@@ -23,6 +37,18 @@ export class AllocationService {
 
   getIncompleteExams(): Observable<ExamSubject[]> {
     return this.http.get<ExamSubject[]>(`${this.base}/getIncompleteExam`, {
+      withCredentials: true
+    });
+  }
+
+  getCompleteExams(): Observable<ExamSubject[]> {
+    return this.http.get<ExamSubject[]>(`${this.base}/getCompleteExam`, {
+      withCredentials: true
+    });
+  }
+
+  getCollegeDetailsForExam(examId: number): Observable<College[]> {
+    return this.http.get<College[]>(`${this.base}/getCollegeDetailsForExam/${examId}`, {
       withCredentials: true
     });
   }

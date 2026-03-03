@@ -16,11 +16,10 @@ import { AddTimeTable } from './Components/Dashboard/university-dashboard/add-ti
 import { changePassword } from './Components/change-password/change-password';
 import { GetTimetable } from './Components/Dashboard/university-dashboard/get-timetable/get-timetable';
 import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/update-student-image/update-student-image'
-import { GenerateSeatingPlan } from './Components/Dashboard/university-dashboard/generate-seating-plan/generate-seating-plan';
 import { ShowCollegeDetail } from './Components/Dashboard/university-dashboard/show-college-detail/show-college-detail';
 import { GetTimeTableCollege } from './Components/Dashboard/college-dashboard/get-time-table-college/get-time-table-college';
 import { GenSeatingPlan } from './Components/Dashboard/university-dashboard/gen-seating-plan/gen-seating-plan';
-
+import {ViewSeatingAllocation} from './Components/Dashboard/university-dashboard/view-seating-allocation/view-seating-allocation'
 export const routes: Routes = [
 
   { path: '', component: LoginComponent },
@@ -50,10 +49,10 @@ export const routes: Routes = [
       { path: 'dashboard', component: UniversityHomeComponent },
       { path: 'addCollege', component: AddCollegeComponent },
       { path: 'csv', component: UploadCsvComponent },
-      { path: 'genSeatPlan', component: GenSeatingPlan },
       {path:'addSubjects',component:AddSubjects},
-      {path:'addTimeTable',component:AddTimeTable},
-      {path:'generateSeatingPlan',component:GenerateSeatingPlan},
+      { path: 'addTimeTable', component: AddTimeTable },
+      { path: 'genSeatPlan', component: GenSeatingPlan },
+      {path:'viewSeatingPlan',component:ViewSeatingAllocation},
       {path:'college-details/:userId',component:ShowCollegeDetail},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

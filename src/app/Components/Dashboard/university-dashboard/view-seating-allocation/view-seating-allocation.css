@@ -1,0 +1,254 @@
+:host {
+    --primary: #4f46e5;
+    --primary-hover: rgba(79, 70, 229, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-soft: #475569;
+    --border-color: rgba(15, 23, 42, 0.1);
+    --shadow-ui: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --table-header-bg: #f8fafc;
+}
+
+:host-context(.dark-mode) {
+    --glass-bg: rgba(15, 23, 42, 0.95);
+    --card-bg: #0f172a;
+    --text-main: #f1f5f9;
+    --text-soft: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --shadow-ui: 0 10px 40px rgba(0, 0, 0, 0.4);
+    --table-header-bg: rgba(255, 255, 255, 0.02);
+}
+
+.gen-plan-container {
+    padding: 20px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    padding: 15px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-ui);
+}
+
+.filter-header input {
+    flex: 3;
+}
+
+.filter-header select {
+    flex: 1;
+}
+
+.filter-header input,
+.filter-header select {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-main);
+    outline: none;
+    transition: 0.2s;
+}
+
+.filter-header input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-hover);
+}
+
+.table-container {
+    border-radius: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-ui);
+    overflow: hidden;
+}
+
+.exam-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.exam-table th {
+    background: var(--table-header-bg);
+    padding: 16px 20px;
+    color: var(--text-soft);
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.exam-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 14px;
+}
+
+.row-hover:hover {
+    background: var(--primary-hover);
+    cursor: pointer;
+}
+
+.already-allocated {
+    opacity: 0.8;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge.unallocated {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px dashed #f59e0b;
+}
+
+.badge.allocated {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.not-found {
+    padding: 50px;
+    text-align: center;
+    color: var(--text-soft);
+}
+
+/* Details Section Wrapper */
+.details-wrapper {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-ui);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.details-header h3 {
+    color: var(--text-main);
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Close Button */
+.btn-close {
+    background: var(--primary-hover);
+    border: none;
+    color: var(--primary);
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.btn-close:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Grid Layout */
+.college-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* College Card Styling */
+.college-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.college-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-ui);
+    border-color: var(--primary);
+}
+.details-wrapper{
+    color: var(--text-main);;
+}
+
+.card-title h4 {
+    color: var(--primary);
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+}
+
+.card-info p {
+    color: var(--text-main);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 12px 0;
+}
+
+.contact-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-row span {
+    color: var(--text-soft);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-row strong {
+    color: var(--text-main);
+}
+
+/* Active Row Highlight */
+.active-row {
+    background: var(--primary-hover) !important;
+    border-left: 4px solid var(--primary);
+}

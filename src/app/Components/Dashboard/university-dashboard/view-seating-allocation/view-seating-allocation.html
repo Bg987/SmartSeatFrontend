@@ -1,0 +1,68 @@
+<div class="gen-plan-container">
+    <div class="filter-header">
+        <input type="text" [(ngModel)]="searchSubject" (input)="applyFilters()" placeholder="Search Subject or ID...">
+        <select [(ngModel)]="searchSemester" (change)="applyFilters()">
+            <option value="">All Semesters</option>
+            <option *ngFor="let s of [1,2,3,4,5,6,7,8]" [value]="s">Semester {{s}}</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table class="exam-table" *ngIf="filteredExams.length > 0; else noData">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Subject Name</th>
+                    <th>Branch</th>
+                    <th>Semester</th>
+                    <th>Exam Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let exam of filteredExams" (click)="fetchCollegeDetails(exam)"
+                    [class.active-row]="selectedExamId === exam.id" class="row-hover">
+                    <td><strong>{{ exam.subjectId }}</strong></td>
+                    <td>{{ exam.subjectName }}</td>
+                    <td>{{ exam.branch }}</td>
+                    <td>Sem {{ exam.semester }}</td>
+                    <td>{{ exam.examDate | date:'dd-MMM-yyyy' }}</td>
+                    <td>
+                        <span class="badge" [class.allocated]="exam.allocated" [class.unallocated]="!exam.allocated">
+                            {{ exam.allocated ? '✓ Allocated' : 'View Colleges' }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <ng-template #noData>
+            <div class="not-found">
+                <p>No exams found matching your criteria.</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="details-wrapper" *ngIf="selectedColleges.length > 0">
+        <div class="title-group">
+            <h3>Registered Colleges for Exam</h3>
+            <p class="subtitle">Colleges whose students are appearing in this exam</p>
+        </div>
+        <div class="college-grid">
+            <div class="college-card" *ngFor="let college of selectedColleges">
+                <div class="card-title">
+                    <h4>{{ college.name }}</h4>
+                </div>
+    
+                <div class="card-info">
+                    <p><strong>📍 Address:</strong> {{ college.address }}</p>
+                    <hr class="divider">
+                    <div class="contact-row">
+                        <span><strong>📧 Email:</strong> {{ college.user?.mail }}</span>
+                        <span><strong>📞 Mobile:</strong> {{ college.user?.mobileNumber }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
