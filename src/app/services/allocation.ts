@@ -32,7 +32,7 @@ export interface College {
 @Injectable({ providedIn: 'root' })
 export class AllocationService {
   private base = `${environment.apiUrl}/university`;
-
+  private base2 = `${environment.apiUrl2}`;
   constructor(private http: HttpClient) { }
 
   getIncompleteExams(): Observable<ExamSubject[]> {
@@ -52,6 +52,27 @@ export class AllocationService {
       withCredentials: true
     });
   }
+
+  getExamsWithoutQuestions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.base2}/exam/ExamWithoutQeustions`, { withCredentials: true });
+  }
+
+  generateQuestionsFromPdf(file: File, count: number, examId: number): Observable<any> {
+  const formData = new FormData();
+  
+  formData.append('file', file);
+  
+  // Appending as string is standard for FormData; 
+  // Spring Boot @RequestParam Long id will parse "1" into 1L automatically.
+  formData.append('count', count.toString()); 
+  formData.append('examId', examId.toString());
+
+  return this.http.post(`${this.base2}/exam/generate-from-pdf`, formData, {
+    withCredentials: true
+    // Do NOT set Content-Type header manually; 
+    // Browser needs to set the boundary for multipart/form-data
+  });
+}
 
   startAllocation(examId: number | string): Observable<string> {
     const url = `${this.base}/main/${examId}`;

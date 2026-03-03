@@ -1,0 +1,94 @@
+<div class="gen-plan-container">
+    <div class="filter-header">
+        <input type="text" [(ngModel)]="searchSubject" (input)="applyFilters()" placeholder="Search Subject or ID...">
+        <select [(ngModel)]="searchSemester" (change)="applyFilters()">
+            <option value="">All Semesters</option>
+            <option *ngFor="let s of [1,2,3,4,5,6,7,8]" [value]="s">Semester {{s}}</option>
+        </select>
+    </div>
+
+    <div *ngIf="loading" class="loader">
+        <div class="spinner"></div>
+        <p>Scanning Examination Database...</p>
+    </div>
+
+    <div class="card-grid" *ngIf="!loading && filteredExams.length > 0">
+        <div class="exam-card" *ngFor="let exam of filteredExams">
+            <div class="card-header">
+                <span class="subject-code">{{ exam.subjectId }}</span>
+                <span class="date-badge">{{ exam.examDate | date:'dd MMM yyyy' }}</span>
+            </div>
+
+            <div class="card-body">
+                <h3>{{ exam.subjectName }}</h3>
+                <div class="details">
+                    <p><strong>Branch:</strong> {{ exam.branch || 'Common' }}</p>
+                    <p><strong>Semester:</strong> {{ exam.semester || 'N/A' }}</p>
+                </div>
+            </div>
+
+            <div class="status-zone">
+                <span class="status-tag ready" *ngIf="exam.allocated">
+                    <i class="icon">✅</i> Seats Allocated
+                </span>
+
+                <span class="status-tag pending" *ngIf="!exam.allocated">
+                    <i class="icon">⏳</i> Allocation Pending
+                </span>
+            </div>
+
+            <button class="btn-generate" (click)="onGenerate(exam)">
+                Generate Questions
+            </button>
+        </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredExams.length === 0 && !loading">
+        <div class="empty-icon">📂</div>
+        <p>No pending question papers found for your criteria.</p>
+    </div>
+
+    <div class="modal-overlay" *ngIf="showUploadModal" (click)="closeModal()">
+        <div class="upload-modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <div class="title-meta">
+                    <h3>AI Question Generator</h3>
+                    <p>{{ selectedExam?.subjectName }} ({{ selectedExam?.subjectId }})</p>
+                </div>
+                <button class="btn-close-modal" (click)="closeModal()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>1. Upload Syllabus/Reference PDF</label>
+                    <div class="file-input-wrapper" [class.file-ready]="selectedFile">
+                        <input type="file" id="pdfFile" (change)="onFileSelected($event)" accept=".pdf">
+                        <label for="pdfFile">
+                            <span *ngIf="!selectedFile">📁 Click to Choose PDF File</span>
+                            <span *ngIf="selectedFile">📄 {{ selectedFile.name }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Number of Questions</label>
+                    <input type="number" [(ngModel)]="questionCount" min="1" max="50" class="styled-input">
+                </div>
+
+                <div class="ai-hint">
+                    <p>✨ <strong>Note:</strong> The AI will analyze the document context to generate relevant questions
+                        for this subject.</p>
+                </div>
+                <p>{{resServer}}</p>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+                <button class="btn-primary-action" [disabled]="!selectedFile || isGenerating"
+                    (click)="confirmGeneration()">
+                    {{ isGenerating ? 'Generating...' : 'Confirm & Generate' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

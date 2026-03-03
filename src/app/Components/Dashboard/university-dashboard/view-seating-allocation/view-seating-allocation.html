@@ -43,7 +43,7 @@
         </ng-template>
     </div>
 
-    <div class="details-wrapper" *ngIf="selectedColleges.length > 0">
+    <div class="details-wrapper"  *ngIf="selectedColleges.length > 0 ; else noData">
         <div class="title-group">
             <h3>Registered Colleges for Exam</h3>
             <p class="subtitle">Colleges whose students are appearing in this exam</p>
@@ -65,4 +65,9 @@
             </div>
         </div>
     </div>
+            <ng-template #noData>
+                <div class="not-found">
+                    <p>No colleges found for this examination</p>
+                </div>
+            </ng-template>
 </div>

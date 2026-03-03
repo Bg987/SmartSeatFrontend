@@ -19,7 +19,9 @@ import {UpdateStudentImage} from './Components/Dashboard/college-dashboard/updat
 import { ShowCollegeDetail } from './Components/Dashboard/university-dashboard/show-college-detail/show-college-detail';
 import { GetTimeTableCollege } from './Components/Dashboard/college-dashboard/get-time-table-college/get-time-table-college';
 import { GenSeatingPlan } from './Components/Dashboard/university-dashboard/gen-seating-plan/gen-seating-plan';
-import {ViewSeatingAllocation} from './Components/Dashboard/university-dashboard/view-seating-allocation/view-seating-allocation'
+import { ViewSeatingAllocation } from './Components/Dashboard/university-dashboard/view-seating-allocation/view-seating-allocation'
+import {QuestionGeneration} from './Components/Dashboard/university-dashboard/question-generation/question-generation'
+
 export const routes: Routes = [
 
   { path: '', component: LoginComponent },
@@ -53,7 +55,8 @@ export const routes: Routes = [
       { path: 'addTimeTable', component: AddTimeTable },
       { path: 'genSeatPlan', component: GenSeatingPlan },
       {path:'viewSeatingPlan',component:ViewSeatingAllocation},
-      {path:'college-details/:userId',component:ShowCollegeDetail},
+      { path: 'college-details/:userId', component: ShowCollegeDetail },
+      {path:'questionGeneration',component:QuestionGeneration},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
