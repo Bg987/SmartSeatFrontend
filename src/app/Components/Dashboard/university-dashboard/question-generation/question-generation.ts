@@ -28,7 +28,7 @@ export class QuestionGeneration implements OnInit {
   selectedExam: any = null;
   selectedFile: File | null = null;
   questionCount: number = 10;
-  resServer: String = "ffdkj";
+  resServer: String = "";
 
   constructor(
     private allocationService: AllocationService,
