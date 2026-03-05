@@ -59,7 +59,7 @@ export class UniversityLayoutComponent implements OnInit, OnDestroy {
   this.sseSub = this.notificationService.getServerSentEvent(sseUrl).subscribe({
     next: (res) => {
       this.zone.run(() => {
-        // 1. CAP THE ARRAY: If we have more than 5, remove the oldest (last) one immediately
+        // If we have more than 5, remove the oldest (last) one immediately
         // This stops the "infinite growth" problem
         if (this.notifications.length >= 5) {
           this.notifications.pop(); 

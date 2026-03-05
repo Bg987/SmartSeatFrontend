@@ -26,7 +26,7 @@ export class NotificationService {
       });
 
       // Listen for the specific 'event-complete' name used in Spring Boot
-      eventSource.addEventListener('event-complete', (event: MessageEvent) => {
+      eventSource.addEventListener('Allocation_Done_Event', (event: MessageEvent) => {
         this.zone.run(() => {
           try {
             // Attempt to parse if the data is a JSON string
