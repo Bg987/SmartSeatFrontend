@@ -35,7 +35,6 @@ export class ShowCollegeDetail {
 
     this.college = res;
     localStorage.setItem('collegeId',this.college.collegeId)
-    console.log(this.college);
 
     // Second API for getting student count of college--
     this.http.get(

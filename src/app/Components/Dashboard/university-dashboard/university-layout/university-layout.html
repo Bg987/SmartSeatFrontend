@@ -1,4 +1,18 @@
 <div class="dashboard-root" [class.dark-mode]="isDarkMode">
+
+  <div class="notification-overlay">
+    <div *ngFor="let note of notifications; let i = index; trackBy: trackByFn" class="notification-toast">
+      <div class="toast-body">
+        <div class="toast-icon">🔔</div>
+        <div class="toast-text">
+          <span class="toast-title">System Update</span>
+          <p>{{ note }}</p>
+        </div>
+      </div>
+      <button class="toast-close" (click)="removeNotification(note)">&times;</button>
+    </div>
+  </div>
+
   <aside class="glass-sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo">S</div>
@@ -46,13 +60,13 @@
           <li routerLink="/university-dashboard/viewSeatingPlan" routerLinkActive="active">
             <i class="icon">👁️</i> <span>View Seating</span>
           </li>
-         <li routerLink="/university-dashboard/genSeatPlan" routerLinkActive="active">
-                  <i class="icon">👁️</i> <span>Generate Seating</span>
-                </li>
+          <li routerLink="/university-dashboard/genSeatPlan" routerLinkActive="active">
+            <i class="icon">👁️</i> <span>Generate Seating</span>
+          </li>
         </ul>
       </div>
     </nav>
-    
+
     <div class="sidebar-footer">
       <div class="theme-switch" (click)="toggleTheme()">
         <div class="switch-content">

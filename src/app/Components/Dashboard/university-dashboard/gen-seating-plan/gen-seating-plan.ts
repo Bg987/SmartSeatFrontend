@@ -32,7 +32,7 @@ export class GenSeatingPlan implements OnInit {
   loadExams() {
     this.allocationService.getIncompleteExams().subscribe({
       next: (data) => {
-        console.log(JSON.stringify(data));
+        
         this.allExams = data; this.filteredExams = data; 
         this.cdr.detectChanges();
       },
