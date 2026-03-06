@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api1/:path*",
+      "destination": "https://smartseatbackend.onrender.com/api/:path*"
+    },
+    {
+      "source": "/api2/:path*",
+      "destination": "https://examportalsmartseatbackend.onrender.com/api/:path*"
+    }
+  ]
+}
