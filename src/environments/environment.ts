@@ -1,6 +1,6 @@
+
+let production = true;
 export const environment = {
-  production: true,
-  // Point to the Vercel proxy paths
-  apiUrl: '/api1', 
-  apiUrl2: '/api2'
+  apiUrl: production ? 'https://smartseatbackend.onrender.com/api' : "http://localhost:8080/api",
+  apiUrl2 : 'https://examportalsmartseatbackend.onrender.com/api',
 };
