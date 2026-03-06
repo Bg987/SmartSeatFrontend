@@ -1,92 +1,86 @@
 <div class="container">
-
-  <!--  EXAM CARD -->
-  <div *ngIf="!showSittingPlan" class="exam-card" (click)="openSittingPlan()">
-    <div class="exam-badge">Exam</div>
-    <h2>{{ examName }}</h2>
-    <p>Click to View Sitting Arrangement</p>
+  <div *ngFor="let exam of examList">
+    <div *ngIf="!showSittingPlan" class="exam-card" (click)="openSittingPlan(exam.id)">
+      <div class="exam-badge">Exam Node</div>
+      <h2>{{ exam.examName }}</h2>
+      <p>Synchronize and view real-time student seat allocation.</p>
+    </div>
   </div>
 
-  <!--  SITTING PLAN SECTION -->
   <div *ngIf="showSittingPlan" class="plan-wrapper">
-
-    <!-- Header -->
-    <div class="plan-header">
-      <div>
-        <h2>{{ examName }}</h2>
-        <p *ngIf="roomNumber">
-          Room {{ roomNumber }} | Capacity: {{ capacity }}
+    <header class="plan-header">
+      <div class="header-info">
+        <h2 class="main-title">{{ examName }}</h2>
+        <p *ngIf="roomNumber" class="subtitle">
         </p>
       </div>
+      <button class="back-btn" (click)="showSittingPlan = false">← Back</button>
+    </header>
 
-      <button class="back-btn" (click)="showSittingPlan = false">
-        ← Back
-      </button>
-    </div>
-
-    <!-- Controls -->
     <div class="controls">
-      <select [(ngModel)]="selectedRoom" (ngModelChange)="changeRoom($event)">
-        <option *ngFor="let room of uniqueRooms" [ngValue]="room">
-          Room {{ roomNumber }}
-        </option>
-      </select>
+      <div class="input-section">
+        <label class="field-label">Infrastructure Node (Block - Room)</label>
+        <select [(ngModel)]="selectedRoom" (ngModelChange)="changeRoom($event)">
+          <option *ngFor="let room of allCollegeRooms" [ngValue]="{roomId: room.id}">
+            {{ room.block ? 'Block ' + room.block : 'Main' }} - {{ room.roomNumber }}
+            {{ isRoomAllocated(room.id) ? '★' : '' }}
+          </option>
+        </select>
+      </div>
 
-      <input
-        type="text"
-        placeholder="Search Enrollment..."
-        [(ngModel)]="searchText"
-        (input)="searchStudent()"
-      />
+      <div class="input-section">
+        <label class="field-label">Enrollment Registry Filter</label>
+        <input type="text" placeholder="Search Enrollment..." [(ngModel)]="searchText" (input)="searchStudent()" />
+      </div>
     </div>
-
-    <!-- Stats -->
     <div class="stats">
-      <div>
-        <span>Total</span>
+      <div class="stat-item">
+        <span>Asset Capacity</span>
         <strong>{{ capacity }}</strong>
       </div>
-      <div>
-        <span>Occupied</span>
+      <div class="stat-item occupied">
+        <span>Allocated Units</span>
         <strong>{{ getOccupiedCount() }}</strong>
       </div>
-      <div>
-        <span>Empty</span>
+      <div class="stat-item available">
+        <span>Available Nodes</span>
         <strong>{{ getEmptySeats() }}</strong>
       </div>
     </div>
 
-    <!-- GRID -->
-    <div class="grid-wrapper" *ngIf="rows.length">
+    <div *ngIf="loading" class="loader-overlay">Synchronizing Blueprint...</div>
 
-      <!-- Column Numbers -->
-      <div class="row header-row">
-        <div class="corner"></div>
-        <div class="col-header" *ngFor="let col of columns">
-          {{ col }}
-        </div>
+    <div class="grid-container" *ngIf="!loading && rows.length > 0">
+      <div class="grid-header-row">
+        <div class="row-label-placeholder"></div>
+        <div class="col-label" *ngFor="let col of columns">COL {{ col }}</div>
       </div>
 
-      <!-- Seat Rows -->
-      <div class="row" *ngFor="let row of rows">
-        <div class="row-header">{{ row }}</div>
+      <div class="grid-body">
+        <div class="grid-row" *ngFor="let row of rows">
+          <div class="row-label">R{{ row }}</div>
 
-        <div
-          class="seat"
-          *ngFor="let col of columns"
-          [ngClass]="{
-            occupied: getStudent(row, col),
-            empty: !getStudent(row, col)
-          }"
-        >
-          <span *ngIf="getStudent(row, col)">
-            {{ getStudent(row, col)?.enrollment }}
-          </span>
+          <div class="seat-wrapper" *ngFor="let col of columns">
+            <div class="seat" [ngClass]="{
+                   'occupied': getStudent(row, col),
+                   'empty': !getStudent(row, col),
+                   'highlight': searchText && getStudent(row, col)?.enrollment.toLowerCase().includes(searchText.toLowerCase())
+                 }">
+              <div class="seat-content" *ngIf="getStudent(row, col)">
+                <span class="enrollment-no">{{ getStudent(row, col)?.enrollment }}</span>
+              </div>
+              <div class="seat-placeholder" *ngIf="!getStudent(row, col)">
+                <span class="seat-dot"></span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
 
+    <div class="no-data-card" *ngIf="!loading && rows.length === 0">
+      <div class="empty-icon">📭</div>
+      <p><strong>No Allocation found</strong>.</p>
+    </div>
   </div>
-
 </div>
