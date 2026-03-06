@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { environment } from '../../../../../environments/environment';
 @Component({
   selector: 'app-sitting-plan',
   standalone: true,
@@ -15,7 +15,7 @@ export class SittingPlan implements OnInit {
 
   students: any[] = [];
   filteredStudents: any[] = [];
-
+  url: String = environment.apiUrl;
   rows: number[] = [];
   columns: number[] = [];
 
@@ -51,7 +51,7 @@ export class SittingPlan implements OnInit {
   getExamName() {
     this.http
       .get(
-        `http://localhost:8080/api/colleges/getExamName/${this.examId}`,
+        `${this.url}/colleges/getExamName/${this.examId}`,
         { responseType: 'text', withCredentials: true }
       )
       .subscribe({
@@ -78,7 +78,7 @@ export class SittingPlan implements OnInit {
 
     this.http
       .get<any[]>(
-        `http://localhost:8080/api/university/getSeatBYCollege/${this.collegeId}/${this.examId}`,
+        `${this.url}/university/getSeatBYCollege/${this.collegeId}/${this.examId}`,
         { withCredentials: true }
       )
       .subscribe({
@@ -184,7 +184,7 @@ export class SittingPlan implements OnInit {
 
     this.http
       .get<any>(
-        `http://localhost:8080/api/colleges/getRoomInfo/${this.collegeId}/${this.roomid}`,
+        `${this.url}/colleges/getRoomInfo/${this.collegeId}/${this.roomid}`,
         { withCredentials: true }
       )
       .subscribe({
