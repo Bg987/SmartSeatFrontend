@@ -54,6 +54,7 @@ export class AllocationService {
   }
 
   getExamsWithoutQuestions(): Observable<any[]> {
+    console.log("url = " + this.base2);
     return this.http.get<any[]>(`${this.base2}/exam/ExamWithoutQeustions`, { withCredentials: true });
   }
 
