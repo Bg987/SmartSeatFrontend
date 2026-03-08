@@ -83,7 +83,7 @@ export class SittingPlan implements OnInit {
   loadSeats(id: Number) {
     this.examId = id;
     this.loading = true;
-    this.http.get<any[]>(`${this.url}/university/getSeatBYCollege/${this.examId}`, { withCredentials: true })
+    this.http.get<any[]>(`${this.url}/colleges/getSeatBYCollege/${this.examId}`, { withCredentials: true })
       .subscribe({
         next: (response) => {
           if (!response || response.length === 0) {
