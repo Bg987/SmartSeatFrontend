@@ -1,6 +1,5 @@
 <div class="container">
-
-    <div class="section">
+    <div class="section" *ngIf="!showGrid">
         <h2 style="margin-bottom: 20px;">Examination Master List</h2>
         <div class="filter-header">
             <input type="text" [(ngModel)]="searchSubject" (input)="applyFilters()" placeholder="Search Subject...">
@@ -36,7 +35,9 @@
             </table>
         </div>
     </div>
-
+    <div class="section" *ngIf="err != '' && !showGrid">
+        <p>{{err}}</p>
+    </div>
     <div class="section" *ngIf="selectedColleges.length > 0 && !showGrid">
         <div class="details-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h3>Registered Centers for: {{examName}}</h3>
@@ -46,9 +47,9 @@
         <div class="college-grid">
             <div class="college-card" *ngFor="let col of selectedColleges" (click)="onCollegeClick(col.collegeId)">
                 <h4>{{col.name}}</h4>
-                <p style="font-size: 13px; color: var(--text-soft); margin-top: 8px;">{{col.address}}</p>
-                <div style="margin-top: 15px; color: var(--primary); font-weight: 600; font-size: 12px;">
-                    VIEW BLUEPRINT →
+                <p style="font-size: 13px; color: #666; margin-top: 8px;">{{col.address}}</p>
+                <div style="margin-top: 15px; color: #007bff; font-weight: 600; font-size: 12px;">
+                    VIEW Allocation →
                 </div>
             </div>
         </div>
@@ -62,27 +63,37 @@
 
         <div class="tabs" style="margin-bottom: 20px;">
             <button *ngFor="let rid of getUniqueRooms()" [class.active]="selectedRoomId === rid"
-                (click)="selectedRoomId = rid; generateGrid()" style="margin-right: 10px; border-radius: 8px;">
-                Room {{rid +" "+selectedRoomBlock}}
+                (click)="updateSelectedRoom(rid)"
+                style="margin-right: 10px; border-radius: 8px; padding: 10px 20px; cursor: pointer;">
+                {{ getRoomLabel(rid) }}
             </button>
         </div>
 
-        <div class="grid-scroll">
+        <div class="grid-scroll" *ngIf="rows.length > 0">
             <table class="blueprint">
-                <tr>
-                    <th></th>
-                    <th *ngFor="let c of columns" style="padding-bottom: 10px; color: var(--text-soft);">COL {{c + 1}}
-                    </th>
-                </tr>
-                <tr *ngFor="let r of rows">
-                    <td class="row-label" style="text-align: right; padding-right: 20px;">R{{r + 1}}</td>
-                    <td *ngFor="let c of columns">
-                        <div class="seat" [class.occupied]="getStudentAt(r,c)">
-                            {{ getStudentAt(r,c)?.enrollmentNo || '·' }}
-                        </div>
-                    </td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th *ngFor="let c of columns" style="padding: 10px; color: #666;">COL {{c + 1}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let r of rows">
+                        <td class="row-label" style="text-align: right; padding-right: 20px; font-weight: bold;">R{{r +
+                            1}}</td>
+                        <td *ngFor="let c of columns">
+                            <div class="seat" [class.occupied]="getStudentAt(r,c)"
+                                [title]="getStudentAt(r,c) ? 'Student: ' + getStudentAt(r,c).enrollmentNo : 'Empty'">
+                                {{ getStudentAt(r,c)?.enrollmentNo || '·' }}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
+        </div>
+
+        <div *ngIf="rows.length === 0" style="text-align: center; padding: 40px; color: #999;">
+            No seat mapping found for this room.
         </div>
     </div>
 </div>

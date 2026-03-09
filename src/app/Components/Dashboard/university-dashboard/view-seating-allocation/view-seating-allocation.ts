@@ -12,7 +12,6 @@ import { environment } from '../../../../../environments/environment';
   styleUrl: './view-seating-allocation.css',
 })
 export class ViewSeatingAllocation implements OnInit {
-  // Config
   apiUrl: string = environment.apiUrl;
 
   // Data State
@@ -25,13 +24,11 @@ export class ViewSeatingAllocation implements OnInit {
   selectedExamId: number | null = null;
   selectedCollegeId: number | null = null;
   selectedRoomId: number | null = null;
-  selectedRoomBlock: number | null = null;
-  selectedRoomName: string = ''; // Added for HTML
-  examName: string = '';         // Added for HTML
+  selectedRoomName: string = ''; 
+  examName: string = '';         
   showGrid: boolean = false;
   isLoading: boolean = false;
-  isDarkMode: boolean = false;   // Added for Theme Toggle
-
+  err: String = '';
   // Search/Filters
   searchSubject: string = '';
   searchSemester: string = '';
@@ -43,13 +40,9 @@ export class ViewSeatingAllocation implements OnInit {
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const savedTheme = localStorage.getItem('theme');
-    this.isDarkMode = savedTheme === 'dark';
     this.loadAllExams();
   }
 
-
-  // API 1: Fetch Exams
   loadAllExams(): void {
     this.http.get<any[]>(`${this.apiUrl}/university/getCompleteExam`, { withCredentials: true })
       .subscribe({
@@ -61,26 +54,30 @@ export class ViewSeatingAllocation implements OnInit {
         error: (err) => console.error('Exam Fetch Error:', err)
       });
   }
-
-  // API 2: Fetch Colleges for selected Exam
   fetchCollegeDetails(exam: any): void {
+    this.err = '';
+    this.selectedColleges = [];
     this.selectedExamId = exam.id;
-    this.examName = exam.subjectName; // Set exam name for display
+    this.examName = exam.subjectName+"-"+exam.semester+"-"+exam.subjectId+"-"+exam.examDate;
     this.showGrid = false; 
     this.isLoading = true;
 
     this.http.get<any[]>(`${this.apiUrl}/university/getCollegeDetailsForExam/${exam.id}`, { withCredentials: true })
       .subscribe({
         next: (data) => {
+          console.log(data);
           this.selectedColleges = data;
           this.isLoading = false;
           this.cdr.detectChanges();
         },
-        error: (err) => { this.isLoading = false; console.error(err); }
+        error: (err) => {
+          this.isLoading = false;
+          this.err = err.error;
+          this.cdr.detectChanges();
+        }
       });
   }
 
-  // API 3: Fetch Actual Seats
   onCollegeClick(collegeId: number): void {
     this.selectedCollegeId = collegeId;
     this.isLoading = true;
@@ -91,11 +88,11 @@ export class ViewSeatingAllocation implements OnInit {
           this.seats = data;
           this.showGrid = true;
           this.isLoading = false;
-          
-          if (this.seats.length > 0) {
-            this.selectedRoomBlock = this.seats[0].roomNumber;
-            this.selectedRoomId = this.seats[0].block;
-            this.selectedRoomName = this.seats[0].block+" "+this.seats[0].roomNumber;
+          this.err = '';
+          if (this.seats && this.seats.length > 0) {
+            // Use room_id for logic, display name for UI
+            this.selectedRoomId = this.seats[0].room_id; 
+            this.selectedRoomName = `${this.seats[0].block} - ${this.seats[0].roomNumber}`;
             this.generateGrid();
           }
           this.cdr.detectChanges();
@@ -104,26 +101,51 @@ export class ViewSeatingAllocation implements OnInit {
       });
   }
 
-  generateGrid(): void {
-    const roomSeats = this.seats.filter(s => s.room_id === this.selectedRoomId);
-    if (roomSeats.length === 0) return;
+  getRoomLabel(roomId: number): string {
+    const seat = this.seats.find(s => s.room_id === roomId);
+    return seat ? `Block ${seat.block} - ${seat.roomNumber}` : `Room ${roomId}`;
+  }
 
+  updateSelectedRoom(roomId: number): void {
+    this.selectedRoomId = roomId;
+    this.selectedRoomName = this.getRoomLabel(roomId);
+    this.generateGrid();
+  }
+
+  generateGrid(): void {
+    // Filter seats based on current room selection
+    const roomSeats = this.seats.filter(s => s.room_id === this.selectedRoomId);
+    
+    if (roomSeats.length === 0) {
+      this.rows = [];
+      this.columns = [];
+      return;
+    }
+
+    // Calculate dynamic boundaries
     const maxRow = Math.max(...roomSeats.map(s => s.row_no));
     const maxCol = Math.max(...roomSeats.map(s => s.col_no));
 
     this.rows = Array.from({ length: maxRow + 1 }, (_, i) => i);
     this.columns = Array.from({ length: maxCol + 1 }, (_, i) => i);
+    this.cdr.detectChanges();
   }
 
   getStudentAt(r: number, c: number) {
-    return this.seats.find(s => s.room_id === this.selectedRoomId && s.row_no === r && s.col_no === c);
+    return this.seats.find(s => 
+      s.room_id === this.selectedRoomId && 
+      s.row_no === r && 
+      s.col_no === c
+    );
   }
 
-  getUniqueRooms() {
+  getUniqueRooms(): number[] {
+    // Use a Set to get unique IDs from the seat data
     return [...new Set(this.seats.map(s => s.room_id))];
   }
 
   applyFilters(): void {
+    this.selectedColleges = [];
     const searchLower = this.searchSubject.toLowerCase();
     this.filteredExams = this.exams.filter(exam => 
       (!this.searchSubject || exam.subjectName.toLowerCase().includes(searchLower) || exam.subjectId.toLowerCase().includes(searchLower)) &&

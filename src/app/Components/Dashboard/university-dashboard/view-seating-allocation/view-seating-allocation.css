@@ -1,7 +1,7 @@
 :host {
-    /* --- THEME VARIABLES (Same as before) --- */
+    /* --- THEME VARIABLES --- */
     --primary: #4f46e5;
-    --primary-hover: rgba(79, 70, 229, 0.08);
+    --primary-hover: #4338ca;
     --glass-bg: rgba(255, 255, 255, 0.9);
     --card-bg: #ffffff;
     --body-bg: #f8fafc;
@@ -14,6 +14,7 @@
     --seat-occupied: #4f46e5;
     --seat-text-occupied: #ffffff;
     --seat-border: #cbd5e1;
+    --tab-inactive-bg: #f1f5f9;
 }
 
 :host-context(.dark-mode),
@@ -30,30 +31,108 @@
     --seat-occupied: #818cf8;
     --seat-text-occupied: #ffffff;
     --seat-border: #475569;
+    --tab-inactive-bg: #1e293b;
 }
 
 .container {
     background-color: var(--body-bg);
     min-height: 100vh;
     padding: 30px;
-    /* Increased padding for overall container */
     color: var(--text-main);
+    transition: background-color 0.3s ease;
 }
 
 /* --- SECTION SPACING --- */
 .section {
     margin-bottom: 40px;
-    /* Stronger separation between Exam List and College List */
     animation: fadeIn 0.4s ease-out;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- BUTTON & ACTION STYLES --- */
+.btn-view {
+    background: var(--card-bg);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-view:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+/* --- ROOM TABS STYLES --- */
+.tabs {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    overflow-x: auto;
+}
+
+.tabs button {
+    background: var(--tab-inactive-bg);
+    color: var(--text-soft);
+    border: 1px solid var(--border-color);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+}
+
+.tabs button:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.tabs button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 8px 20px -6px rgba(79, 70, 229, 0.5);
+    font-weight: 600;
+    transform: scale(1.02);
+}
+
+/* --- TABLE & FILTER STYLES --- */
 .filter-header {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
 }
 
-/* --- TABLE FIXES --- */
+.filter-header input,
+.filter-header select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-main);
+}
+
 .table-container {
     border-radius: 12px;
     background: var(--card-bg);
@@ -62,13 +141,29 @@
     overflow: hidden;
 }
 
+.exam-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.exam-table th {
+    background: var(--table-header-bg);
+    text-align: left;
+    color: var(--text-soft);
+}
+
 .exam-table td,
 .exam-table th {
     padding: 16px 20px;
     border-bottom: 1px solid var(--border-color);
 }
 
-/* --- COLLEGE GRID FIXES --- */
+.row-hover:hover {
+    background: var(--table-header-bg);
+    cursor: pointer;
+}
+
+/* --- COLLEGE GRID --- */
 .college-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -77,31 +172,39 @@
 }
 
 .college-card {
+    background: var(--card-bg);
     padding: 24px;
     border-radius: 12px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.3s ease;
     border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-ui);
 }
 
-/* --- SEAT BLUEPRINT (LARGE FOR ENR NUMBERS) --- */
+.college-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- SEAT BLUEPRINT --- */
 .grid-scroll {
     background: var(--table-header-bg);
     padding: 40px;
     border-radius: 16px;
     overflow-x: auto;
     border: 1px solid var(--border-color);
+    margin-top: 10px;
 }
 
 .blueprint {
     border-spacing: 12px;
-    /* Adds space between seats */
     border-collapse: separate;
+    margin: 0 auto;
 }
 
 .seat {
     width: 110px;
-    /* Significantly wider for Enrollment Numbers */
     height: 50px;
     background: var(--seat-bg);
     border: 1px solid var(--seat-border);
@@ -110,10 +213,10 @@
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    /* Slightly larger text */
     font-family: 'Courier New', monospace;
-    /* Professional tech look */
     letter-spacing: 0.5px;
+    color: var(--text-soft);
+    transition: all 0.2s ease;
 }
 
 .seat.occupied {
@@ -121,5 +224,26 @@
     color: var(--seat-text-occupied);
     border-color: var(--seat-occupied);
     font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.seat.occupied:hover {
+    transform: scale(1.1);
+    z-index: 2;
+    filter: brightness(1.1);
+}
+
+/* Status Badges */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.badge.allocated {
+    background: #dcfce7;
+    color: #22c55e;
 }
