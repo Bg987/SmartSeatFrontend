@@ -56,6 +56,7 @@
     </div>
 
     <div class="section" *ngIf="showGrid">
+        <p><b>Exam - {{examName}}</b></p>
         <div class="grid-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
             <button (click)="showGrid = false" class="btn-view">← Back to Colleges</button>
             <h3 style="margin: 0;">Allocation: {{selectedRoomName}}</h3>
