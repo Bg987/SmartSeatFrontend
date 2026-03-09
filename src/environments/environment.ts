@@ -1,5 +1,5 @@
 
-let production = true;
+let production = false;
 export const environment = {
 
   apiUrl: production ? 'https://proxy-0xaq.onrender.com/api1' : "http://localhost:8080/api",
