@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './Components/login/login';
-import { StudentDashboardComponent } from './Components/Dashboard/student-dashboard/student-dashboard';
+import { StudentLayout } from './Components/Dashboard/student-dashboard/student-layout/student-layout';
+import {StudentHome} from './Components/Dashboard/student-dashboard/student-home/student-home'
 import { UniversityLayoutComponent } from './Components/Dashboard/university-dashboard/university-layout/university-layout';
 import { UniversityHomeComponent } from './Components/Dashboard/university-dashboard/university-home/university-home';
 import { UploadCsvComponent } from './Components/Dashboard/university-dashboard/upload-colleges/upload-colleges';
@@ -25,7 +26,15 @@ import {QuestionGeneration} from './Components/Dashboard/university-dashboard/qu
 export const routes: Routes = [
 
   { path: '', component: LoginComponent },
-  { path: 'student-dashboard', component: StudentDashboardComponent },
+  {
+    path: 'student-dashboard',
+    component: StudentLayout,
+    children: [
+     { path: '', component: StudentHome },
+      { path: 'changePassword', component: changePassword },
+    ]
+    
+  },
   { path: 'college-dashboard',
     component: CollegeLayoutComponent ,
      children: [

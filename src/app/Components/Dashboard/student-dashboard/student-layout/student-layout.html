@@ -1,0 +1,86 @@
+<div class="dashboard-root" [class.dark-mode]="isDarkMode">
+
+    <div class="notification-overlay">
+        <div *ngFor="let note of notifications; trackBy: trackByFn" class="notification-toast">
+            <div class="toast-body">
+                <div class="toast-icon">🎓</div>
+                <div class="toast-text">
+                    <span class="toast-title">Student Update</span>
+                    <p>{{ note }}</p>
+                </div>
+            </div>
+            <button class="toast-close" (click)="removeNotification(note)">&times;</button>
+        </div>
+    </div>
+
+    <aside class="glass-sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo">S</div>
+            <h1>SmartSeat<span>.</span></h1>
+        </div>
+
+        <nav class="side-nav">
+            <div class="nav-section">
+                <span class="section-title">Personal</span>
+                <ul>
+                    <li routerLink="/student-dashboard" routerLinkActive="active">
+                        <i class="icon">🏠</i> <span>My Dashboard</span>
+                    </li>
+                    <li routerLink="/student-dashboard/profile-setup" routerLinkActive="active">
+                        <i class="icon">👤</i> <span>Profile Identity</span>
+                    </li>
+                    <li routerLink="/student-dashboard/changePassword" routerLinkActive="active">
+                        <i class="icon">🔐</i> <span>Change Password</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="section-title">Examination</span>
+                <ul>
+                    <li routerLink="/student-dashboard/my-allocation" routerLinkActive="active">
+                        <i class="icon">🪑</i> <span>View My Seat</span>
+                    </li>
+                    <li routerLink="/student-dashboard/hall-ticket" routerLinkActive="active">
+                        <i class="icon">🎟️</i> <span>Hall Ticket</span>
+                    </li>
+                    <li routerLink="/student-dashboard/schedule" routerLinkActive="active">
+                        <i class="icon">📅</i> <span>Exam Schedule</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="section-title">Academic</span>
+                <ul>
+                    <li routerLink="/student-dashboard/results" routerLinkActive="active">
+                        <i class="icon">🏆</i> <span>Exam Results</span>
+                    </li>
+                    <li routerLink="/student-dashboard/security" routerLinkActive="active">
+                        <i class="icon">🔐</i> <span>Account Security</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="theme-switch" (click)="toggleTheme()">
+                <div class="switch-content">
+                    <span>{{ isDarkMode ? '🌙 ' : '☀️' }}</span>
+                </div>
+                <div class="switch-track">
+                    <div class="switch-thumb" [class.active]="isDarkMode"></div>
+                </div>
+            </div>
+            <button type="button" class="logout-btn" (click)="onLogout()">
+                <span class="icon">🚪</span> Log Out
+            </button>
+        </div>
+    </aside>
+
+<main class="main-canvas">
+    <div class="content-viewport">
+        <router-outlet></router-outlet>
+    </div>
+</main>
+</div>

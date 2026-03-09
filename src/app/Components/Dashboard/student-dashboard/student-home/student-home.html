@@ -1,0 +1,138 @@
+<div class="profile-viewport" [attr.data-theme]="isDarkMode ? 'dark' : 'light'">
+    <div class="theme-switcher-float">
+        <button (click)="toggleTheme()" class="theme-btn">
+            {{ isDarkMode ? '☀️ Day Mode' : '🌙 Night Mode' }}
+        </button>
+    </div>
+
+    <div class="profile-container">
+        <aside class="profile-sidebar">
+            <div class="glass-card identity-card">
+                <div class="profile-image-wrapper">
+                    <div class="avatar-ring" [class.needs-photo]="!student?.imgUrl && !imagePreview">
+                        <div class="avatar-main">
+                            <img *ngIf="student?.imgUrl && !imagePreview" [src]="student.imgUrl" alt="Verified Profile"
+                                class="avatar-img">
+                            <img *ngIf="imagePreview" [src]="imagePreview" alt="Upload Preview"
+                                class="avatar-img preview">
+
+                            <div class="empty-trigger" *ngIf="!student?.imgUrl && !imagePreview"
+                                (click)="fileInput.click()">
+                                <span class="camera-icon">📸</span>
+                                <span class="upload-text"
+                                    style="font-size: 12px; font-weight: 700; color: var(--text-soft);">Upload
+                                    Photo</span>
+                            </div>
+
+                            <div class="verified-badge" *ngIf="student?.imgUrl && !imagePreview">
+                                <span>🔒 VERIFIED</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="identity-text">
+                    <h2>{{ student?.name | titlecase }}</h2>
+                    <span class="student-id">{{ student?.enrollmentNo }}</span>
+                    <div class="badge-stack" style="text-align: center;">
+                        <span class="status-pill" [class.backlog]="student?.hasBacklog">
+                            {{ student?.hasBacklog ? 'Academic Backlog' : 'Academic Clear' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-notice-card" *ngIf="!student?.imgUrl">
+                <div class="notice-header">
+                    <span class="warning-blob"
+                        style="background: var(--danger); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900;">!</span>
+                    <h4 style="margin: 0; color: var(--danger); font-weight: 800;">{{ selectedFile ? 'Confirm Photo' :
+                        'Action Required' }}</h4>
+                </div>
+
+                <ng-container *ngIf="!selectedFile">
+                    <p style="font-size: 13px; margin: 12px 0;">Your identity is not yet verified for the AI exam
+                        system.</p>
+                    <div class="policy-box">
+                        <strong>One-Time Policy:</strong> <u>This image is used for AI Recognition. Updates require
+                            college admin intervention.</u>
+                    </div>
+                    <ul class="auth-specs" style="padding: 0;">
+                        <li>✨ Complete front-facing light</li>
+                        <li>👓 No spectacles or shades</li>
+                        <li>👤 Direct camera gaze</li>
+                    </ul>
+                    <button class="primary-btn accent-btn" (click)="fileInput.click()">
+                        Select Photo
+                    </button>
+                </ng-container>
+
+                <ng-container *ngIf="selectedFile">
+                    <div class="policy-box" style="background: var(--accent-soft); border-style: dashed;">
+                        <p style="margin: 0;">Selected: <strong>{{ selectedFile.name }}</strong></p>
+                        <small style="color: var(--text-soft);">Ensure lighting is clear before locking.</small>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="primary-btn success-btn" (click)="confirmAndUpload()" [disabled]="isUploading">
+                            {{ isUploading ? 'Uploading...' : 'Confirm & Lock' }}
+                        </button>
+                        <button class="secondary-btn" (click)="resetSelection()" [disabled]="isUploading">
+                            Cancel
+                        </button>
+                    </div>
+                </ng-container>
+            </div>
+        </aside>
+
+        <main class="profile-main-content">
+            <div class="glass-card details-card">
+                <div class="section-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <h3
+                        style="margin: 0; color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                        Academic Information</h3>
+                    <div style="flex: 1; height: 1px; background: var(--card-border);"></div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-tile">
+                        <label>Branch</label>
+                        <p>{{ student?.branch }}</p>
+                    </div>
+                    <div class="info-tile">
+                        <label>Specialization</label>
+                        <p>{{ student?.specialization }}</p>
+                    </div>
+                    <div class="info-tile">
+                        <label>Semester</label>
+                        <p>{{ student?.semester }}th Sem</p>
+                    </div>
+                    <div class="info-tile highlight">
+                        <label>College</label>
+                        <p>{{ college?.name }}</p>
+                    </div>
+                </div>
+
+                <div class="section-header" style="display: flex; align-items: center; gap: 10px; margin: 30px 0 20px;">
+                    <h3
+                        style="margin: 0; color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">
+                        Contact Details</h3>
+                    <div style="flex: 1; height: 1px; background: var(--card-border);"></div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-tile">
+                        <label>Email</label>
+                        <p style="font-size: 14px;">{{ student?.email }}</p>
+                    </div>
+                    <div class="info-tile">
+                        <label>Mobile</label>
+                        <p>+91 {{ student?.mobileNumber }}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)"
+        accept="image/jpeg, image/jpg">
+</div>
