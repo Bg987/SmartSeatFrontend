@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './Components/login/login';
 import { StudentLayout } from './Components/Dashboard/student-dashboard/student-layout/student-layout';
-import {StudentHome} from './Components/Dashboard/student-dashboard/student-home/student-home'
+import { StudentHome } from './Components/Dashboard/student-dashboard/student-home/student-home';
+import {GetIncompleteExam} from './Components/Dashboard/student-dashboard/get-incomplete-exam/get-incomplete-exam'
 import { UniversityLayoutComponent } from './Components/Dashboard/university-dashboard/university-layout/university-layout';
 import { UniversityHomeComponent } from './Components/Dashboard/university-dashboard/university-home/university-home';
 import { UploadCsvComponent } from './Components/Dashboard/university-dashboard/upload-colleges/upload-colleges';
@@ -30,8 +31,10 @@ export const routes: Routes = [
     path: 'student-dashboard',
     component: StudentLayout,
     children: [
-     { path: '', component: StudentHome },
+      { path: '', component: StudentHome },
+      { path: 'upcomingExams', component: GetIncompleteExam },
       { path: 'changePassword', component: changePassword },
+
     ]
     
   },

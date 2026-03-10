@@ -1,0 +1,75 @@
+<div class="content-viewport">
+    <div class="state-placeholder" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Syncing Data...</p>
+    </div>
+
+    <div class="exam-selection-container" *ngIf="!isViewingTicket && !isLoading">
+        <div class="view-header">
+            <div class="title-group">
+                <div class="icon-box">📅</div>
+                <div>
+                    <h3>Upcoming Exams</h3>
+                    <p class="subtitle">Check your seating and schedule</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="exam-grid">
+            <div class="exam-card-tile" *ngFor="let exam of exams">
+                <div class="exam-details">
+                    <div class="countdown-tag" [class.urgent]="getDaysRemaining(exam.Date) <= 1"
+                        [class.upcoming]="getDaysRemaining(exam.Date) > 1">
+                        {{ getDaysRemaining(exam.Date) === 0 ? 'Today' : 'In ' + getDaysRemaining(exam.Date) + ' Days'
+                        }}
+                    </div>
+                    <h4 class="exam-title">{{ exam.examName }}</h4>
+                    <span>Date: {{ exam.Date | date:'mediumDate' }}</span>
+                </div>
+                <button class="action-btn" (click)="viewSeat(exam.id)">View Seat →</button>
+            </div>
+
+            <div class="state-placeholder" *ngIf="exams.length === 0">
+                <div class="success-icon">✅</div>
+                <p>{{ errorMessage || 'No pending exams.' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticket-view-container" *ngIf="isViewingTicket && selectedAllocation && !isLoading">
+        <button class="outline-btn" (click)="goBack()" style="margin-bottom: 20px;">← Back to Schedule</button>
+    
+        <div class="glass-card seat-map-card">
+            <div class="map-header">
+                <div class="room-info">
+                    <h3>Block {{ selectedAllocation.seatDetails[0]?.block }} : Room {{ selectedAllocation.seatDetails[0]?.roomNumber }}</h3>
+                    <h4><p>📍 {{ selectedAllocation.enrollmentNo }} - Column {{ selectedAllocation.seatDetails[0]?.col_no + 1 }} Row
+                    {{selectedAllocation.seatDetails[0]?.row_no + 1 }}</p></h4>
+                </div>
+            </div>
+            <br>
+            <div class="classroom-layout">
+                <div class="blackboard">EXAM BOARD / FRONT</div>
+    
+                <div class="grid-scroll-container">
+                    <div class="column-wrapper">
+                        <div class="seat-column" *ngFor="let col of [].constructor(maxCols); let cIdx = index">
+                            <div class="column-header">Col {{cIdx + 1}}</div>
+    
+                            <div *ngFor="let row of [].constructor(maxRows); let rIdx = index" class="seat-cell"
+                                [class.is-me]="seatGrid[rIdx][cIdx]?.enrollmentNo === selectedAllocation.enrollmentNo"
+                                [class.is-occupied]="seatGrid[rIdx][cIdx] && seatGrid[rIdx][cIdx]?.enrollmentNo !== selectedAllocation.enrollmentNo"
+                                [class.is-empty]="!seatGrid[rIdx][cIdx]">
+    
+                                <div class="seat-content" *ngIf="seatGrid[rIdx][cIdx]">
+                                    <span class="enr-label">{{ seatGrid[rIdx][cIdx].enrollmentNo }}</span>
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,11 +23,8 @@
             <div class="nav-section">
                 <span class="section-title">Personal</span>
                 <ul>
-                    <li routerLink="/student-dashboard" routerLinkActive="active">
+                    <li routerLink="/student-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <i class="icon">🏠</i> <span>My Dashboard</span>
-                    </li>
-                    <li routerLink="/student-dashboard/profile-setup" routerLinkActive="active">
-                        <i class="icon">👤</i> <span>Profile Identity</span>
                     </li>
                     <li routerLink="/student-dashboard/changePassword" routerLinkActive="active">
                         <i class="icon">🔐</i> <span>Change Password</span>
@@ -38,14 +35,14 @@
             <div class="nav-section">
                 <span class="section-title">Examination</span>
                 <ul>
+                    <li routerLink="/student-dashboard/upcomingExams" routerLinkActive="active">
+                    <i class="icon">📅</i> <span>Upcoming Exams</span>
+                    </li>
                     <li routerLink="/student-dashboard/my-allocation" routerLinkActive="active">
                         <i class="icon">🪑</i> <span>View My Seat</span>
                     </li>
                     <li routerLink="/student-dashboard/hall-ticket" routerLinkActive="active">
                         <i class="icon">🎟️</i> <span>Hall Ticket</span>
-                    </li>
-                    <li routerLink="/student-dashboard/schedule" routerLinkActive="active">
-                        <i class="icon">📅</i> <span>Exam Schedule</span>
                     </li>
                 </ul>
             </div>
@@ -55,9 +52,6 @@
                 <ul>
                     <li routerLink="/student-dashboard/results" routerLinkActive="active">
                         <i class="icon">🏆</i> <span>Exam Results</span>
-                    </li>
-                    <li routerLink="/student-dashboard/security" routerLinkActive="active">
-                        <i class="icon">🔐</i> <span>Account Security</span>
                     </li>
                 </ul>
             </div>

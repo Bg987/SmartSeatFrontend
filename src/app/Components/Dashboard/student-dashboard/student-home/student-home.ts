@@ -16,7 +16,7 @@ export class StudentHome implements OnInit {
   url: string = environment.apiUrl;
   student: any;
   college: any;
-  
+  isRender = false;
   // State Management
   selectedFile: File | null = null;
   imagePreview: string | null = null;
@@ -42,6 +42,7 @@ export class StudentHome implements OnInit {
         next: (res) => {
           this.student = res.student;
           this.college = res.college;
+          this.isRender = this.student.imgUrl === null;
           this.cdr.detectChanges();
         },
         error: (err) => console.error('Error fetching details', err)
@@ -91,7 +92,9 @@ export class StudentHome implements OnInit {
     }).subscribe({
       next: (res) => {
         alert("Success: Your identity has been verified and locked.");
+        this.isRender = false;
         this.resetSelection();
+        this.loadStudentDetails();
         this.loadStudentDetails(); // Reload to show the locked Cloudinary image
       },
       error: (err: HttpErrorResponse) => {
@@ -113,11 +116,7 @@ export class StudentHome implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // --- Theme Logic ---
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-  }
+
 
   private loadTheme() {
     const savedTheme = localStorage.getItem('theme');
