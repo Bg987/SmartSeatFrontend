@@ -23,6 +23,7 @@ import { GetTimeTableCollege } from './Components/Dashboard/college-dashboard/ge
 import { GenSeatingPlan } from './Components/Dashboard/university-dashboard/gen-seating-plan/gen-seating-plan';
 import { ViewSeatingAllocation } from './Components/Dashboard/university-dashboard/view-seating-allocation/view-seating-allocation'
 import {QuestionGeneration} from './Components/Dashboard/university-dashboard/question-generation/question-generation'
+import { ScheduleExam } from './Components/Dashboard/university-dashboard/schedule-exam/schedule-exam'
 
 export const routes: Routes = [
 
@@ -47,7 +48,7 @@ export const routes: Routes = [
       { path: 'uploadStudent', component: UploadStudents },
       {path:'addStudents',component:AddStudents},
       {path:'uploadRooms',component:UploadRooms},
-       {path:'getTimeTable',component:GetTimeTableCollege},
+      {path:'getTimeTable',component:GetTimeTableCollege},
       {path:'sittingPlan',component:SittingPlan},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
@@ -63,6 +64,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: UniversityHomeComponent },
       { path: 'addCollege', component: AddCollegeComponent },
       { path: 'csv', component: UploadCsvComponent },
+      { path: 'scheduleExam', component: ScheduleExam },
       {path:'addSubjects',component:AddSubjects},
       { path: 'addTimeTable', component: AddTimeTable },
       { path: 'genSeatPlan', component: GenSeatingPlan },

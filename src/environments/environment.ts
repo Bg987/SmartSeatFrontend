@@ -1,5 +1,6 @@
+import { CdkTreeNodeOutlet } from "@angular/cdk/tree";
 
-let production = true;
+let production = CdkTreeNodeOutlet;
 export const environment = {
 
   apiUrl: production ? 'https://proxy-0xaq.onrender.com/api1' : "http://localhost:8080/api",

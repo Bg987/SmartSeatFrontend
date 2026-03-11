@@ -51,22 +51,23 @@
       <div class="nav-section">
         <span class="section-title">Engine</span>
         <ul>
-          <li routerLink="/university-dashboard/questionGeneration" routerLinkActive="active">
-            <i class="icon">👁️</i> <span>Generate Questions</span>
-          </li>
-          <li routerLink="/university-dashboard/addTimeTable" routerLinkActive="active">
-            <i class="icon">📅</i> <span>Schedules</span>
-          </li>
+        <li routerLink="/university-dashboard/scheduleExam" routerLinkActive="active">
+          <i class="icon">📅</i> <span>Schedule Exam</span>
+        </li>
+        <li routerLink="/university-dashboard/genSeatPlan" routerLinkActive="active">
+          <i class="icon">🪑</i> <span>Generate Seating</span>
+        </li>
           <li routerLink="/university-dashboard/viewSeatingPlan" routerLinkActive="active">
             <i class="icon">👁️</i> <span>View Seating</span>
           </li>
-          <li routerLink="/university-dashboard/genSeatPlan" routerLinkActive="active">
-            <i class="icon">👁️</i> <span>Generate Seating</span>
+          <li routerLink="/university-dashboard/questionGeneration" routerLinkActive="active">
+            <i class="icon">✨</i> <span>Generate Questions</span>
           </li>
         </ul>
       </div>
     </nav>
 
+    
     <div class="sidebar-footer">
       <div class="theme-switch" (click)="toggleTheme()">
         <div class="switch-content">
