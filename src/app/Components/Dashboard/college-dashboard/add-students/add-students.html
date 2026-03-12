@@ -6,6 +6,7 @@
 
   <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="themed-form">
 
+    <!-- BASIC INFO -->
     <div class="form-section">
       <div class="form-row">
         <div class="input-section">
@@ -32,6 +33,7 @@
       </div>
     </div>
 
+    <!-- ACADEMIC INFO -->
     <div class="form-section row-split">
       <div class="input-section">
         <label class="field-label">Academic Branch</label>
@@ -56,6 +58,7 @@
       </div>
     </div>
 
+    <!-- SUBJECTS -->
     <div class="subjects-canvas">
       <h3 class="canvas-title">Academic Curriculum (Subject Codes)</h3>
       <div formArrayName="subjects">
@@ -71,18 +74,47 @@
       </button>
     </div>
 
+    <!-- FOOTER -->
     <div class="footer-section">
+
+      <!-- BACKLOG SWITCH -->
       <div class="switch-container">
         <label class="switch">
           <input type="checkbox" formControlName="hasBacklog" id="backlogSwitch">
           <span class="slider"></span>
         </label>
-        <label for="backlogSwitch" class="switch-label">Student currently has active Backlog</label>
+        <label for="backlogSwitch" class="switch-label">
+          Student currently has active Backlog
+        </label>
       </div>
 
-      <button type="submit" class="prime-btn success" [disabled]="studentForm.invalid">
+      <!-- 🔥 BACKLOG SECTION (NEW ADDED) -->
+      <div *ngIf="showBacklogUI" class="subjects-canvas backlog-section">
+
+        <h3 class="canvas-title">Backlog Subjects</h3>
+
+        <div formArrayName="backlogSubjects">
+          <div *ngFor="let sub of backlogSubjects.controls; let i=index" class="subject-row">
+            <input [formControlName]="i" placeholder="Enter Backlog Subject Code (e.g. CS201)">
+            <button type="button" class="remove-btn" (click)="removeBacklogSubject(i)">
+              <span class="icon">🗑️</span>
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="add-node-btn" (click)="addBacklogSubject()">
+          <span class="icon">➕</span> Add Backlog Subject
+        </button>
+
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit"
+              class="prime-btn success"
+              [disabled]="studentForm.invalid">
         Finalize Enrollment
       </button>
+
     </div>
 
   </form>
