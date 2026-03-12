@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class AddStudents {
 
   studentForm: FormGroup;
+  showBacklogUI = false;   // 🔥 Needed for UI
 
   constructor(
     private fb: FormBuilder,
@@ -33,8 +34,10 @@ export class AddStudents {
       backlogSubjects: this.fb.array([])
     });
 
-    // 🔥 Dynamic backlog control
+    // 🔥 Proper backlog UI handling
     this.studentForm.get('hasBacklog')?.valueChanges.subscribe(value => {
+      this.showBacklogUI = value;
+
       if (value) {
         if (this.backlogSubjects.length === 0) {
           this.addBacklogSubject();
@@ -45,7 +48,7 @@ export class AddStudents {
     });
   }
 
-  // ---------- GETTERS ----------
+  // -------- GETTERS --------
 
   get subjects(): FormArray {
     return this.studentForm.get('subjects') as FormArray;
@@ -55,7 +58,7 @@ export class AddStudents {
     return this.studentForm.get('backlogSubjects') as FormArray;
   }
 
-  // ---------- SUBJECT FUNCTIONS ----------
+  // -------- SUBJECTS --------
 
   addSubject() {
     this.subjects.push(this.fb.control('', Validators.required));
@@ -65,7 +68,7 @@ export class AddStudents {
     this.subjects.removeAt(index);
   }
 
-  // ---------- BACKLOG FUNCTIONS ----------
+  // -------- BACKLOG --------
 
   addBacklogSubject() {
     this.backlogSubjects.push(this.fb.control('', Validators.required));
@@ -75,7 +78,7 @@ export class AddStudents {
     this.backlogSubjects.removeAt(index);
   }
 
-  // ---------- SUBMIT ----------
+  // -------- SUBMIT --------
 
   onSubmit() {
 
@@ -84,18 +87,23 @@ export class AddStudents {
       return;
     }
 
+    const formValue = this.studentForm.value;
+
     const payload = {
-      ...this.studentForm.value,
+      ...formValue,
       subjects: this.subjects.value,
-      backlogSubjects: this.backlogSubjects.value
+      backlogSubjects: formValue.hasBacklog
+        ? this.backlogSubjects.value
+        : null   
     };
 
     this.studentService.addStudent(payload).subscribe({
       next: (res) => {
-        alert('Student Added Successfully ✅');
+        alert(res);
         this.studentForm.reset();
         this.subjects.clear();
         this.backlogSubjects.clear();
+        this.showBacklogUI = false;
       },
       error: (err) => {
         console.error('Error:', err);
