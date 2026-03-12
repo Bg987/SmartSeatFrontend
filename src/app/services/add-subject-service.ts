@@ -28,7 +28,9 @@ export class AddSubjectService {
 }
 
 uploadSubjectFile(data: FormData) {
-  return this.http.post(`${this.url}/university/uploadSubjects`, data,{withCredentials:true});
+  return this.http.post(`${this.url}/university/uploadSubjects`, data, {
+    withCredentials: true,
+  }, );
 }
 
 

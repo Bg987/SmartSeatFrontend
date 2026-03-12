@@ -1,3 +1,6 @@
+<div class="loader-overlay" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
 <div class="form-wrapper">
   <header class="form-header">
     <h2 class="main-title">Subject Management</h2>
@@ -56,15 +59,34 @@
         <p class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</p>
       </div>
       <button class="prime-btn" (click)="uploadFile()" [disabled]="!selectedFile">
-        Upload Manifest
+        Upload CSV
       </button>
     </div>
+    <br>
     <div class="status-toast" *ngIf="uploadMessage">{{ uploadMessage }}</div>
   </div>
 
   <div class="table-section">
     <h3 class="table-title">Academic Inventory</h3>
-    <div class="table-container" *ngIf="subjects.length > 0; else noData">
+    <header class="filter-header">
+      <input type="text" [(ngModel)]="searchText", placeholder="Search By id or Name">
+      <select [(ngModel)]="selectedDept">
+        <option value="">All Depts</option>
+        <option *ngFor="let d of uniqueDepts" [value]="d">{{d}}</option>
+      </select>
+      <select [(ngModel)]="selectedBranch">
+        <option value="">All Branches</option>
+        <option *ngFor="let b of uniqueBranches" [value]="b">{{b}}</option>
+      </select>
+      <select [(ngModel)]="selectedSem">
+        <option value="">All Sems</option>
+        <option *ngFor="let s of uniqueSems" [value]="s">Sem {{s}}</option>
+      </select>
+  
+    </header>
+
+
+    <div class="table-container" *ngIf="filteredSubjects.length > 0; else noData">
       <table class="custom-table">
         <thead>
           <tr>
@@ -77,7 +99,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let sub of subjects; let i = index">
+        <tr *ngFor="let sub of filteredSubjects; let i = index">
             <td><span class="index-badge">{{ i + 1 }}</span></td>
             <td><code>{{ sub.subjectId }}</code></td>
             <td><strong>{{ sub.subjectName }}</strong></td>
@@ -92,7 +114,7 @@
 
   <ng-template #noData>
     <div class="empty-state">
-      <p>No subjects have been registered in the inventory.</p>
+      <p>No subjects have been registered in the inventory based on filter</p>
     </div>
   </ng-template>
 </div>

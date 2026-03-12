@@ -30,6 +30,7 @@ export class ScheduleExam implements OnInit {
   // UI State
   response: any = '';
   isConfiguring: boolean = false;
+
   searchText: string = '';
   selectedDept: string = '';
   selectedBranch: string = '';
@@ -120,7 +121,7 @@ export class ScheduleExam implements OnInit {
     // Send this.selectedSubjects array to your backend
   }
 
-  // Filters (Same as before)
+  // Filters 
   get uniqueDepts() { return [...new Set(this.subjects.map(s => s.department))].filter(v => !!v); }
   get uniqueBranches() { return [...new Set(this.subjects.map(s => s.branch))].filter(v => !!v); }
   get uniqueSems() { return [...new Set(this.subjects.map(s => s.semester))].filter(v => !!v).sort(); }

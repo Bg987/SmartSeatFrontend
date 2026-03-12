@@ -1,65 +1,85 @@
+/* --- 1. CORE WRAPPER & THEME DEFAULTS --- */
 .form-wrapper {
   max-width: 800px;
   margin: 0 auto;
+  padding: 20px;
+  color: var(--text-main);
 }
 
-/* OPTION TOGGLE */
+.main-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+/* --- 2. OPTION TOGGLE (Segmented Control) --- */
 .option-toggle {
-  /* Using a slightly darker background so the white active button pops */
   background: rgba(79, 70, 229, 0.08);
   display: flex;
-  gap: 8px;
+  gap: 4px;
   padding: 6px;
   border-radius: 14px;
   margin-bottom: 30px;
   border: 1px solid var(--border-color);
+  transition: background 0.3s ease;
 }
 
 .option-toggle button {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   border: none;
   background: transparent;
   color: var(--text-soft);
   border-radius: 10px;
   cursor: pointer;
   font-weight: 700;
-  /* Increased weight for better readability */
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .option-toggle button.active {
-  /* This ensures the active button is pure white (or dark-blue in dark mode) */
-  background: var(--text-main) !important;
+  background: var(--card-bg, #ffffff) !important;
+  /* Falls back to white if var not defined */
   color: var(--primary) !important;
-  /* Stronger shadow to create a "lifted" effect in light mode */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
-/* Specific Dark Mode refinement */
-.dark-mode .option-toggle {
-  background: rgba(0, 0, 0, 0.3);
+.option-toggle button:hover:not(.active) {
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.04);
 }
 
-.dark-mode .option-toggle button.active {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+/* --- 3. THEMED FORM & INPUTS --- */
+.themed-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* INPUTS & FORMS */
+.input-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .field-label {
-  display: block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-soft);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 input {
@@ -69,61 +89,97 @@ input {
   border: 1px solid var(--border-color);
   border-radius: 10px;
   color: var(--text-main);
-  margin-bottom: 15px;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
 input:focus {
   outline: none;
   border-color: var(--primary);
-  background: var(--content-bg);
+  background: var(--card-bg);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
-/* UPLOAD DROPZONE */
+/* --- 4. ACTION BUTTONS --- */
+.prime-btn {
+  width: 100%;
+  padding: 14px;
+  color: var(--text-main);
+  background: var(--primary);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+  margin-top: 10px;
+}
+
+.prime-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.prime-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* --- 5. UPLOAD DROPZONE --- */
 .upload-dropzone {
   background: var(--bg-main);
-  border: 1px solid rgba(79, 70, 229, 0.1);
-    border-radius: 12px;
-  padding: 30px;
+  border: 2px dashed var(--border-color);
+  border-radius: 16px;
+  padding: 40px 20px;
   text-align: center;
-  /* Added: Inner shadow to create depth in light mode */
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
-/* Make it pop when hovering or dragging */
 .upload-dropzone:hover {
-  border: 1px solid rgba(79, 70, 229, 0.1);
-    border-radius: 12px;
+  border-color: var(--primary);
   background: rgba(79, 70, 229, 0.02);
 }
 
 .upload-trigger {
-  color: var(--text-main);;
   cursor: pointer;
-  margin-bottom: 20px;
 }
 
 .upload-icon {
-  font-size: 32px;
+  font-size: 40px;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  filter: grayscale(0.5);
 }
 
 .file-name {
   color: var(--primary);
   font-weight: 700;
+  margin-top: 10px;
+  display: block;
 }
 
-/* TABLE STYLES */
+/* --- 6. TABLE STYLES --- */
 .table-section {
-  margin-top: 40px;
+  margin-top: 50px;
 }
 
 .table-title {
-  font-size: 18px;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  padding-left: 4px;
+  border-left: 4px solid var(--primary);
+}
+
+.table-container {
+  background: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  box-shadow: var(--shadow-ui);
 }
 
 .custom-table {
@@ -132,45 +188,172 @@ input:focus {
 }
 
 .custom-table th {
+  background: var(--bg-main);
   text-align: left;
-  padding: 12px;
+  padding: 14px;
   font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-soft);
   border-bottom: 1px solid var(--border-color);
 }
 
 .custom-table td {
-  padding: 14px 12px;
+  padding: 16px 14px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-main);
+  font-size: 14px;
+}
+
+.custom-table tr:last-child td {
+  border-bottom: none;
 }
 
 .custom-table tr:hover {
-  background: rgba(79, 70, 229, 0.03);
+  background: rgba(79, 70, 229, 0.02);
 }
 
 .index-badge {
   background: var(--bg-main);
   color: var(--text-soft);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 code {
   background: rgba(79, 70, 229, 0.1);
   color: var(--primary);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: monospace;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
 }
 
-/* EMPTY STATE */
+/* --- 7. STATUS & FEEDBACK --- */
+.status-toast {
+  background: var(--bg-main);
+  color: var(--text-main);
+  padding: 12px 16px;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary);
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
 .empty-state {
-  padding: 40px;
+  padding: 60px;
   text-align: center;
   background: var(--bg-main);
   border-radius: 20px;
   color: var(--text-soft);
+  border: 1px solid var(--border-color);
+}
+
+/* --- 8. DARK MODE SPECIFIC REFINEMENTS --- */
+:host-context(.dark-mode) .option-toggle,
+.dark-mode .option-toggle {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+:host-context(.dark-mode) .option-toggle button.active,
+.dark-mode .option-toggle button.active {
+  background: #1e293b !important;
+  /* Deep Slate */
+  color: #818cf8 !important;
+  /* Soft Indigo */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+:host-context(.dark-mode) .upload-dropzone,
+.dark-mode .upload-dropzone {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #3f51b5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 16px 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-ui);
+  top: 20px;
+  z-index: 1000;
+  flex-wrap: wrap;
+}
+
+.filter-header input[type="text"],
+.filter-header select {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.filter-header input[type="text"] {
+  flex: 2;
+  min-width: 220px;
+}
+
+.filter-header select {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  flex: 1;
+  min-width: 150px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.filter-header select option {
+  background: var(--bg-main);;
+  color: var(--text-main);
 }

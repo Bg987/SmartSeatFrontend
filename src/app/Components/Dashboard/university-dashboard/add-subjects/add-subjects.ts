@@ -1,5 +1,5 @@
 import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule,FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddSubjectService } from '../../../../services/add-subject-service';
 
@@ -8,7 +8,8 @@ import { AddSubjectService } from '../../../../services/add-subject-service';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
   ],
   templateUrl: './add-subjects.html',
   styleUrls: ['./add-subjects.css']
@@ -16,14 +17,21 @@ import { AddSubjectService } from '../../../../services/add-subject-service';
 export class AddSubjects implements OnInit {
 
   subjectForm!: FormGroup;
-  responseMessage= '';
   subjects: any[] = [];
   isLoading: boolean = false;
 
   // File Upload Variables
   selectedFile: File | null = null;
+  responseMessage: string= '';
   uploadMessage: string = '';
   activeTab: string = 'manual';
+
+  searchText: string = '';
+  selectedDept: string = '';
+  selectedBranch: string = '';
+  selectedSem: string = '';
+
+  selectedSubjects: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -48,57 +56,66 @@ export class AddSubjects implements OnInit {
 
   // load Subjects
   loadSubjects(): void {
+  this.isLoading = true;
 
-    this.isLoading = true;
+  this.subjectService.getAllSubjects()
+    .subscribe({
+      next: (res: any) => {
 
-    this.subjectService.getAllSubjects()
-      .subscribe({
-        next: (res: any) => {
-
-          if (Array.isArray(res)) {
-            this.subjects = res;
-          } else if (res) {
-            this.subjects = [res];
-          } else {
-            this.subjects = [];
-          }
-
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error loading subjects:', err);
+        if (Array.isArray(res)) {
+          this.subjects = [...res].reverse();
+        } else if (res) {
+          this.subjects = [res];
+        } else {
           this.subjects = [];
-          this.isLoading = false;
         }
-      });
-  }
+
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error loading subjects:', err);
+        this.subjects = [];
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+}
 
   // Add Subject
   onSubmit(): void {
 
-    if (this.subjectForm.invalid) {
-      this.responseMessage = 'Please fill all required fields';
-      return;
-    }
+  this.responseMessage = "";
 
-    this.subjectService.addSubject(this.subjectForm.value)
-      .subscribe({
-        next: (res: any) => {
+  if (this.subjectForm.invalid) {
+    this.responseMessage = 'Please fill all required fields';
+    return;
+  }
 
-          this.responseMessage = "Subject added successfully ✅";
-          this.subjectForm.reset();
-          this.loadSubjects();
-        },
-        error: (err) => {
-          console.error('Error adding subject:', err.error);
-          const errorObj = typeof err.error === 'string' ? JSON.parse(err.error) : err.error;
+  this.isLoading = true;
 
-          //Extract values and join them into a single message (or keep as array)
-          this.responseMessage = Object.values(errorObj).join(', ');
-          this.cdr.detectChanges();
-        }
-      });
+  this.subjectService.addSubject(this.subjectForm.value)
+    .subscribe({
+      next: (res: any) => {
+
+        this.responseMessage = "Subject added successfully ✅";
+        this.subjectForm.reset();
+        this.loadSubjects();
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+
+        console.error('Error adding subject:', err.error);
+        const errorObj = typeof err.error === 'string'
+          ? JSON.parse(err.error)
+          : err.error;
+
+        this.responseMessage = Object.values(errorObj).join(', ');
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   //File Select
@@ -113,27 +130,48 @@ export class AddSubjects implements OnInit {
   //  Upload File
   uploadFile(): void {
 
-    if (!this.selectedFile) {
-      this.uploadMessage = "Please select a file first";
-      return;
-    }
+  this.uploadMessage = "";
 
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-
-    this.subjectService.uploadSubjectFile(formData)
-      .subscribe({
-        next: (res: any) => {
-
-          this.uploadMessage = "File uploaded successfully ";
-          this.selectedFile = null;
-
-        },
-        error: (err) => {
-          console.error(err);
-          this.uploadMessage = "File upload failed ";
-        }
-      });
+  if (!this.selectedFile) {
+    this.uploadMessage = "Please select a file first";
+    return;
   }
 
+  this.isLoading = true;
+
+  const formData = new FormData();
+  formData.append('file', this.selectedFile);
+
+  this.subjectService.uploadSubjectFile(formData)
+    .subscribe({
+      next: (res: any) => {
+        this.selectedFile = null;
+        this.uploadMessage = res.message;
+        this.loadSubjects();
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.uploadMessage = err.error.error;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  get uniqueDepts() { return [...new Set(this.subjects.map(s => s.department))].filter(v => !!v); }
+  get uniqueBranches() { return [...new Set(this.subjects.map(s => s.branch))].filter(v => !!v); }
+  get uniqueSems() { return [...new Set(this.subjects.map(s => s.semester))].filter(v => !!v).sort(); }
+
+  get filteredSubjects() {
+    return this.subjects.filter(s => {
+      const matchesSearch = !this.searchText || 
+        s.subjectName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        s.subjectId.toLowerCase().includes(this.searchText.toLowerCase());
+      return matchesSearch && 
+             (!this.selectedDept || s.department === this.selectedDept) &&
+             (!this.selectedBranch || s.branch === this.selectedBranch) &&
+             (!this.selectedSem || s.semester?.toString() === this.selectedSem);
+    });
+  }
 }
