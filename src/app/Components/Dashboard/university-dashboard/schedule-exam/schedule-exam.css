@@ -326,3 +326,37 @@
         width: 100%;
     }
 }
+
+/* Styling for rows that are already scheduled */
+.row-disabled {
+    background-color: rgba(239, 68, 68, 0.03);
+    /* Subtle red tint */
+    opacity: 0.8;
+}
+
+.row-disabled .form-input {
+    background-color: var(--bg-main);
+    cursor: not-allowed;
+    border-color: var(--border-color);
+    color: var(--text-soft);
+}
+
+/* Status Badge */
+.status-badge.error {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 2px 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fee2e2;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Dark mode adjustment for error badge */
+:host-context(.dark-mode) .status-badge.error {
+    background: rgba(220, 38, 38, 0.1);
+    color: #f87171;
+    border-color: rgba(220, 38, 38, 0.2);
+}

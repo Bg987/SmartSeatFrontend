@@ -23,10 +23,10 @@ interface ScheduledSubject {
 })
 export class ScheduleExam implements OnInit {
 
+  alreadyScheduledMap: { [key: string]: boolean } = {};
   subjects: any[] = [];
   url: string = environment.apiUrl;
   private http = inject(HttpClient);
-
   // UI State
   response: any = '';
   isConfiguring: boolean = false;
@@ -80,8 +80,20 @@ export class ScheduleExam implements OnInit {
   }
 
   proceedToConfigure() {
+    this.response = '';
     if (this.selectedSubjects.length > 0) {
       this.isConfiguring = true;
+      const ids = this.selectedSubjects.map(s => s.subjectId);
+  
+      this.http.post<any>(`${this.url}/university/check-scheduled`, ids, { withCredentials: true })
+        .subscribe({
+          next: (res) => {
+            this.alreadyScheduledMap = res;
+            this.isConfiguring = true;
+            this.cdr.detectChanges();
+          },
+          error: (err) => console.error("Error checking subject status", err)
+      });
     }
   }
 
@@ -92,12 +104,13 @@ export class ScheduleExam implements OnInit {
       alert("Please select a date for all subjects.");
       return;
     } 
-    console.log(this.selectedSubjects);
+    this.response = "";
     this.http.post(`${this.url}/university/scheduleExam`, this.selectedSubjects, { withCredentials: true })
       .subscribe({
         next: (res: any) => {
           this.response = res.message;
           this.cdr.detectChanges();
+          this.isConfiguring = false;
         },
         error: (err) => {
           this.response = err.error.error;

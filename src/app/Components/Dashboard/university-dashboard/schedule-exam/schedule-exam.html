@@ -40,7 +40,8 @@
             <h2>Set Individual Exam Details</h2>
         </div>
 
-        <div class="config-table-wrapper">
+        <div *ngIf="selectedSubjects.length==0">Select atleast on subject</div>
+        <div class="config-table-wrapper" *ngIf="selectedSubjects.length!=0">
             <table class="config-table">
                 <thead>
                     <tr>
@@ -52,16 +53,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of selectedSubjects; let i = index">
+                    <tr *ngFor="let item of selectedSubjects; let i = index"
+                        [class.row-disabled]="alreadyScheduledMap[item.subjectId]">
                         <td>
                             <div class="sub-info">
                                 <strong>{{item.subjectId}}</strong>
                                 <span>{{item.subjectName}}</span>
+                                <div *ngIf="alreadyScheduledMap[item.subjectId]" class="status-badge error">
+                                    Already Scheduled & Incomplete
+                                </div>
                             </div>
                         </td>
-                        <td><input type="date" [(ngModel)]="item.examDate" class="form-input"></td>
-                        <td><input type="time" [(ngModel)]="item.startTime" class="form-input"></td>
-                        <td><input type="number" [(ngModel)]="item.duration" class="form-input" style="width: 80px;">
+                        <td>
+                            <input type="date" [(ngModel)]="item.examDate" class="form-input"
+                                [disabled]="alreadyScheduledMap[item.subjectId]">
+                        </td>
+                        <td>
+                            <input type="time" [(ngModel)]="item.startTime" class="form-input"
+                                [disabled]="alreadyScheduledMap[item.subjectId]">
+                        </td>
+                        <td>
+                            <input type="number" [(ngModel)]="item.duration" class="form-input" style="width: 80px;"
+                                [disabled]="alreadyScheduledMap[item.subjectId]">
                         </td>
                         <td>
                             <button class="btn-remove" (click)="selectedSubjects.splice(i, 1)">Remove</button>
@@ -72,7 +85,7 @@
         </div>
 
         <div class="config-footer">
-            <button class="btn-finalize" (click)="confirmAllSchedules()">Finalize All Exams</button>
+            <button class="btn-finalize" (click)="confirmAllSchedules()" *ngIf="selectedSubjects.length!=0">Finalize All Exams</button>
         </div>
         <div>{{response}}</div>
     </div>

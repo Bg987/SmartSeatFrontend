@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    alert("call");
     this.submitted = true;
     this.successMessage = '';
     this.errorMessage = '';
