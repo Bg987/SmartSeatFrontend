@@ -79,6 +79,10 @@
   font-weight: 800;
 }
 
+.template-section,.status-toast{
+  color: var(--text-main);
+}
+
 /* --- NAVIGATION (BLACK TEXT ACTIVE STATE) --- */
 .side-nav {
   flex: 1;
@@ -211,6 +215,7 @@
 }
 
 .prime-btn:hover:not(:disabled) {
+  color: var(--text-main);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
 }
@@ -289,7 +294,7 @@
   padding: 16px;
   border-radius: 14px;
   background: var(--primary);
-  color: white;
+  color: var(--text-main);
   font-weight: 700;
   border: none;
   cursor: pointer;

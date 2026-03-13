@@ -78,47 +78,29 @@ export class UploadCsvComponent {
   const formData = new FormData();
   formData.append("file", this.selectedFile);
 
+   this.response = "";
   this.isUploading = true;
   this.isError = false;
 
-  this.http.post<string[]>(this.uploadUrl, formData,{withCredentials: true})
-    .pipe(
-      finalize(() => {
-        this.isUploading = false;
-        this.cdr.detectChanges();
-      })
-    )
-    .subscribe({
-
-      next: (response: any) => {
-
-        let message = '';
-
-        if (Array.isArray(response)) {
-          message = response.join('\n');
-        } else if (typeof response === 'string') {
-          message = response;
-        } else {
-          message = JSON.stringify(response);
-        }
-
-        this.response = "Upload Result:\n\n" + message;
-        //alert();
-      },
-
-      error: (error: HttpErrorResponse) => {
-
-        let message = '';
-        if (Array.isArray(error.error)) {
-          message = error.error.join('\n');
-        } else if (typeof error.error === 'string') {
-          message = error.error;
-        } else {
-          message = "Upload failed!";
-        }
-        this.response = message; 
-      }
-    });
+  this.http.post<any>(this.uploadUrl, formData, { withCredentials: true })
+  .pipe(
+    finalize(() => {
+      this.isUploading = false;
+      this.cdr.detectChanges();
+    })
+  )
+  .subscribe({
+    next: (res: any) => {
+      this.isError = false;
+      const msg = res.message || "Upload successful";
+      this.response = msg;
+    },
+    error: (err) => {
+      this.isError = true;
+      this.response = err.error.error;
+      this.cdr.detectChanges();
+    }
+  });
 }
 
 }

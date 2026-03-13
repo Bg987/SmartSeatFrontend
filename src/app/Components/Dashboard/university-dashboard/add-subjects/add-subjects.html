@@ -52,12 +52,11 @@
 
   <div *ngIf="activeTab === 'upload'" class="tab-content">
     <div class="template-section">
-      <p>Please use our standard format for bulk subject uploads.</p>
-    
+      <p>Please use our standard format for bulk subject uploads.
       <a href="/templates/subject_upload_sample.csv">
-        <i class="fas fa-file-download"></i> Download Example CSV
-      </a>
-      <br><br>
+         Download Example CSV
+      </a></p>
+      <br>
     </div>
     <div class="upload-dropzone">
       <input type="file" #fileInput (change)="onFileSelected($event)" accept=".csv,.xlsx" hidden />

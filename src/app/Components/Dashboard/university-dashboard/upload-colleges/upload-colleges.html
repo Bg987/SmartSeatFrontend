@@ -8,7 +8,10 @@
       <span class="icon">ℹ️</span>
       <p>Ensure unique emails, 10-digit contacts, and full institutional addresses in your manifest.</p>
     </div>
-
+    <div class="template-section">
+      <p>Please use our standard format for bulk college uploads.
+      <a href="/templates/college_upload_sample.csv">Download Example CSV</a></p>
+      <br>
     <div class="drop-zone" [class.dragging]="isDragging" (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
 
@@ -35,6 +38,7 @@
       {{ isUploading ? 'Processing Manifest...' : 'Initialize Bulk Upload' }}
     </button>
 
+    <br><br>
     <div class="status-toast" *ngIf="response" [class.error-toast]="isError">
       <span class="toast-icon">{{ isError ? '⚠️' : '✨' }}</span>
       {{ response }}
