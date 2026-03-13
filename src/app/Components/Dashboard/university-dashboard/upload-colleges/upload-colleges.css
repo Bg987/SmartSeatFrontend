@@ -187,23 +187,24 @@
   font-weight: 800;
   color: var(--text-main);
 }
+
 .prime-btn {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 300px;
   padding: 16px;
   border-radius: 16px;
   border: none;
   background: var(--primary);
-  color: white;
+  color: var(--text-main);
   font-weight: 700;
   font-size: 15px;
-  cursor: pointer;
+  cursor: progress;
   box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
   transition: all 0.3s ease;
 }
 
 .prime-btn:disabled {
-  background: var(--text-soft);
+  color: var(--text-main);
   opacity: 0.4;
   cursor: not-allowed;
   box-shadow: none;

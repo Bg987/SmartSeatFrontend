@@ -87,16 +87,16 @@ textarea:focus {
 
 /* PRIMARY BUTTON */
 .prime-btn {
+  font-weight: bold;
   width: 100%;
   padding: 16px;
-  border: none;
-  background: var(--primary);
-  color: white;
+  border: 1px dotted rgba(168, 8, 85, 0.1);
+  background: var(--bg-main);
+  color: var(--text-main);
   border-radius: 14px;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 10px;
 }
