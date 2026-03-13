@@ -8,7 +8,7 @@
 
     <div class="info-banner">
       <span class="icon">ℹ️</span>
-      <p><u>Ensure unique email, 10-digit contact, and full institutional address.</u></p>
+      <p><u>Ensure Proper email, 10-digit contact, and full institutional address.</u></p>
     </div>
 
     <div class="input-section">
@@ -28,12 +28,6 @@
         [(ngModel)]="collegeData.contactNumber" required pattern="^[0-9]{10}$" />
     </div>
 
-     <div class="input-section">
-      <label class="field-label">Department</label>
-      <input type="text" placeholder="Enter department" name="department"
-        [(ngModel)]="collegeData.department" required  />
-    </div>
-
     <div class="input-section">
       <label class="field-label">Institutional Address</label>
       <textarea placeholder="Provide the full physical location of the campus" name="address"
@@ -47,7 +41,7 @@
   </form>
 
   <div class="status-toast" *ngIf="response">
-    <span class="toast-icon">✨</span>
+    <span class="toast-icon"></span>
     {{ response }}
   </div>
 </div>

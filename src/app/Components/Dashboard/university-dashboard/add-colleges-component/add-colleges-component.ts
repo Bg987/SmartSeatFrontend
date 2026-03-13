@@ -17,7 +17,6 @@ export class AddCollegeComponent {
     email: '',
     contactNumber: '',
     address: '',
-    department:'',
   };
 
   response: String = '';
@@ -26,26 +25,21 @@ export class AddCollegeComponent {
   constructor(private collegeService: CollegeService,private cdr: ChangeDetectorRef) {}
 
  submitCollege(form?: any) {
-  this.loading = true;
-
-  this.collegeService.addCollege(this.collegeData).subscribe({
-    next: (res: String) => {
+   this.loading = true;
+   this.response ="";
+   this.collegeService.addCollege(this.collegeData).subscribe({
+    next: (res) => {
       this.loading = false;
-      this.response ="";
+      
          
       this.collegeData = {
         collegeName: '',
         email: '',
         contactNumber: '',
         address: '',
-        department:'',
       };
-      console.log(res);
-
-      alert("From submitted successfully...");
-      if (form) {
-        form.resetForm();   // force UI refresh
-      }
+      this.response = res.message;
+      form.resetForm();   // force UI refresh
     },
     error: (error) => {
       this.loading = false;
