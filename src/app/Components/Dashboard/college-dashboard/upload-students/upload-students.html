@@ -4,7 +4,9 @@
       <h2 class="main-title">Student Onboarding</h2>
       <p class="subtitle">Upload a CSV manifest to bulk register students to this college node.</p>
     </header>
-
+    <p>Please use our standard format for bulk student uploads.
+      <a href="/templates/student_upload_sample.csv">Download Example CSV</a>
+    </p>
     <div class="drop-zone" [class.dragging]="isDragging" (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="fileInput.click()">
 

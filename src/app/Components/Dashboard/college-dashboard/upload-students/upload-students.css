@@ -6,6 +6,9 @@
   min-height: 70vh;
 }
 
+p{
+  color :var(--text-main)
+}
 .upload-container {
   
   width: 100%;
