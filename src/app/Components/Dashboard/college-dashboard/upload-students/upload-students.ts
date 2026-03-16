@@ -30,7 +30,7 @@ export class UploadStudents {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-
+    this.responseMessage = '';
     if (file && file.name.toLowerCase().endsWith('.csv')) {
       this.selectedFile = file;
       this.fileSize = (file.size / 1024).toFixed(2) + ' KB';
@@ -38,6 +38,7 @@ export class UploadStudents {
     } else {
       alert("Please upload a valid CSV file");
     }
+    this.cdr.detectChanges();
   }
 
   onDragOver(event: DragEvent) {
@@ -69,6 +70,7 @@ export class UploadStudents {
 
  uploadFile() {
 
+   this.responseMessage = "";
   if (!this.selectedFile || this.isUploading) {
     console.log("Upload prevented - either no file or already uploading");
     return;
@@ -96,9 +98,7 @@ export class UploadStudents {
   .subscribe({
 
     next: (response: any) => {
-
-      
-
+      alert(JSON.stringify(response));
       if (Array.isArray(response)) {
         this.responseMessage  = response.join('\n');
       } else if (typeof response === 'string') {
@@ -106,13 +106,11 @@ export class UploadStudents {
       } else {
         this.responseMessage = JSON.stringify(response);
       }
-
+      this.cdr.detectChanges();
       //alert("Upload Result:\n\n" + message);
     },
 
     error: (error: HttpErrorResponse) => {
-
-      
 
       if (Array.isArray(error.error)) {
        this.responseMessage = error.error.join('\n');
@@ -121,8 +119,7 @@ export class UploadStudents {
       } else {
         this.responseMessage = "Upload failed!";
       }
-
-      //alert("Error:\n\n" + message);
+      this.cdr.detectChanges();
     }
   });
 }

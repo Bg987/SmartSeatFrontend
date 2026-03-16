@@ -38,12 +38,9 @@
       <div class="input-section">
         <label class="field-label">Academic Branch</label>
         <select formControlName="branch">
-          <option value="">Select Branch</option>
-          <option value="CSE">Computer Science And Engineering</option>
-          <option value="IT">Information Technology</option>
-          <option value="EC">Electronics</option>
-          <option value="ME">Mechanical</option>
-          <option value="CE">Civil</option>
+          <option value="" disabled selected>Select Branch</option>
+          <option *ngFor="let b of branches" [value]="b">{{ b }}</option>
+          <option *ngIf="loadingBranches" disabled>Loading...</option>
         </select>
       </div>
 
@@ -107,7 +104,7 @@
         </button>
 
       </div>
-
+      <div class="response">{{response}}</div>
       <!-- SUBMIT -->
       <button type="submit"
               class="prime-btn success"

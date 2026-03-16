@@ -18,4 +18,10 @@ export class AddStudent {
       withCredentials: true      //cookie/session send hogi
     });
   }
+
+  getSubjects(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/colleges/getBranch`, {
+      withCredentials: true
+    });
+  }
 }
