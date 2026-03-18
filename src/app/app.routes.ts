@@ -24,6 +24,7 @@ import { GenSeatingPlan } from './Components/Dashboard/university-dashboard/gen-
 import { ViewSeatingAllocation } from './Components/Dashboard/university-dashboard/view-seating-allocation/view-seating-allocation'
 import {QuestionGeneration} from './Components/Dashboard/university-dashboard/question-generation/question-generation'
 import { ScheduleExam } from './Components/Dashboard/university-dashboard/schedule-exam/schedule-exam'
+import { GetExamPassword } from './Components/Dashboard/college-dashboard/get-exam-password/get-exam-password';
 
 export const routes: Routes = [
 
@@ -44,6 +45,7 @@ export const routes: Routes = [
      children: [
        { path: '', component: CollegeHome },
        { path: 'updateImage', component: UpdateStudentImage },
+       { path: 'getPassword', component: GetExamPassword },
       { path: 'changePassword', component: changePassword },
       { path: 'uploadStudent', component: UploadStudents },
       {path:'addStudents',component:AddStudents},
