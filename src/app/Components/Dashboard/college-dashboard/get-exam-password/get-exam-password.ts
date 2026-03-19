@@ -59,7 +59,7 @@ export class GetExamPassword implements OnInit {
     },
     error: (err) => {
       console.error("API Error:", err);
-      this.securityMessage = "Unable to connect to Security Server.";
+      this.securityMessage = "Unable to connect to Server.";
       this.isLoading = false;
       this.cdr.detectChanges();
     }
