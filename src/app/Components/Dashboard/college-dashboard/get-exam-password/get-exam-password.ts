@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-get-exam-password',
@@ -14,6 +15,7 @@ export class GetExamPassword implements OnInit {
   securityMessage: string = '';
   isLoading: boolean = false;
   currentTime: Date = new Date();
+  url: String = environment.apiUrl2;
   private clockInterval: any; // Store reference to clear it later
   constructor(private http: HttpClient,
     private cdr: ChangeDetectorRef,
@@ -31,7 +33,7 @@ export class GetExamPassword implements OnInit {
 
   fetchPasswords() {
   this.isLoading = true;
-  this.http.get<any>('http://localhost:8081/api/exam/getExamPassword', {
+  this.http.get<any>(`${this.url}/exam/getExamPassword`, {
     withCredentials: true,
   }).subscribe({
     next: (res) => {
