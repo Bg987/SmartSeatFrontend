@@ -1,0 +1,43 @@
+<div class="notif-container">
+    <div class="notif-blur-overlay" *ngIf="showNotifications"></div>
+
+    <div class="notif-trigger" (click)="toggleNotifications()">
+        <span class="bell-icon">🔔</span>
+        <div class="whatsapp-badge" *ngIf="unreadCount > 0">
+            {{ unreadCount > 99 ? '99+' : unreadCount }}
+        </div>
+    </div>
+
+    <div class="notif-panel" *ngIf="showNotifications">
+        <div class="notif-header">
+            <div class="header-content">
+                <span class="pulse-dot"></span>
+                <h3>System Notification</h3>
+            </div>
+            <button class="close-btn" (click)="toggleNotifications()">✕</button>
+        </div>
+
+        <div class="notif-scroll-area">
+            <div *ngIf="notifications.length === 0" class="empty-state">
+                <div class="empty-icon">📥</div>
+                <p>All caught up!</p>
+            </div>
+
+            <div class="timeline-container" *ngIf="notifications.length > 0">
+                <div class="timeline-line"></div>
+                <div class="notif-item" *ngFor="let n of notifications; let i = index" [class.unread]="!n.read">
+                    <div class="timeline-marker" [ngClass]="n.type">
+                        <span class="marker-inner"></span>
+                    </div>
+                    <div class="notif-body">
+                        <div class="notif-meta">
+                            <span class="notif-type">{{ n.type | lowercase }}</span>
+                            <span class="notif-time">{{ n.createdAt | date:'shortTime' }}</span>
+                        </div>
+                        <p class="notif-msg">{{ n.msg }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

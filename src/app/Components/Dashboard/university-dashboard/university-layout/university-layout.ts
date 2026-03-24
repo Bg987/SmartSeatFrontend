@@ -1,99 +1,56 @@
 import { Component, OnInit, OnDestroy, NgZone,ChangeDetectorRef,HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
 import { AuthService } from '../../../../services/auth-service';
 import { NotificationService } from '../../../../services/notification'; 
-import { Subscription } from 'rxjs';
+import { NotificationComponent } from '../../../notification/notification';
+
 
 @Component({
   selector: 'app-university-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,NotificationComponent],
   templateUrl: './university-layout.html',
   styleUrls: ['./university-layout.css'],
 })
-export class UniversityLayoutComponent implements OnInit, OnDestroy {
+// ... imports stay the same
+
+export class UniversityLayoutComponent implements OnInit {
   isDarkMode: boolean = localStorage.getItem("smartseat-theme") === "dark";
-  private apiUrl = environment.apiUrl;
   universityName: string | null = '';
   
-  // Notification Management
-  notifications: string[] = []; 
-  private sseSub?: Subscription;
+  unreadCount: number = 0;
+  showNotifications: boolean = false;
+  notifications: any[] = [];
 
   constructor(
     private router: Router,
-    private cdr : ChangeDetectorRef,
-    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
     private authService: AuthService,
-    private notificationService: NotificationService,
-    private zone: NgZone // Added to ensure UI updates across threads
+    private notificationService: NotificationService
   ) {
-    // Initial Theme Setup
     this.applyTheme();
-
-    // Role Guard
     if (localStorage.getItem('userRole') !== 'university') {
       this.router.navigate(['/']);
     }
-
     this.universityName = localStorage.getItem('userName');
   }
 
-  @HostListener('document:visibilitychange', [])
-  onVisibilityChange() {
-    if (document.hidden) {
-      // Optional: Clear notifications when user leaves tab to prevent "stacking"
-      // this.notifications = [];
-    } else {
-      // When user returns, force a clean render
-      this.cdr.detectChanges();
-    }
+  ngOnInit(): void {
+    this.loadUnreadCount();
   }
 
-  ngOnInit(): void {
-  const sseUrl = `${this.apiUrl}/notifications/subscribe/university`;
+  toggleNotifications(): void{
+    alert("call");
+  }
   
-  this.sseSub = this.notificationService.getServerSentEvent(sseUrl).subscribe({
-    next: (res) => {
-      this.zone.run(() => {
-        // If we have more than 5, remove the oldest (last) one immediately
-        // This stops the "infinite growth" problem
-        if (this.notifications.length >= 5) {
-          this.notifications.pop(); 
-        }
+  loadUnreadCount() {
+    this.notificationService.getUnreadCount().subscribe(count => {
+      this.unreadCount = count;
+      this.cdr.detectChanges();
+    });
+  }
 
-        // 2. Add the new one to the top
-        this.notifications.unshift(res);
-        this.cdr.detectChanges();
-
-        // 3. The cleanup timer still works for individual items,
-        // but the 'pop()' above handles the 1-second spam.
-        setTimeout(() => {
-          this.zone.run(() => {
-            this.removeNotification(res);
-          });
-        }, 10000);
-      });
-    }
-  });
-}
-
-removeNotification(message: string): void {
-  this.notifications = this.notifications.filter(n => n !== message);
-  this.cdr.detectChanges(); // Refresh UI after removal
-}
-
-// Add this helper function for the HTML
-trackByFn(index: number, item: string) {
-  return index; // Or return item if the messages are always unique
-}
-
-  /**
-   * Toggles between light and dark themes
-   */
   toggleTheme(): void {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem("smartseat-theme", this.isDarkMode ? "dark" : "light");
@@ -108,9 +65,6 @@ trackByFn(index: number, item: string) {
     }
   }
 
-  /**
-   * Handles user logout
-   */
   onLogout(): void {
     this.authService.logout().subscribe({
       next: () => this.authService.clearAndRedirect(),
@@ -119,14 +73,5 @@ trackByFn(index: number, item: string) {
         this.authService.clearAndRedirect();
       }
     });
-  }
-
-  /**
-   * Cleanup SSE connection to prevent memory leaks and ghost connections
-   */
-  ngOnDestroy(): void {
-    if (this.sseSub) {
-      this.sseSub.unsubscribe();
-    }
   }
 }

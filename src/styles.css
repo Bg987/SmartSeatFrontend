@@ -31,3 +31,7 @@ img {
 html {
     scroll-behavior: smooth;
 }
+
+.brand-logo {
+    visibility: hidden;
+}

@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth-service';
+import { NotificationComponent } from '../../../notification/notification';
 
 @Component({
   selector: 'app-student-layout',
-   imports: [CommonModule, RouterModule],
+   imports: [CommonModule, RouterModule,NotificationComponent],
   templateUrl: './student-layout.html',
   styleUrl: './student-layout.css',
 })

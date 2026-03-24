@@ -1,59 +1,35 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(private zone: NgZone) { }
+  url: String = environment.apiUrl;
 
-  /**
-   * Establishes a Server-Sent Events connection.
-   * @param url The full API endpoint for the SSE stream.
-   */
-  getServerSentEvent(url: string): Observable<any> {
-    return new Observable(observer => {
-      // Create the EventSource connection
-      
-        const eventSource = new EventSource(url, {
-          withCredentials: true,
-      });
+  constructor(private zone: NgZone,
+    private http: HttpClient
+  ) { }
 
-      // Listen for the 'INIT' event (Optional connection start message)
-      eventSource.addEventListener('INIT', (event: MessageEvent) => {
-        console.log("SSE Connection Initialized");
-      });
 
-      // Listen for the specific 'event-complete' name used in Spring Boot
-      eventSource.addEventListener('Allocation_Done_Event', (event: MessageEvent) => {
-        this.zone.run(() => {
-          try {
-            // Attempt to parse if the data is a JSON string
-            const parsedData = JSON.parse(event.data);
-            observer.next(parsedData);
-          } catch (e) {
-            // Fallback for plain text messages
-            observer.next(event.data);
-          }
-        });
-      });
+  getUnreadCount(): Observable<number> {
+    return this.http.get<number>(`${this.url}/notifications/unread-count`, {
+      withCredentials : true,
+    });
+  }
 
-      // Handle connection errors
-      eventSource.onerror = (error) => {
-        this.zone.run(() => {
-          // If the connection is closed by the server, error out.
-          // Note: EventSource usually auto-reconnects on timeout.
-          if (eventSource.readyState === EventSource.CLOSED) {
-            observer.error('SSE connection was closed');
-          }
-        });
-      };
+  getNotifications(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.url}/notifications/latest`, {
+      withCredentials: true
+    });
+  }
 
-      // Cleanup: Close the connection when the component unsubscribes
-      return () => {
-        eventSource.close();
-      };
+  markAllAsRead(): Observable<Notification[]> {
+    return this.http.put<Notification[]>(`${this.url}/notifications/mark-as-read`,{}, {
+      withCredentials: true
     });
   }
 }

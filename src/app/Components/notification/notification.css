@@ -1,0 +1,328 @@
+/* --- 1. MAIN CONTAINER & TRIGGER --- */
+.notif-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.notif-trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 10px;
+}
+
+.notif-trigger:hover {
+    transform: scale(1.1);
+}
+
+.bell-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+}
+
+/* --- 2. THE DIM OVERLAY (REPLACED BLUR) --- */
+.notif-blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Semi-transparent dark tint for focus */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* --- 3. BADGE OVERLAY --- */
+.whatsapp-badge {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    background: #ef4444;
+    /* Standard Red */
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #111827;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+    z-index: 10;
+}
+
+/* --- 4. THE FLOATING PANEL (SOLID DEEP SLATE) --- */
+.notif-panel {
+    position: fixed;
+    left: 315px;
+    /* Sidebar width (280) + Margin/Gap */
+    top: 20px;
+    bottom: 20px;
+    width: 360px;
+    z-index: 99999;
+
+    /* Professional Solid Palette */
+    background: #111827;
+    /* Deep Charcoal */
+    color: #f9fafb;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    border-radius: 24px;
+    box-shadow: 25px 0 50px rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    animation: slideInLeft 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* --- 5. HEADER SECTION --- */
+.notif-header {
+    padding: 24px;
+    background: #1f2937;
+    /* Lighter slate header */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    background: #00d2ff;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #00d2ff;
+    animation: pulse 1.8s infinite;
+}
+
+/* --- 6. TIMELINE & SCROLL AREA --- */
+.notif-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    scrollbar-width: none;
+}
+
+.notif-scroll-area::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-container {
+    position: relative;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 17px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #00d2ff, #3a7bd5, transparent);
+    z-index: 1;
+}
+
+/* --- 7. NOTIFICATION ITEMS --- */
+.notif-item {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 16px;
+    background: #1f2937;
+    /* Card Background */
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 0.3s ease;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInItem 0.4s forwards;
+}
+
+.notif-item:hover {
+    background: #374151;
+    /* Hover Slate */
+    border-color: rgba(0, 210, 255, 0.4);
+    transform: translateX(8px);
+}
+
+.notif-item.unread {
+    background: #111827;
+    border-left: 4px solid #00d2ff;
+}
+
+.timeline-marker {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    background: #111827;
+    border: 2px solid #00d2ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.marker-inner {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.notif-body {
+    flex: 1;
+}
+
+.notif-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.notif-type {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: #00d2ff;
+    font-weight: 800;
+}
+
+.notif-time {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.notif-msg {
+    font-size: 0.85rem;
+    color: #e5e7eb;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* --- 8. ANIMATIONS --- */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInItem {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+}
+
+/* --- EMPTY STATE --- */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    opacity: 0.2;
+    filter: grayscale(1);
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* --- CLOSE BUTTON --- */
+.close-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #9ca3af;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #ef4444;
+    /* Turns red on hover */
+    color: white;
+    border-color: #ef4444;
+}
+
+/* Ensure the overlay doesn't have a click event now */
+.notif-blur-overlay {
+    pointer-events: none;
+    /* User can click "through" the dim to the UI if you want, or just remove it */
+}

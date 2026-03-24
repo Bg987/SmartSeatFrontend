@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/auth-service';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { NotificationComponent } from '../../../notification/notification';
 
 @Component({
   selector: 'app-college-layout',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,NotificationComponent],
   templateUrl:'college-layout.html',
   styleUrl:'college-layout.css'
 })
