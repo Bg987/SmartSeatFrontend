@@ -28,6 +28,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
     // Polling every 30 seconds for new notifications
     this.getUnreadNotificationNumber();
   }
+  
   getUnreadNotificationNumber(): void{
     this.pollingSub = interval(30000)
       .pipe(
