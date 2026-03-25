@@ -57,7 +57,7 @@ confirmAllocation() {
       this.apiResponse = res; 
       this.showConfirmDialog = false; 
       this.showResultDialog = true; 
-      
+      this.loadExams(); 
       this.cdr.detectChanges();
 
       // 2. Handle the auto-close timer
@@ -65,9 +65,6 @@ confirmAllocation() {
         this.showResultDialog = false;
         this.selectedExam = null;
         this.apiResponse = ""; 
-        
-        // 3. Refresh table data
-        this.loadExams(); 
 
         this.cdr.detectChanges();
       }, 1000);
