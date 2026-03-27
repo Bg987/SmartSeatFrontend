@@ -1,0 +1,108 @@
+<div class="content-viewport">
+    @if (isLoading) {
+    <div class="state-placeholder">
+        <div class="spinner"></div>
+        <p class="text-soft">Syncing Academic Records...</p>
+    </div>
+    }
+
+    @if (!selectedResult && !isLoading) {
+    <div class="view-header">
+        <div class="title-group">
+            <div class="icon-box">🏆</div>
+            <div>
+                <h3>Academic Performance</h3>
+                <p class="subtitle">Select a completed exam to view your marks</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="exam-grid">
+        @for (exam of completedExams; track exam.id) {
+        <div class="exam-card-tile">
+            <div class="exam-details">
+                <div class="status-tag completed">Completed</div>
+                <h4 class="exam-title">{{ exam.examName }}</h4>
+                <span class="exam-date">Date: {{ exam.Date | date:'mediumDate' }}</span>
+            </div>
+            <button class="action-btn" (click)="viewResult(exam.id)">View Marks →</button>
+        </div>
+        } @empty {
+        <div class="state-placeholder">
+            <div class="success-icon">📄</div>
+            <p>No processed results found yet.</p>
+        </div>
+        }
+    </div>
+    }
+
+    @if (selectedResult && !isLoading) {
+    <div class="result-view-container">
+        <button class="outline-btn" (click)="goBack()">← Back to Results</button>
+
+        <div class="glass-card result-card mb-5">
+            <div class="result-header">
+                <h3>Exam Scorecard</h3>
+                        </div>
+
+            <div class="score-circle-container">
+                <div class="score-circle" [class.pass-border]="selectedResult.status === 'PASSED'"
+                    [class.fail-border]="selectedResult.status === 'FAILED'">
+                    <span class="score-big">{{ selectedResult.marks }}</span>
+                    <span class="score-total">/ {{ selectedResult.totalMarks }}</span>
+                </div>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <label>Percentage</label>
+                    <p>{{ selectedResult.percentage | number:'1.1-2' }}%</p>
+                </div>
+                <div class="stat-item">
+                    <label>Status</label>
+                    <p [class.passed]="selectedResult.status === 'PASSED'"
+                        [class.failed]="selectedResult.status === 'FAILED'">
+                        {{ selectedResult.status }}
+                    </p>
+                </div>
+            </div>
+            <div class="blackboard">OFFICIAL UNIVERSITY RESULT</div>
+        </div>
+
+        <div class="review-section">
+            <h3 class="section-subtitle">Correction Report</h3>
+            <div class="review-list">
+                @for (q of selectedResult.questionReviews; track $index) {
+                <div class="review-card" [class.correct-card]="q.correct"
+                    [class.wrong-card]="!q.correct && q.studentAnswer !== 'Not Attempted'"
+                    [class.skipped-card]="q.studentAnswer === 'Not Attempted'">
+
+                    <div class="card-header-row">
+                        <span class="q-number">Question {{ $index + 1 }}</span>
+                        <span class="q-status-badge" [class.text-success]="q.correct"
+                            [class.text-danger]="!q.correct && q.studentAnswer !== 'Not Attempted'">
+                            {{ q.correct ? '✓ Correct' : (q.studentAnswer === 'Not Attempted' ? '⚠ Skipped' : '✗
+                            Incorrect') }}
+                        </span>
+                    </div>
+
+                    <h4 class="q-text">{{ q.questionText }}</h4>
+
+                    <div class="options-grid">
+                        @for (opt of q.options; track opt) {
+                        <div class="opt-item" [class.is-correct-opt]="opt === q.correctAnswer"
+                            [class.is-student-opt]="opt === q.studentAnswer">
+                            {{ opt }}
+                            @if (opt === q.correctAnswer) { <span class="opt-label"> (Correct)</span> }
+                            @if (opt === q.studentAnswer && opt !== q.correctAnswer) { <span class="opt-label"> (Your
+                                Choice)</span> }
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
+</div>

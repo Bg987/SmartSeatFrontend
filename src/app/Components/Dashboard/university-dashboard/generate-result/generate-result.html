@@ -1,0 +1,59 @@
+<div class="content-viewport">
+    <div class="view-header">
+        <div class="title-group">
+            <div class="icon-box">🪄</div>
+            <div>
+                <h3>Result Management</h3>
+                <p class="subtitle">Generate and publish scores for completed exams</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="state-placeholder" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p class="text-soft">Fetching Exam Schedules...</p>
+    </div>
+
+    <div class="exam-grid" *ngIf="!isLoading">
+
+        <div class="exam-card-tile" *ngFor="let exam of exams">
+            <div class="exam-details">
+                <div class="status-tag pending" *ngIf="!exam.completed">Ready for Grading</div>
+                <div class="status-tag completed" *ngIf="exam.completed">✓ Published</div>
+
+                <h4 class="exam-title">{{ exam.subjectName }}</h4>
+                <div class="exam-meta">
+                    <span>Code: <strong>{{ exam.subjectId }}</strong></span>
+                    <span>Branch: {{ exam.branch }}</span>
+                    <span>Semester: {{ exam.semester }}</span>
+                </div>
+
+                <div class="exam-timing">
+                    <i class="bi bi-calendar3"></i> {{ exam.examDate | date:'fullDate' }}
+                    <br>
+                    <i class="bi bi-clock"></i> Started at: {{ exam.startTime }}
+                </div>
+            </div>
+
+            <div class="action-area">
+                <button class="action-btn" *ngIf="!exam.completed && !isProcessing" (click)="generateResult(exam.id)">
+                    <span>🪄 Generate Result</span>
+                </button>
+
+                <div class="processing-status" *ngIf="isProcessing">
+                    <div class="spinner-sm"></div>
+                    <span>Calculating...</span>
+                </div>
+
+                <div class="success-check" *ngIf="exam.completed">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="state-placeholder" *ngIf="exams.length === 0">
+            <div class="success-icon">✅</div>
+            <p>All exams have been graded. No pending tasks.</p>
+        </div>
+    </div>
+</div>

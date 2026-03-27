@@ -1,0 +1,163 @@
+/* --- VIEWPORT & HEADER --- */
+.content-viewport {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 35px;
+    color: var(--text-main) !important;
+    box-shadow: var(--shadow-ui);
+    min-height: 500px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.view-header {
+    margin-bottom: 30px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-box {
+    font-size: 24px;
+    background: var(--primary-hover);
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--text-soft);
+}
+
+/* --- EXAM TILES --- */
+.exam-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.exam-card-tile {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.exam-card-tile:hover {
+    transform: translateX(8px);
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.exam-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+.exam-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-bottom: 12px;
+}
+
+.exam-meta strong {
+    color: var(--primary);
+}
+
+.exam-timing {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+    line-height: 1.6;
+}
+
+/* --- BADGES --- */
+.status-tag {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+.status-tag.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-tag.completed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* --- BUTTONS & ACTIONS --- */
+.action-btn {
+    background: var(--primary);
+    color: var(--text-main);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.success-check {
+    font-size: 28px;
+    color: #10b981;
+}
+
+.processing-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* --- UTILITIES --- */
+.spinner-sm {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

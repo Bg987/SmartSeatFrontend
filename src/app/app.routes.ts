@@ -25,6 +25,9 @@ import { ViewSeatingAllocation } from './Components/Dashboard/university-dashboa
 import {QuestionGeneration} from './Components/Dashboard/university-dashboard/question-generation/question-generation'
 import { ScheduleExam } from './Components/Dashboard/university-dashboard/schedule-exam/schedule-exam'
 import { GetExamPassword } from './Components/Dashboard/college-dashboard/get-exam-password/get-exam-password';
+import { StudentResult } from './Components/Dashboard/student-dashboard/student-result/student-result';
+import { GenerateResult } from './Components/Dashboard/university-dashboard/generate-result/generate-result';
+
 
 export const routes: Routes = [
 
@@ -36,7 +39,7 @@ export const routes: Routes = [
       { path: '', component: StudentHome },
       { path: 'upcomingExams', component: GetIncompleteExam },
       { path: 'changePassword', component: changePassword },
-
+      { path: 'StudentResult', component: StudentResult },
     ]
     
   },
@@ -72,7 +75,8 @@ export const routes: Routes = [
       { path: 'genSeatPlan', component: GenSeatingPlan },
       {path:'viewSeatingPlan',component:ViewSeatingAllocation},
       { path: 'college-details/:userId', component: ShowCollegeDetail },
-      {path:'questionGeneration',component:QuestionGeneration},
+      { path: 'questionGeneration', component: QuestionGeneration },
+      {path:'result',component:GenerateResult},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+/* --- SHARED SYSTEM --- */
+:root {
+    --primary: #4f46e5;
+    --primary-hover: rgba(79, 70, 229, 0.1);
+    --bg-main: #e2e8f0;
+    --content-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-soft: #475569;
+    --border-color: rgba(15, 23, 42, 0.3);
+    --shadow-ui: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode {
+    --bg-main: #020617;
+    --content-bg: #0f172a;
+    --text-main: #f1f5f9;
+    --text-soft: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.15);
+    --shadow-ui: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.content-viewport {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 35px;
+    color: var(--text-main) !important;
+    /* Forces visibility in light mode */
+    box-shadow: var(--shadow-ui);
+    transition: all 0.4s ease;
+    min-height: 500px;
+}
+
+/* --- HEADERS --- */
+.view-header {
+    margin-bottom: 30px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-box {
+    font-size: 24px;
+    background: var(--primary-hover);
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--text-soft);
+}
+
+/* --- EXAM TILES --- */
+.exam-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.exam-card-tile {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.exam-card-tile:hover {
+    transform: translateX(8px);
+    border-color: var(--primary);
+}
+
+.status-tag {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    width: fit-content;
+}
+
+.status-tag.completed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* --- SCORECARD CARD --- */
+.glass-card {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 550px;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: var(--shadow-ui);
+}
+
+.score-circle-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.score-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-hover);
+    border: 8px solid var(--primary);
+}
+
+.score-circle.pass-border {
+    border-color: #10b981;
+}
+
+.score-circle.fail-border {
+    border-color: #ef4444;
+}
+
+.score-big {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.score-total {
+    font-size: 14px;
+    color: var(--text-soft);
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.stat-item label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-soft);
+    text-transform: uppercase;
+}
+
+.stat-item p {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.stat-item p.passed {
+    color: #10b981;
+}
+
+.stat-item p.failed {
+    color: #ef4444;
+}
+
+/* --- REVIEW SECTION (Detailed) --- */
+.review-section {
+    margin-top: 50px;
+    border-top: 2px dashed var(--border-color);
+    padding-top: 30px;
+}
+
+.section-subtitle {
+    font-weight: 800;
+    margin-bottom: 25px;
+    color: var(--primary);
+}
+
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-card {
+    background: var(--content-bg);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 16px;
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.q-number {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-soft);
+}
+
+.q-status-badge {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.correct-card {
+    border-left: 6px solid #10b981;
+}
+
+.wrong-card {
+    border-left: 6px solid #ef4444;
+}
+
+.skipped-card {
+    border-left: 6px solid var(--text-soft);
+    opacity: 0.8;
+}
+
+.q-text {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+.options-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.opt-item {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: var(--bg-main);
+    font-size: 14px;
+    color: var(--text-soft);
+    border: 1px solid transparent;
+}
+
+.is-correct-opt {
+    background: #dcfce7 !important;
+    border-color: #10b981 !important;
+    color: #15803d !important;
+    font-weight: 700;
+}
+
+.is-student-opt:not(.is-correct-opt) {
+    background: #fee2e2 !important;
+    border-color: #ef4444 !important;
+    color: #b91c1c !important;
+}
+
+.opt-label {
+    font-size: 10px;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* --- COMMON ELEMENTS --- */
+.blackboard {
+    background: #334155;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.action-btn {
+    background: var(--primary);
+    color: var(--text-main);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+
+.outline-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 40px auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

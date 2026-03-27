@@ -17,15 +17,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         localStorage.clear();
 
         // 2. Call the logout API (withCredentials ensures the ngrok cookie is sent to be cleared)
-        http.post(`${Url}/auth/logout`, { 
-          withCredentials: true, 
-          responseType: 'text'}).subscribe({
-            //next: (res) => //console.log("Backend session cleared:", res),
-            //error: (err) => //console.error("Backend logout failed", err)
-          });
+        // http.post(`${Url}/auth/logout`, { 
+        //   withCredentials: true, 
+        //   responseType: 'text'}).subscribe({
+        //     //next: (res) => //console.log("Backend session cleared:", res),
+        //     //error: (err) => //console.error("Backend logout failed", err)
+        //   });
 
         //Redirect to login
-        router.navigate(['/login']);
+        //router.navigate(['/login']);
       }
 
       return throwError(() => error);
