@@ -1,0 +1,86 @@
+<div class="analytics-container">
+  
+  <div class="dashboard-header">
+    <h2>University Analysis Dashboard</h2>
+    
+    <div class="selection-engine">
+      <label for="examDrop">Select Completed Exam to Analyze</label>
+      <select id="examDrop" class="form-select" (change)="onExamSelected($event)">
+        <option value="">-- Choose an Exam Session --</option>
+        <option *ngFor="let exam of exams" [value]="exam.id">
+          {{ exam.examName }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loader-wrapper">
+    <div class="loader"></div>
+    <p class="loading-text">Processing Request...</p>
+  </div>
+
+  <div class="results-grid" *ngIf="!isLoading && colleges.length > 0">
+    <div class="college-card" *ngFor="let college of colleges" (click)="viewCollegeAnalytics(college.collegeId)">
+      
+      <div class="card-identity">
+        <div class="college-name">{{ college.name }}</div>
+        <div class="college-location">
+          <span class="icon">📍</span> {{ college.address }}
+        </div>
+      </div>
+
+      <div class="admin-data-grid">
+        <div class="data-cell full-width">
+          <span class="cell-label">Primary Administrator</span>
+          <span class="cell-value">{{ college.user?.name || 'Not Assigned' }}</span>
+        </div>
+
+        <div class="data-cell">
+          <span class="cell-label">Contact No.</span>
+          <span class="cell-value">{{ college.user?.mobileNumber || 'N/A' }}</span>
+        </div>
+
+        <div class="data-cell">
+          <span class="cell-label">Email Address</span>
+          <span class="cell-value" [title]="college.user?.mail">
+            {{ college.user?.mail || 'N/A' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="card-action-hint">
+        Click to view detailed analytics →
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && selectedExamId && colleges.length === 0" class="empty-state-box">
+    <div class="empty-icon">📂</div>
+    <h3>No Colleges Found</h3>
+    <p>There are no colleges registered for the selected exam session.</p>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()">
+    
+    <div class="modal-content analytics-popup-card" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <h3>Performance Analysis</h3>
+        <button class="btn-close-icon" (click)="closeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <app-college-analytics-component 
+          *ngIf="selectedCollegeAnalytics" 
+          [analyticsData]="selectedCollegeAnalytics">
+        </app-college-analytics-component>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-primary-action" (click)="closeModal()">Close Report</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

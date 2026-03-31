@@ -13,13 +13,12 @@ export class GetStudents {
 
   constructor(private http: HttpClient) { }
 
-  getStudents(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`,
-      {
-        withCredentials:true
-      }
-    );
-  }
+getStudents(): Observable<string> {
+  return this.http.get(`${this.apiUrl}`, {
+    withCredentials: true,
+    responseType: 'text' // <--- This stops the "red" parsing error
+  });
+}
 
 
   }

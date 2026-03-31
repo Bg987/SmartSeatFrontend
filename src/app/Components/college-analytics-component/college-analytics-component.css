@@ -1,0 +1,190 @@
+:host {
+    display: block;
+    --primary-blue: #4f46e5;
+    --bg-surface: var(--card-bg, #ffffff);
+    --text-main: var(--text-main, #1e293b);
+}
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color, #f1f5f9);
+}
+
+.sub-code {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    background: var(--primary-hover, rgba(79, 70, 229, 0.1));
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.last-sync {
+    font-size: 11px;
+    color: var(--text-soft, #64748b);
+}
+
+/* Grid Logic */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stats-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color, #e2e8f0);
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-card.highlight {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+}
+
+.stats-card.full-width {
+    grid-column: span 3;
+}
+
+.card-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+.main-stat {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.stat-footer {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Grade Bars */
+.grade-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.grade-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary-blue);
+    transition: width 1s ease-in-out;
+}
+
+/* --- MODAL OVERLAY (The Dark Background) --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.75); /* Darker overlay for focus */
+    backdrop-filter: blur(6px); /* Modern blur effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100; /* Ensure it stays above everything */
+    padding: 20px;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* --- THE ACTUAL POPUP BOX --- */
+.analytics-popup-card {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 850px; /* Wider to accommodate charts/grids */
+    max-height: 90vh; /* Don't exceed screen height */
+    overflow-y: auto; /* Scrollable if content is long */
+    border-radius: 28px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    position: relative;
+    animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleUp {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Modal Header Elements */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.btn-close-icon {
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    color: var(--text-soft);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-close-icon:hover {
+    color: #ef4444;
+}
+
+/* Footer Action */
+.modal-footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary-action {
+    background: var(--primary);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-primary-action:hover {
+    transform: scale(1.05);
+}

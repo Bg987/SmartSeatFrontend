@@ -1,0 +1,48 @@
+<div class="analytics-wrapper" *ngIf="analyticsData">
+  
+  <div class="analytics-header">
+    <div class="title-group">
+      <h4>{{ analyticsData.collegeName }}</h4>
+      <span class="sub-code">Subject: {{ analyticsData.subjectCode }}</span>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stats-card highlight">
+      <div class="card-label">Attendance</div>
+      <div class="main-stat">{{ analyticsData.attendancePercentage | number:'1.0-1' }}%</div>
+      <div class="stat-footer">
+        {{ analyticsData.totalPresent }} Present / {{ analyticsData.totalRegistered }} Total
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="card-label">Passing Rate</div>
+      <div class="main-stat text-primary">{{ analyticsData.passPercentage | number:'1.0-1' }}%</div>
+      <div class="stat-footer">{{ analyticsData.totalPassed }} Students Passed</div>
+    </div>
+
+    <div class="stats-card">
+      <div class="card-label">Avg / Highest</div>
+      <div class="main-stat">{{ analyticsData.averageMarks }} <span class="divider">/</span> {{ analyticsData.highestMarks }}</div>
+      <div class="stat-footer">Performance Metrics</div>
+    </div>
+
+    <div class="stats-card full-width">
+      <div class="card-label">Grade Breakdown</div>
+      <div class="grade-container">
+        <div class="grade-item" *ngFor="let grade of analyticsData.gradeBreakdown | keyvalue">
+          <div class="grade-info">
+            <span class="grade-name">{{ grade.key }}</span>
+            <span class="grade-count">{{ grade.value }}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" 
+                 [style.width.%]="analyticsData.totalRegistered > 0 ? (grade.value / analyticsData.totalRegistered) * 100 : 0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

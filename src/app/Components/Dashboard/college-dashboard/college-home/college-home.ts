@@ -16,7 +16,7 @@ export class CollegeHome implements OnInit {
   //default values
   totalStudents = 0;
   totalRooms = 0;
-  totalSittingPlans = 6;
+  totalSittingPlans = 0;
 
   students: any[] = [];
   rooms: any[] = [];
@@ -42,12 +42,32 @@ export class CollegeHome implements OnInit {
 
   // Load Students
   loadStudentsData() {
-    this.getStudent.getStudents().subscribe((res) => {
-      this.students = res;
-      this.totalStudents = this.students.length;
-      this.cd.detectChanges();
-    });
-  }
+  this.getStudent.getStudents().subscribe({
+    next: (rawRes: string) => {
+      try {
+        // Find the last valid closing bracket of the JSON array
+        const lastBracket = rawRes.lastIndexOf(']');
+        
+        if (lastBracket !== -1) {
+          // Slice the string to remove the "could not initialize proxy" text
+          const cleanJson = rawRes.substring(0, lastBracket + 1);
+          
+          this.students = JSON.parse(cleanJson);
+          console.log("Cleaned Data:", this.students);
+          
+          // Now detectChanges will actually have data to work with
+          this.cd.detectChanges();
+        }
+      } catch (e) {
+        console.error("Manual JSON parse failed:", e);
+      }
+    },
+    error: (err) => {
+      // This is where your code was likely ending up before
+      console.error("HTTP Error detected:", err);
+    }
+  });
+}
 
   loadRoomsData() {
     this.getRoom.getRooms(this.roomPage, this.roomSize).subscribe((res) => {

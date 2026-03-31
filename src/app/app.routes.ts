@@ -27,7 +27,7 @@ import { ScheduleExam } from './Components/Dashboard/university-dashboard/schedu
 import { GetExamPassword } from './Components/Dashboard/college-dashboard/get-exam-password/get-exam-password';
 import { StudentResult } from './Components/Dashboard/student-dashboard/student-result/student-result';
 import { GenerateResult } from './Components/Dashboard/university-dashboard/generate-result/generate-result';
-
+import {AnalyticsUniveristy} from './Components/Dashboard/university-dashboard/analytics-univeristy/analytics-univeristy'
 
 export const routes: Routes = [
 
@@ -40,8 +40,7 @@ export const routes: Routes = [
       { path: 'upcomingExams', component: GetIncompleteExam },
       { path: 'changePassword', component: changePassword },
       { path: 'StudentResult', component: StudentResult },
-    ]
-    
+    ]    
   },
   { path: 'college-dashboard',
     component: CollegeLayoutComponent ,
@@ -77,6 +76,7 @@ export const routes: Routes = [
       { path: 'college-details/:userId', component: ShowCollegeDetail },
       { path: 'questionGeneration', component: QuestionGeneration },
       {path:'result',component:GenerateResult},
+      {path:'analysis',component:AnalyticsUniveristy},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
