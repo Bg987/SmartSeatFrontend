@@ -1,0 +1,27 @@
+<div class="analytics-container">
+    <h2>Exam Performance Analysis</h2>
+
+    <div class="controls-row">
+        <div class="exam-selector" *ngIf="completedExams.length > 0">
+            <label for="examSelect">Select a Completed Exam: </label>
+            <select #examDropdown id="examSelect" (change)="onExamSelect(examDropdown.value)">
+                <option value="" [selected]="selectedExamId === null" disabled>-- Choose an Exam --</option>
+                <option *ngFor="let exam of completedExams" [value]="exam.id" [selected]="exam.id == selectedExamId">
+                    {{ exam.examName }}
+                </option>
+            </select>
+        </div>
+
+        
+    </div>
+
+    <div *ngIf="loading" class="loader">Loading analysis data...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <app-college-analytics-component *ngIf="analyticsData && !loading" [analyticsData]="analyticsData">
+    </app-college-analytics-component>
+
+    <div class="no-data" *ngIf="!loading && completedExams.length === 0">
+        No completed exams found for analysis.
+    </div>
+</div>

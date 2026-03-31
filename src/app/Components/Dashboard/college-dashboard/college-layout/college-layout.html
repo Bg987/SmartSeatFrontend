@@ -16,7 +16,10 @@
         <span class="section-title">Operations</span>
         <ul>
           <li routerLink="/college-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <i class="icon">📊</i> <span>Overview</span>
+            <i class="icon">🏠</i> <span>Overview</span>
+          </li>
+          <li routerLink="/college-dashboard/CollegeAnalytics" routerLinkActive="active">
+            <i class="icon">📈</i> <span>Exam Analysis</span>
           </li>
           <li routerLink="/college-dashboard/changePassword" routerLinkActive="active">
             <i class="icon">🛡️</i> <span>Change Password</span>
@@ -50,10 +53,6 @@
             <i class="icon">🏢</i> <span>Room Inventory</span>
           </li>
 
-         <li routerLink="/college-dashboard/analysis" routerLinkActive="active">
-            <i class="icon"></i> <span>Get Analysis</span>
-          </li>
-          
           <li routerLink="/college-dashboard/sittingPlan" routerLinkActive="active">
             <i class="icon">🪑</i> <span>View Seating Allocation</span>
           </li>

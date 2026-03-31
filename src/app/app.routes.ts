@@ -28,6 +28,7 @@ import { GetExamPassword } from './Components/Dashboard/college-dashboard/get-ex
 import { StudentResult } from './Components/Dashboard/student-dashboard/student-result/student-result';
 import { GenerateResult } from './Components/Dashboard/university-dashboard/generate-result/generate-result';
 import {AnalyticsUniveristy} from './Components/Dashboard/university-dashboard/analytics-univeristy/analytics-univeristy'
+import {CollegeAnalytics} from './Components/Dashboard/college-dashboard/college-analytics/college-analytics'
 
 export const routes: Routes = [
 
@@ -54,6 +55,7 @@ export const routes: Routes = [
       {path:'uploadRooms',component:UploadRooms},
       {path:'getTimeTable',component:GetTimeTableCollege},
       {path:'sittingPlan',component:SittingPlan},
+      {path:'CollegeAnalytics',component:CollegeAnalytics},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   
