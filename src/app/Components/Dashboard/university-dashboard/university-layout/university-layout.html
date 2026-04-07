@@ -53,8 +53,25 @@
           <li routerLink="/university-dashboard/viewSeatingPlan" routerLinkActive="active">
             <i class="icon">👁️</i> <span>View Seating</span>
           </li>
-          <li routerLink="/university-dashboard/questionGeneration" routerLinkActive="active">
-            <i class="icon">✨</i> <span>Generate Questions</span>
+<li (click)="toggleQuestionMenu()" [class.active]="isQuestionMenuOpen">
+  <div class="menu-item-wrapper">
+    <i class="icon">📝</i>
+    <span>Question Management</span>
+    <i class="arrow-icon" [class.rotated]="isQuestionMenuOpen">▼</i>
+  </div>
+</li>
+
+    <ul class="sub-menu" *ngIf="isQuestionMenuOpen">
+      <li routerLink="/university-dashboard/questionGeneration" routerLinkActive="active">
+        <i class="icon">✨</i> <span>Generate Questions</span>
+      </li>
+      <li routerLink="/university-dashboard/approveQuestions" routerLinkActive="active">
+        <i class="icon">✅</i> <span>Approve Questions</span>
+      </li>
+            <li routerLink="/university-dashboard/InsertQuestion" routerLinkActive="active">
+        <i class="icon">📥</i> <span>Insert Questions</span>
+      </li>
+    </ul>
           <li routerLink="/university-dashboard/result" routerLinkActive="active">
             <i class="icon">⚙️</i> <span>Generate Result</span>
           </li>

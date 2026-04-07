@@ -1,0 +1,124 @@
+<div class="gen-plan-container">
+    <div class="filter-header">
+        <div class="title-section">
+            <h2>Manual Question Entry</h2>
+            <p>Build your question paper manually or via CSV upload</p>
+        </div>
+        <div class="search-box-wrapper">
+            <div class="search-input-group">
+                <i class="search-icon">🔍</i>
+                <input type="text" [(ngModel)]="searchSubject" (input)="applyFilters()" placeholder="Search Subject or ID...">
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="empty-state" *ngIf="!loading && (filteredExams.length === 0 || errorMessage)">
+        <div class="empty-icon">📂</div>
+        <h3>No Exams Found</h3>
+        <p>{{ errorMessage || 'All question papers have been generated and approved.' }}</p>
+    </div>
+    <div class="card-grid" *ngIf="!loading && filteredExams.length > 0">
+        <div class="exam-card" *ngFor="let exam of filteredExams">
+            <div class="card-header">
+                <span class="subject-code">{{ exam.subjectId }}</span>
+                <span class="date-badge">{{ exam.examDate | date:'dd MMM yyyy' }}</span>
+            </div>
+
+            <div class="card-body">
+                <h3>{{ exam.subjectName }}</h3>
+                <div class="details">
+                    <p><strong>Branch:</strong> {{ exam.branch || 'Common' }}</p>
+                    <p><strong>Semester:</strong> {{ exam.semester || 'N/A' }}</p>
+                </div>
+            </div>
+
+            <button class="btn-generate" (click)="openInsertModal(exam)">
+                ➕ Start Inserting Questions
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" *ngIf="showInsertModal" (click)="showInsertModal = false">
+        <div class="review-modal" (click)="$event.stopPropagation()">
+            
+            <div class="modal-header">
+                <div class="header-left">
+                    <div class="title-meta">
+                        <h3>Question Builder</h3>
+                        <p>{{ selectedExam?.subjectName }}</p>
+                    </div>
+                </div>
+
+                <div class="header-center">
+                    <div class="header-center">
+                        <div class="counter-group">
+                            <div class="import-wrapper">
+                                <label class="csv-upload-pill">
+                                    📥 <span class="label">Import CSV</span>
+                                    <input type="file" (change)="onCsvUpload($event)" accept=".csv" class="hidden-input">
+                                </label>
+                                
+                                <div class="csv-helper">
+                                    <p>Use our standard format. 
+                                        <a href="/templates/question_upload_sample.csv" download>
+                                            Download Template
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="counter-divider">|</div>
+
+                            <div class="counter-pill">
+                                <span class="label">Total Questions</span>
+                                <span class="value">{{ manualQuestions.length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-close-modal" (click)="showInsertModal = false">×</button>
+            </div>
+
+            <div class="modal-body question-list-container">
+                <div class="question-editor-card" *ngFor="let q of manualQuestions; let i = index; trackBy: trackByFn">
+                    <div class="q-header-actions">
+                        <span class="q-number">QUESTION {{i + 1}}</span>
+                        <button class="icon-btn_delete" (click)="removeQuestion(i)" title="Remove Question"> 🗑️</button>
+                    </div>
+
+                    <textarea class="edit-textarea" [(ngModel)]="q.text" placeholder="Type your question here..."></textarea>
+
+                    <div class="options-editor-grid">
+                        <div class="option-row" *ngFor="let opt of q.options; let optIdx = index; trackBy: trackByOption"
+                             [class.selected-answer]="optIdx === q.correctAnswerIndex">
+                            
+                            <input type="radio" [name]="'correct-'+i" [checked]="optIdx === q.correctAnswerIndex" (change)="q.correctAnswerIndex = optIdx">
+                            
+                            <span class="opt-alpha">{{ ['A', 'B', 'C', 'D', 'E', 'F'][optIdx] }}</span>
+                            
+                            <input type="text" [(ngModel)]="q.options[optIdx]" class="opt-input" placeholder="Enter option text...">
+                            
+                            <button class="remove-opt" (click)="removeOption(i, optIdx)" *ngIf="q.options.length > 2" title="Remove Option">×</button>
+                        </div>
+
+                        <button type="button" class="add-option-btn" (click)="addOption(i)" *ngIf="q.options.length < 6">
+                            + Add Option
+                        </button>
+                    </div>
+                </div>
+
+                <button class="add-new-q-btn" (click)="addNewQuestion()">
+                    ➕ Add Another Question Row
+                </button>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" (click)="showInsertModal = false">Discard All</button>
+                <button class="approve-confirm" (click)="submitQuestions()">
+                    Save & Finalize Paper
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

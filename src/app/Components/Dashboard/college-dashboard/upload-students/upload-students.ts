@@ -98,7 +98,7 @@ export class UploadStudents {
   .subscribe({
 
     next: (response: any) => {
-      alert(JSON.stringify(response));
+      //alert(JSON.stringify(response));
       if (Array.isArray(response)) {
         this.responseMessage  = response.join('\n');
       } else if (typeof response === 'string') {

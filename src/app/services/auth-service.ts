@@ -37,7 +37,7 @@ export class AuthService {
     localStorage.removeItem("userName");
     localStorage.removeItem("userRole");
     sessionStorage.clear();
-    window.location.href = '/';
+    window.location.href = '/login';
   }
 
   passwordchange(passwordData: any) {

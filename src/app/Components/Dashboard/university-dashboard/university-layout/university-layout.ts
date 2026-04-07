@@ -18,7 +18,8 @@ import { NotificationComponent } from '../../../notification/notification';
 export class UniversityLayoutComponent implements OnInit {
   isDarkMode: boolean = localStorage.getItem("smartseat-theme") === "dark";
   universityName: string | null = '';
-  
+  isQuestionMenuOpen: boolean = false;
+
   unreadCount: number = 0;
   showNotifications: boolean = false;
   notifications: any[] = [];
@@ -73,5 +74,9 @@ export class UniversityLayoutComponent implements OnInit {
         this.authService.clearAndRedirect();
       }
     });
+  }
+
+  toggleQuestionMenu() {
+    this.isQuestionMenuOpen = !this.isQuestionMenuOpen;
   }
 }

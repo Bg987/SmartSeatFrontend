@@ -1,0 +1,61 @@
+<div class="landing-wrapper">
+    <nav class="navbar">
+        <div class="logo">SmartSeat</div>
+        <div class="nav-links">
+            <a routerLink="/login" class="btn-secondary">Portal Login</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="badge">Distributed Exam Systems</div>
+            <h1>Intelligent <span>Exam Management</span> for Modern Universities</h1>
+            <p>
+                A distributed, AI-driven platform designed to automate seating plans,
+                monitor exam integrity, and provide deep performance analytics.
+            </p>
+            <div class="hero-btns">
+                <button class="btn-primary-lg" routerLink="/login">Launch Dashboard</button>
+                <button class="btn-outline-lg">Documentation</button>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="mockup-card">
+                <div class="mock-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </div>
+                <div class="mock-body">
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="mock-grid">
+                        <div class="grid-box filled"></div>
+                        <div class="grid-box"></div>
+                        <div class="grid-box"></div>
+                        <div class="grid-box filled"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="glow-effect"></div>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="feature-card" *ngFor="let f of features">
+            <div class="f-icon">{{ f.icon }}</div>
+            <h3>{{ f.title }}</h3>
+            <p>{{ f.desc }}</p>
+        </div>
+    </section>
+
+    <section class="focus-bar">
+        <div class="focus-item" *ngFor="let area of focusAreas">
+            <span class="check-mark">✓</span> {{ area }}
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-logo">SmartSeat AI</div>
+        <p>&copy; 2026 SmartSeat AI. Empowering Academic Integrity through Distributed Systems.</p>
+    </footer>
+</div>

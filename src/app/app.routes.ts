@@ -28,11 +28,14 @@ import { GetExamPassword } from './Components/Dashboard/college-dashboard/get-ex
 import { StudentResult } from './Components/Dashboard/student-dashboard/student-result/student-result';
 import { GenerateResult } from './Components/Dashboard/university-dashboard/generate-result/generate-result';
 import {AnalyticsUniveristy} from './Components/Dashboard/university-dashboard/analytics-univeristy/analytics-univeristy'
-import {CollegeAnalytics} from './Components/Dashboard/college-dashboard/college-analytics/college-analytics'
-
+import {CollegeAnalytics} from './Components/Dashboard/college-dashboard/college-analytics/college-analytics';
+import {LandingPage} from './Components/landing-page/landing-page'
+import { ApproveQuestion } from './Components/Dashboard/university-dashboard/approve-question/approve-question'
+import {InsertQuestion} from './Components/Dashboard/university-dashboard/insert-question/insert-question'
 export const routes: Routes = [
 
-  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', component: LandingPage },
   {
     path: 'student-dashboard',
     component: StudentLayout,
@@ -79,6 +82,8 @@ export const routes: Routes = [
       { path: 'questionGeneration', component: QuestionGeneration },
       {path:'result',component:GenerateResult},
       {path:'analysis',component:AnalyticsUniveristy},
+      {path:'approveQuestions',component:ApproveQuestion},
+      {path:'InsertQuestion',component:InsertQuestion},
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

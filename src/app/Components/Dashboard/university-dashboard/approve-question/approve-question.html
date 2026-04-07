@@ -1,0 +1,101 @@
+<div class="gen-plan-container">
+  <div class="filter-header">
+    <div class="title-section" >
+      <h2>Pending Approvals</h2>
+      <p>Review and authorize AI-generated question papers</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loader">
+    <div class="spinner"></div>
+    <p>Loading Data...</p>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && unapprovedExams === null">
+    <div class="empty-icon">🎉</div>
+    <p>No papers awaiting approval.</p>
+  </div>
+
+  <div class="card-grid" *ngIf="!loading && unapprovedExams.length > 0">
+    <div class="exam-card" *ngFor="let exam of unapprovedExams">
+      <div class="card-header">
+        <span class="status-tag pending">⏳ Awaiting Review</span>
+      </div>
+      <div class="card-body">
+        <h3>{{ exam.examName }}</h3>
+        <div class="ai-hint">✨ AI Generated</div>
+      </div>
+      <button class="btn-generate" (click)="onReview(exam.id)">Review & Edit</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showReviewModal" (click)="closeReview()">
+    <div class="review-modal" (click)="$event.stopPropagation()">
+      
+      <div class="modal-header">
+        <div class="header-left">
+          <div class="title-meta">
+            <h3>Question Editor</h3>
+            <p>ID: {{ selectedExamQuestions?.examId }}</p>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <div class="counter-group">
+            <div class="counter-pill">
+              <span class="label">Target</span>
+              <span class="value">{{n}}</span>
+            </div>
+            <div class="counter-divider">|</div>
+            <div class="counter-pill" [class.warning]="selectedExamQuestions?.questions?.length !== n">
+              <span class="label">Current</span>
+              <span class="value">{{ selectedExamQuestions?.questions?.length }}</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-close-modal" (click)="closeReview()">×</button>
+      </div>
+
+      <div class="modal-body question-list-container">
+        <div class="question-editor-card" *ngFor="let q of selectedExamQuestions?.questions; let i = index">
+          <div class="q-header-actions">
+            <span class="q-number">QUESTION {{i + 1}}</span>
+            <button class="icon-btn delete" (click)="deleteQuestion(i)">🗑️</button>
+          </div>
+
+          <textarea class="edit-textarea" [(ngModel)]="q.text" placeholder="Question text..."></textarea>
+
+          <div class="options-editor-grid">
+            <div class="option-row" *ngFor="let opt of q.options; let optIdx = index; trackBy: trackByFn"
+              [class.selected-answer]="optIdx === q.correctAnswerIndex">
+            
+              <input type="radio" [name]="'correct-'+i" [checked]="optIdx === q.correctAnswerIndex"
+                (change)="setCorrectAnswer(i, optIdx)">
+            
+              <span class="opt-alpha">{{ ['A', 'B', 'C', 'D', 'E', 'F'][optIdx] }}</span>
+            
+              <input type="text" [(ngModel)]="q.options[optIdx]" class="opt-input">
+            
+              <button class="remove-opt" (click)="deleteOption(i, optIdx)" *ngIf="q.options.length > 2">×</button>
+            </div>
+            <button class="add-option-btn" (click)="addOption(i)">
+              + Add Option
+            </button>
+          </div>
+        </div>
+
+        <button class="add-new-q-btn" (click)="addNewQuestion()">
+          ➕ Add New Question
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeReview()">Cancel</button>
+        <button class="btn-primary-action approve-confirm" (click)="confirmApproval(selectedExamQuestions.examId)">
+          Approve & Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
