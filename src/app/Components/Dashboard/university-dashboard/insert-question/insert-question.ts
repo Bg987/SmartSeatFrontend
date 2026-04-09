@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AllocationService } from '../../../../services/allocation';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-insert-question',
@@ -21,6 +22,8 @@ export class InsertQuestion implements OnInit {
   showInsertModal = false;
   selectedExam: any = null;
   manualQuestions: any[] = [];
+  url2 = environment.apiUrl2;
+
 
   constructor(
     private allocationService: AllocationService,
@@ -169,7 +172,7 @@ export class InsertQuestion implements OnInit {
     
 
   //4. API Call
-  this.http.post('http://localhost:8081/api/exam/manual-insert', payload, { 
+  this.http.post(`${this.url2}/exam/manual-insert`, payload, { 
     withCredentials: true,
     responseType: 'text' 
   }).subscribe({
