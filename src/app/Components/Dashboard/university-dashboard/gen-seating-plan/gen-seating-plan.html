@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th>Code</th>
+                    <th>Branch</th>
                     <th>Subject Name</th>
                     <th>Exam Date</th>
                     <th>Semester</th>
@@ -21,6 +22,7 @@
             <tbody>
                 <tr *ngFor="let exam of filteredExams" (click)="openConfirm(exam)" class="row-hover">
                     <td><strong>{{ exam.subjectId }}</strong></td>
+                    <td><strong>{{ exam.branch }}</strong></td>
                     <td>{{ exam.subjectName }}</td>
                     <td>{{ exam.examDate | date:'dd-MM-yyyy' }}</td>
                     <td>{{ exam.semester }}</td>

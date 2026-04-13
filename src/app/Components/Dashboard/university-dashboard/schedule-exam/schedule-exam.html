@@ -1,80 +1,62 @@
 <div class="schedule-container">
+    <h1 class="page-title">University Exam Scheduler</h1>
+    <p class="page-subtitle">AI-Assisted Semester Synchronization</p>
 
-    <div *ngIf="!isConfiguring">
-        <h1 class="page-title">University Exam Scheduler</h1>
-        <br>
-        <header class="filter-header">
-            <input type="text" [(ngModel)]="searchText" placeholder="Search...">
-            <select [(ngModel)]="selectedDept">
-                <option value="">All Depts</option>
-                <option *ngFor="let d of uniqueDepts" [value]="d">{{d}}</option>
-            </select>
-            <select [(ngModel)]="selectedBranch">
-                <option value="">All Branches</option>
-                <option *ngFor="let b of uniqueBranches" [value]="b">{{b}}</option>
-            </select>
-            <select [(ngModel)]="selectedSem">
-                <option value="">All Sems</option>
-                <option *ngFor="let s of uniqueSems" [value]="s">Sem {{s}}</option>
-            </select>
-
-            <button class="btn-proceed" [disabled]="selectedSubjects.length === 0" (click)="proceedToConfigure()">
-                Configure ({{selectedSubjects.length}}) Subjects
+    <div class="config-view" *ngIf="!isConfiguring">
+        <header class="filter-header" style="max-width: 800px; margin: 0 auto;">
+            <div style="flex: 1;">
+                <label style="display:block; margin-bottom:5px; font-weight:700;">Semester</label>
+                <select [(ngModel)]="aiSemester">
+                    <option *ngFor="let s of uniqueSems" [value]="s">Semester {{s}}</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="display:block; margin-bottom:5px; font-weight:700;">Start Date</label>
+                <input type="date" [(ngModel)]="aiStartDate" class="form-input">
+            </div>
+            <div style="flex: 1;">
+                <label style="display:block; margin-bottom:5px; font-weight:700;">Start Time</label>
+                <input type="time" [(ngModel)]="aiStartTime" class="form-input">
+            </div>
+            <button class="btn-proceed" [disabled]="isLoading" (click)="generateAiDraft()" style="margin-top: 22px;">
+                {{ isLoading ? 'Generating...' : '✨ Generate Master Plan' }}
             </button>
         </header>
 
-        <div class="card-grid" *ngIf="filteredSubjects.length > 0; else noData">
-            <div class="subject-card" *ngFor="let s of filteredSubjects"
-                [class.selected]="isSubjectSelected(s.subjectId)" (click)="toggleSelection(s)">
-                <span class="subject-id-badge">{{ s.subjectId }}</span>
-                <h3>{{ s.subjectName }}</h3>
-                <p>{{s.department}} | {{s.branch}} | Sem {{s.semester}}</p>
-                <div class="check-indicator" *ngIf="isSubjectSelected(s.subjectId)">✓ Selected</div>
-            </div>
+        <div *ngIf="response" class="empty-state" style="margin-top: 20px; border-style: solid;">
+            {{ response }}
         </div>
     </div>
 
     <div class="config-view" *ngIf="isConfiguring">
         <div class="config-header">
-            <button (click)="isConfiguring = false" class="btn-back">← Back to Selection</button>
-            <h2>Set Individual Exam Details</h2>
+            <button (click)="isConfiguring = false" class="btn-back">← Reschedule</button>
+            <h2>Review Master Timetable: Semester {{aiSemester}}</h2>
         </div>
 
-        <div *ngIf="selectedSubjects.length==0">Select atleast on subject</div>
-        <div class="config-table-wrapper" *ngIf="selectedSubjects.length!=0">
+        <div class="config-table-wrapper">
             <table class="config-table">
                 <thead>
                     <tr>
-                        <th>Subject</th>
+                        <th>Branch & Subject</th>
                         <th>Exam Date</th>
                         <th>Start Time</th>
-                        <th>Duration (Min)</th>
+                        <th>Duration</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of selectedSubjects; let i = index"
-                        [class.row-disabled]="alreadyScheduledMap[item.subjectId]">
+                    <tr *ngFor="let item of selectedSubjects; let i = index">
                         <td>
                             <div class="sub-info">
+                                <span class="subject-id-badge">{{item.branch}}</span>
                                 <strong>{{item.subjectId}}</strong>
                                 <span>{{item.subjectName}}</span>
-                                <div *ngIf="alreadyScheduledMap[item.subjectId]" class="status-badge error">
-                                    Already Scheduled & Incomplete
-                                </div>
                             </div>
                         </td>
-                        <td>
-                            <input type="date" [(ngModel)]="item.examDate" class="form-input"
-                                [disabled]="alreadyScheduledMap[item.subjectId]">
-                        </td>
-                        <td>
-                            <input type="time" [(ngModel)]="item.startTime" class="form-input"
-                                [disabled]="alreadyScheduledMap[item.subjectId]">
-                        </td>
-                        <td>
-                            <input type="number" [(ngModel)]="item.duration" class="form-input" style="width: 80px;"
-                                [disabled]="alreadyScheduledMap[item.subjectId]">
+                        <td><input type="date" [(ngModel)]="item.examDate" class="form-input"></td>
+                        <td><input type="time" [(ngModel)]="item.startTime" class="form-input"></td>
+                        <td><input type="number" [(ngModel)]="item.duration" class="form-input" style="width: 80px;">
                         </td>
                         <td>
                             <button class="btn-remove" (click)="selectedSubjects.splice(i, 1)">Remove</button>
@@ -85,12 +67,9 @@
         </div>
 
         <div class="config-footer">
-            <button class="btn-finalize" (click)="confirmAllSchedules()" *ngIf="selectedSubjects.length!=0">Finalize All Exams</button>
+            <button class="btn-finalize" [disabled]="isLoading" (click)="confirmAllSchedules()">
+                {{ isLoading ? 'Saving...' : 'Confirm' }}
+            </button>
         </div>
-        <div>{{response}}</div>
     </div>
-
-    <ng-template #noData>
-        <div class="empty-state">No matching subjects found.</div>
-    </ng-template>
 </div>

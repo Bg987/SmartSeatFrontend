@@ -58,7 +58,7 @@ export class ViewSeatingAllocation implements OnInit {
     this.err = '';
     this.selectedColleges = [];
     this.selectedExamId = exam.id;
-    this.examName = exam.subjectName+"-"+exam.semester+"-"+exam.subjectId+"-"+exam.examDate;
+    this.examName = exam.subjectName+"-"+exam.semester+"-"+exam.subjectId+"-"+exam.examDate+"-"+exam.branch;
     this.showGrid = false; 
     this.isLoading = true;
 

@@ -7,11 +7,11 @@ import { FormsModule } from '@angular/forms';
 interface ScheduledSubject {
   subjectId: string;
   subjectName: string;
+  branch: string;
+  semester: number;
   examDate: string;
   startTime: string;
   duration: number;
-  semester: number,
-  branch: string,
 }
 
 @Component({
@@ -22,119 +22,76 @@ interface ScheduledSubject {
   styleUrl: './schedule-exam.css',
 })
 export class ScheduleExam implements OnInit {
-
-  alreadyScheduledMap: { [key: string]: boolean } = {};
-  subjects: any[] = [];
   url: string = environment.apiUrl;
+  url2: string = environment.apiUrl2;
   private http = inject(HttpClient);
-  // UI State
-  response: any = '';
+  private cdr = inject(ChangeDetectorRef);
+
+  // State Management
   isConfiguring: boolean = false;
+  isLoading: boolean = false;
+  response: string = '';
 
-  searchText: string = '';
-  selectedDept: string = '';
-  selectedBranch: string = '';
-  selectedSem: string = '';
+  // AI Form Inputs
+  aiSemester: number = 1;
+  aiStartDate: string = '';
+  aiStartTime: string = '09:00';
 
-  // Separate configurations for selected subjects
+  // The resulting schedule
   selectedSubjects: ScheduledSubject[] = [];
+  uniqueSems: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-    this.loadSubjects();
-  }
+  generateAiDraft() {
+    if (!this.aiStartDate) {
+      alert("Please select a starting date.");
+      return;
+    }
 
-  loadSubjects() {
-    this.http.get<any[]>(`${this.url}/university/getAllSubjects`, {
-      withCredentials: true,
+    this.isLoading = true;
+    this.response = "AI is generating the synchronized semester timetable...";
+
+    const params = {
+      startDate: this.aiStartDate,
+      startTime: this.aiStartTime
+    };
+
+    this.http.get<ScheduledSubject[]>(`${this.url2}/exam/generate-ai-draft/${this.aiSemester}`, {
+      params: params,
+      withCredentials: true
     }).subscribe({
       next: (data) => {
-        this.subjects = data;
+        this.selectedSubjects = data;
+        this.isConfiguring = true; // Switch to the table view
+        this.isLoading = false;
+        this.response = "";
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Error fetching subjects', err)
+      error: (err) => {
+        this.isLoading = false;
+        this.response = "Error: " + (err.error?.error || "AI generation failed");
+        this.cdr.detectChanges();
+      }
     });
-  }
-
-  // Toggle selection and initialize defaults for new subjects
-  toggleSelection(s: any) {
-    const index = this.selectedSubjects.findIndex(item => item.subjectId === s.subjectId);
-    
-    if (index > -1) {
-      this.selectedSubjects.splice(index, 1);
-    } else {
-      this.selectedSubjects.push({
-        subjectId: s.subjectId,
-        subjectName: s.subjectName,
-        semester : s.semester,
-        examDate: '',
-        branch : s.branch,
-        startTime: '09:00', // Default
-        duration: 180      // Default
-      });
-    }
-  }
-
-  isSubjectSelected(id: string): boolean {
-    return this.selectedSubjects.some(s => s.subjectId === id);
-  }
-
-  proceedToConfigure() {
-    this.response = '';
-    if (this.selectedSubjects.length > 0) {
-      this.isConfiguring = true;
-      const ids = this.selectedSubjects.map(s => s.subjectId);
-  
-      this.http.post<any>(`${this.url}/university/check-scheduled`, ids, { withCredentials: true })
-        .subscribe({
-          next: (res) => {
-            this.alreadyScheduledMap = res;
-            this.isConfiguring = true;
-            this.cdr.detectChanges();
-          },
-          error: (err) => console.error("Error checking subject status", err)
-      });
-    }
   }
 
   confirmAllSchedules() {
-    // Check if all dates are filled
-    const isInvalid = this.selectedSubjects.some(s => !s.examDate);
-    if (isInvalid) {
-      alert("Please select a date for all subjects.");
-      return;
-    } 
-    this.response = "";
-    this.http.post(`${this.url}/university/scheduleExam`, this.selectedSubjects, { withCredentials: true })
+    this.isLoading = true;
+    this.http.post(`${this.url}/university/confirm-ai-draft`, this.selectedSubjects, { withCredentials: true })
       .subscribe({
         next: (res: any) => {
           this.response = res.message;
-          this.cdr.detectChanges();
           this.isConfiguring = false;
+          this.selectedSubjects = [];
+          this.isLoading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
-          this.response = err.error.error;
+          this.response = "Save Failed: " + (err.error?.error || "Check date constraints (min 25 days)");
+          this.isLoading = false;
           this.cdr.detectChanges();
-        } 
-    });
-    // Send this.selectedSubjects array to your backend
-  }
-
-  // Filters 
-  get uniqueDepts() { return [...new Set(this.subjects.map(s => s.department))].filter(v => !!v); }
-  get uniqueBranches() { return [...new Set(this.subjects.map(s => s.branch))].filter(v => !!v); }
-  get uniqueSems() { return [...new Set(this.subjects.map(s => s.semester))].filter(v => !!v).sort(); }
-
-  get filteredSubjects() {
-    return this.subjects.filter(s => {
-      const matchesSearch = !this.searchText || 
-        s.subjectName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        s.subjectId.toLowerCase().includes(this.searchText.toLowerCase());
-      return matchesSearch && 
-             (!this.selectedDept || s.department === this.selectedDept) &&
-             (!this.selectedBranch || s.branch === this.selectedBranch) &&
-             (!this.selectedSem || s.semester?.toString() === this.selectedSem);
+        }
     });
   }
 }
