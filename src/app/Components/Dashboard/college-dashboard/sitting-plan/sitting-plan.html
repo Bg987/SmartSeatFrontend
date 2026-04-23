@@ -1,9 +1,51 @@
 <div class="container">
-  <div *ngFor="let exam of examList">
-    <div *ngIf="!showSittingPlan" class="exam-card" (click)="openSittingPlan(exam.id)">
-      <div class="exam-badge">Exam Node</div>
-      <h2>{{ exam.examName }}</h2>
-      <p>Synchronize and view real-time student seat allocation.</p>
+
+  <div *ngIf="!showSittingPlan && !showRoomList">
+    <div *ngFor="let slot of examList" class="slot-group">
+      <div class="slot-header clickable" (click)="openRoomAudit(slot)">
+        <div class="slot-info">
+          <span class="slot-date">📅 {{ slot.examDate }}</span>
+          <span class="slot-time">🕒 {{ slot.startTime }}</span>
+        </div>
+        <span class="view-rooms-hint">Check Classrooms →</span>
+      </div>
+
+      <div class="exam-cards-container">
+        <div *ngFor="let subExam of slot.exams" class="exam-card"
+          (click)="openSittingPlan(subExam.id, subExam.examName)">
+          <div class="exam-badge">Exam Node</div>
+          <h2>{{ subExam.examName }}</h2>
+          <p>Click to view real-time seating allocation.</p>
+          <div class="card-footer">ID: {{ subExam.id }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showRoomList" class="room-audit-wrapper">
+    <header class="plan-header">
+      <div class="header-info">
+        <h2 class="main-title">Classroom Requirement</h2>
+        <p class="subtitle">Allocated Classrooms for {{ selectedSlotLabel }}</p>
+      </div>
+      <button class="back-btn" (click)="showRoomList = false">← Back to Schedule</button>
+    </header>
+
+    <div class="table-container" *ngIf="occupiedRooms.length > 0">
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Block</th>
+            <th>Room</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of occupiedRooms">
+            <td><span class="block-badge">{{ room.block || 'Main' }}</span></td>
+            <td class="room-cell">{{ room.roomnumber }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -11,15 +53,14 @@
     <header class="plan-header">
       <div class="header-info">
         <h2 class="main-title">{{ examName }}</h2>
-        <p *ngIf="roomNumber" class="subtitle">
-        </p>
+        <p class="subtitle">{{ blockName }} - Room {{ roomNumber }}</p>
       </div>
       <button class="back-btn" (click)="showSittingPlan = false">← Back</button>
     </header>
 
     <div class="controls">
       <div class="input-section">
-        <label class="field-label">Infrastructure Node (Block - Room)</label>
+        <label class="field-label">Switch Room</label>
         <select [(ngModel)]="selectedRoom" (ngModelChange)="changeRoom($event)">
           <option *ngFor="let room of allCollegeRooms" [ngValue]="{roomId: room.id}">
             {{ room.block ? 'Block ' + room.block : 'Main' }} - {{ room.roomNumber }}
@@ -27,60 +68,24 @@
           </option>
         </select>
       </div>
-
-      <div class="input-section">
-        <label class="field-label">Enrollment Registry Filter</label>
-        <input type="text" placeholder="Search Enrollment..." [(ngModel)]="searchText" (input)="searchStudent()" />
+      <div class="input-section"><label class="field-label">Search Enrollment</label>
+        <input type="text" [(ngModel)]="searchText" (input)="searchStudent()" placeholder="Search..." />
       </div>
     </div>
-    <div class="stats">
-      <div class="stat-item">
-        <span>Asset Capacity</span>
-        <strong>{{ capacity }}</strong>
-      </div>
-      <div class="stat-item occupied">
-        <span>Allocated Units</span>
-        <strong>{{ getOccupiedCount() }}</strong>
-      </div>
-      <div class="stat-item available">
-        <span>Available Nodes</span>
-        <strong>{{ getEmptySeats() }}</strong>
-      </div>
-    </div>
-
-    <div *ngIf="loading" class="loader-overlay">Synchronizing Blueprint...</div>
-
-    <div class="grid-container" *ngIf="!loading && rows.length > 0">
+    <div class="grid-container" *ngIf="rows.length > 0">
       <div class="grid-header-row">
         <div class="row-label-placeholder"></div>
         <div class="col-label" *ngFor="let col of columns">COL {{ col }}</div>
       </div>
-
-      <div class="grid-body">
-        <div class="grid-row" *ngFor="let row of rows">
-          <div class="row-label">R{{ row }}</div>
-
-          <div class="seat-wrapper" *ngFor="let col of columns">
-            <div class="seat" [ngClass]="{
-                   'occupied': getStudent(row, col),
-                   'empty': !getStudent(row, col),
-                   'highlight': searchText && getStudent(row, col)?.enrollment.toLowerCase().includes(searchText.toLowerCase())
-                 }">
-              <div class="seat-content" *ngIf="getStudent(row, col)">
-                <span class="enrollment-no">{{ getStudent(row, col)?.enrollment }}</span>
-              </div>
-              <div class="seat-placeholder" *ngIf="!getStudent(row, col)">
-                <span class="seat-dot"></span>
-              </div>
-            </div>
+      <div class="grid-row" *ngFor="let row of rows">
+        <div class="row-label">R{{ row }}</div>
+        <div class="seat-wrapper" *ngFor="let col of columns">
+          <div class="seat" [ngClass]="{'occupied': getStudent(row, col), 'empty': !getStudent(row, col)}">
+            <span *ngIf="getStudent(row, col)">{{ getStudent(row, col).enrollment }}</span>
+            <span *ngIf="!getStudent(row, col)" class="seat-dot"></span>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="no-data-card" *ngIf="!loading && rows.length === 0">
-      <div class="empty-icon">📭</div>
-      <p><strong>No Allocation found</strong>.</p>
     </div>
   </div>
 </div>

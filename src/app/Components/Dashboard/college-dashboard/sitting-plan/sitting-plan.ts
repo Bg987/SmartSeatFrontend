@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 
-export interface ExamDetail {
-  id: number;
-  examName: string;
+export interface ExamSlot {
+  examDate: string;
+  startTime: string;
+  exams: any[];
 }
 
 @Component({
@@ -18,32 +19,32 @@ export interface ExamDetail {
 })
 export class SittingPlan implements OnInit {
   // Data Sources
+  examList: ExamSlot[] = [];
+  occupiedRooms: any[] = [];
   students: any[] = [];
   filteredStudents: any[] = [];
-  examList: ExamDetail[] = [];
   allCollegeRooms: any[] = [];
   uniqueRooms: any[] = [];
   
-  // Grid Logic
+  // State
+  url: String = environment.apiUrl;
+  showSittingPlan = false;
+  showRoomList = false;
+  loading = false;
+  searchText: string = '';
+
+  // Current Selections
+  selectedSlotLabel: string = '';
+  examId!: number;
+  examName: string = '';
+  roomid!: number;
+  selectedRoom: any = null;
+
+  // Grid Info
   rows: number[] = [];
   columns: number[] = [];
-  
-  // State Management
-  url: String = environment.apiUrl;
-  searchText: string = '';
-  loading = false;
-  showSittingPlan = false;
-
-  // Identity & Selections
-  collegeId = Number(localStorage.getItem('collegeId'));
-  examId!: Number;
-  examName: string = '';
-  selectedRoom: any = null;
-  roomid!: number;
-  
-  // Room Info Display
-  roomNumber!: number;
-  blockName!: string;
+  roomNumber: number=-1;
+  blockName: string='';
   capacity: number = 0;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
@@ -53,102 +54,85 @@ export class SittingPlan implements OnInit {
     this.getAllCollegeRooms();
   }
 
-  getAllCollegeRooms() {
-    this.http.get<any[]>(`${this.url}/colleges/getRoomInfoOfCollege`, { withCredentials: true })
-      .subscribe(res => { 
-        this.allCollegeRooms = res; 
-        this.cdr.detectChanges();
-      });
-  }
-
-  isRoomAllocated(roomId: number): boolean {
-    return this.uniqueRooms.some(r => r.roomId === roomId);
-  }
-
   getExamDetails() {
-    this.http.get<ExamDetail[]>(`${this.url}/colleges/getExamDetails`, { withCredentials: true })
-      .subscribe({
-        next: (res) => { this.examList = res; this.cdr.detectChanges(); },
-        error: (err) => console.error('Exam Fetch Error:', err)
-      });
+    this.http.get<any[]>(`${this.url}/colleges/getExamDetails`, { withCredentials: true })
+      .subscribe(res => { this.examList = res; this.cdr.detectChanges(); });
   }
 
-  openSittingPlan(id: Number) {
-    const selected = this.examList.find(e => e.id === id);
-    this.examName = selected ? selected.examName : 'Sitting Plan';
+  openRoomAudit(slot: ExamSlot) {
+    this.selectedSlotLabel = `${slot.examDate} @ ${slot.startTime}`;
+    this.showRoomList = true;
+    this.showSittingPlan = false;
+    this.loading = true;
+    this.http.get<any[]>(`${this.url}/colleges/getRoomsBySlot`, { 
+      params: { date: slot.examDate, time: slot.startTime }, 
+      withCredentials: true 
+    }).subscribe(res => {
+      this.occupiedRooms = res || [];
+      this.loading = false;
+      this.cdr.detectChanges();
+    });
+  }
+
+  openSittingPlan(id: number, name: string) {
+    this.examId = id;
+    this.examName = name;
     this.showSittingPlan = true;
+    this.showRoomList = false;
     this.loadSeats(id);
   }
 
-  loadSeats(id: Number) {
-    this.examId = id;
+  loadSeats(id: number) {
     this.loading = true;
-    this.http.get<any[]>(`${this.url}/colleges/getSeatBYCollege/${this.examId}`, { withCredentials: true })
-      .subscribe({
-        next: (response) => {
-          if (!response || response.length === 0) {
-            this.students = []; this.uniqueRooms = []; this.rows = [];
-            this.loading = false; return;
-          }
-
-          this.students = response.map(seat => ({
-            enrollment: seat.enrollmentNo,
-            roomId: seat.room_id,
-            row: seat.row_no + 1,
-            column: seat.col_no + 1,
-          }));
-
-          this.filteredStudents = [...this.students];
-          
-          const roomMap = new Map();
-          this.students.forEach(s => {
-            if (!roomMap.has(s.roomId)) roomMap.set(s.roomId, { roomId: s.roomId });
-          });
-          this.uniqueRooms = Array.from(roomMap.values());
-
-          // INITIALIZATION: Render first room automatically
-          if (this.uniqueRooms.length > 0) {
-            this.roomid = this.uniqueRooms[0].roomId;
-            this.selectedRoom = { roomId: this.roomid }; 
-            
-            // Sync all UI sections for the first room
-            this.getRoomInformation();
-            this.generateGrid();
-          }
-
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-        error: () => this.loading = false
+    this.http.get<any[]>(`${this.url}/colleges/getSeatBYCollege/${id}`, { withCredentials: true })
+      .subscribe(response => {
+        this.students = response.map(seat => ({
+          enrollment: seat.enrollmentNo,
+          roomId: Number(seat.room_id),
+          row: Number(seat.row_no) + 1,
+          column: Number(seat.col_no) + 1,
+        }));
+        this.filteredStudents = [...this.students];
+        const roomMap = new Map();
+        this.students.forEach(s => roomMap.set(s.roomId, { roomId: s.roomId }));
+        this.uniqueRooms = Array.from(roomMap.values());
+        if (this.uniqueRooms.length > 0) {
+          this.roomid = this.uniqueRooms[0].roomId;
+          this.selectedRoom = { roomId: this.roomid }; 
+          this.getRoomInformation();
+          this.generateGrid();
+        }
+        this.loading = false;
+        this.cdr.detectChanges();
       });
   }
 
   generateGrid() {
     const roomStudents = this.filteredStudents.filter(s => s.roomId === this.roomid);
-    if (roomStudents.length === 0) {
-      this.rows = []; this.columns = []; return;
-    }
-    const maxRow = Math.max(...roomStudents.map(s => s.row));
-    const maxCol = Math.max(...roomStudents.map(s => s.column));
-    this.rows = Array.from({ length: maxRow }, (_, i) => i + 1);
-    this.columns = Array.from({ length: maxCol }, (_, i) => i + 1);
+    if (roomStudents.length === 0) { this.rows = []; this.columns = []; return; }
+    this.rows = Array.from({ length: Math.max(...roomStudents.map(s => s.row)) }, (_, i) => i + 1);
+    this.columns = Array.from({ length: Math.max(...roomStudents.map(s => s.column)) }, (_, i) => i + 1);
+  }
+
+  getStudent(r: number, c: number) {
+    return this.filteredStudents.find(s => s.roomId === this.roomid && s.row === r && s.column === c);
   }
 
   changeRoom(event: any) {
-    if (event && event.roomId) {
-      this.roomid = event.roomId;
-      
-      // Reset grid while switching to prevent data ghosting
-      this.rows = [];
-      this.columns = [];
-
-      this.getRoomInformation();
-      this.generateGrid();
-    }
+    this.roomid = event.roomId;
+    this.getRoomInformation();
+    this.generateGrid();
   }
 
-  getStudent(row: number, column: number) {
-    return this.filteredStudents.find(s => s.roomId === this.roomid && s.row === row && s.column === column);
+  getAllCollegeRooms() {
+    this.http.get<any[]>(`${this.url}/colleges/getRoomInfoOfCollege`, { withCredentials: true }).subscribe(res => this.allCollegeRooms = res);
+  }
+
+  getRoomInformation() {
+    this.http.get<any>(`${this.url}/colleges/getRoomInfo/${this.roomid}`, { withCredentials: true }).subscribe(res => {
+      this.roomNumber = res.roomNumber; this.blockName = res.block || 'Main'; this.capacity = res.capacity;
+      this.cdr.detectChanges();
+    });
   }
 
   searchStudent() {
@@ -156,18 +140,8 @@ export class SittingPlan implements OnInit {
       this.students.filter(s => s.enrollment.toLowerCase().includes(this.searchText.toLowerCase()));
     this.generateGrid();
   }
-
+  
+  isRoomAllocated(roomId: number) { return this.uniqueRooms.some(r => r.roomId === roomId); }
   getOccupiedCount() { return this.students.filter(s => s.roomId === this.roomid).length; }
   getEmptySeats() { return Math.max(0, this.capacity - this.getOccupiedCount()); }
-
-  getRoomInformation() {
-    if (!this.roomid) return;
-    this.http.get<any>(`${this.url}/colleges/getRoomInfo/${this.roomid}`, { withCredentials: true })
-      .subscribe(res => {
-        this.roomNumber = res.roomNumber;
-        this.blockName = res.block ? res.block : 'Main';
-        this.capacity = res.capacity;
-        this.cdr.detectChanges();
-      });
-  }
 }
